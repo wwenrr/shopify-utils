@@ -95,7 +95,8 @@
 
         input[type="text"],
         input[type="url"],
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 12px 16px;
             font-size: 16px;
@@ -110,7 +111,8 @@
 
         input[type="text"]:focus,
         input[type="url"]:focus,
-        textarea:focus {
+        textarea:focus,
+        select:focus {
             outline: none;
             border-color: var(--color-accent);
         }
@@ -352,6 +354,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="buttonVariant">Kiểu button</label>
+                        <select id="buttonVariant">
+                            <option value="jwl" selected>JWL</option>
+                            <option value="jf">JF</option>
+                        </select>
+                        <div class="form-hint">Chọn style button phù hợp từng thương hiệu.</div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="buttonDescription">Mô tả button</label>
                         <textarea id="buttonDescription" rows="3" placeholder="Tùy chọn: Giải thích ngắn về hành động của button"></textarea>
                         <div class="form-hint">Hiển thị ngay dưới button, có thể bỏ trống.</div>
@@ -392,11 +403,13 @@
         let latestButtonMarkup = '';
 
         function initPage() {
-            const watchedFields = ['buttonText', 'buttonUrl', 'buttonDescription', 'buttonTarget'];
+            const watchedFields = ['buttonText', 'buttonUrl', 'buttonVariant', 'buttonDescription', 'buttonTarget'];
             watchedFields.forEach(function(fieldId) {
                 const element = document.getElementById(fieldId);
                 if (!element) return;
-                const eventName = element.type === 'checkbox' ? 'change' : 'input';
+                const isCheckbox = element.type === 'checkbox';
+                const isSelect = element.tagName === 'SELECT';
+                const eventName = (isCheckbox || isSelect) ? 'change' : 'input';
                 element.addEventListener(eventName, refreshPreview);
             });
             refreshPreview();
@@ -414,6 +427,7 @@
             return {
                 text: getInputValue('buttonText', 'Đọc thêm bài viết'),
                 url: getInputValue('buttonUrl', 'https://example.com/bai-viet'),
+                variant: getInputValue('buttonVariant', 'jwl'),
                 description: getInputValue('buttonDescription', ''),
                 target: document.getElementById('buttonTarget')?.checked || false
             };
@@ -427,6 +441,7 @@
 
         function buildButtonMarkup(values) {
             const targetAttr = values.target ? ' target="_blank" rel="noopener noreferrer"' : '';
+            const variantConfig = getVariantConfig(values.variant);
             const buttonStyle = [
                 'display:inline-flex',
                 'align-items:center',
@@ -437,14 +452,14 @@
                 "font-family:'Inter',sans-serif",
                 "font-size:max(clamp(12px,calc(0.347vw + 10.333px),13px),clamp(13px,calc(1.171875vw + 4px),16px))",
                 'text-decoration:none',
-                'color:#FFFFFF',
-                'background-color:#111111',
-                'border:1px solid #111111',
-                'border-radius:999px',
+                `color:${variantConfig.textColor}`,
+                `background-color:${variantConfig.backgroundColor}`,
+                `border:1px solid ${variantConfig.borderColor}`,
+                `border-radius:${variantConfig.borderRadius}`,
                 'transition:all 0.2s ease'
             ].join(';');
-            const hoverIn = "this.style.color='#111111';this.style.backgroundColor='#FFFFFF';this.style.borderColor='#111111'";
-            const hoverOut = "this.style.color='#FFFFFF';this.style.backgroundColor='#111111';this.style.borderColor='#111111'";
+            const hoverIn = `this.style.color='${variantConfig.hoverTextColor}';this.style.backgroundColor='${variantConfig.hoverBackgroundColor}';this.style.borderColor='${variantConfig.hoverBorderColor}'`;
+            const hoverOut = `this.style.color='${variantConfig.textColor}';this.style.backgroundColor='${variantConfig.backgroundColor}';this.style.borderColor='${variantConfig.borderColor}'`;
             const containerStyle = [
                 'margin:32px 0',
                 'display:flex',
@@ -461,6 +476,30 @@
     <a href="${values.url}"${targetAttr} style="${buttonStyle}" onmouseenter="${hoverIn}" onmouseleave="${hoverOut}">${values.text}</a>
     ${descriptionBlock}
 </div>`;
+        }
+
+        function getVariantConfig(variant) {
+            if (variant === 'jf') {
+                return {
+                    backgroundColor: '#0D0C0C',
+                    borderColor: '#0D0C0C',
+                    borderRadius: '5px',
+                    textColor: '#FFFFFF',
+                    hoverBackgroundColor: '#FFFFFF',
+                    hoverTextColor: '#0D0C0C',
+                    hoverBorderColor: '#0D0C0C'
+                };
+            }
+
+            return {
+                backgroundColor: '#3F3E3D',
+                borderColor: '#3F3E3D',
+                borderRadius: '999px',
+                textColor: '#FFFFFF',
+                hoverBackgroundColor: '#FFFFFF',
+                hoverTextColor: '#3F3E3D',
+                hoverBorderColor: '#3F3E3D'
+            };
         }
 
         function renderPreview(values, buttonMarkup) {
