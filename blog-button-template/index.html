@@ -271,6 +271,23 @@
             transform: rotate(45deg);
         }
 
+        .variant-settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .variant-settings-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .variant-settings-note {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: 12px;
+        }
+
         @media (max-width: 960px) {
             body {
                 padding: 24px 16px 48px;
@@ -382,7 +399,49 @@
                 </form>
             </div>
 
-            <div class="card">
+            <div class="card variant-settings-card">
+                <div class="section-title">Cấu hình variant</div>
+                <p class="variant-settings-note">Variant hiện tại: <strong id="variantActiveLabel">JWL</strong></p>
+                <div class="variant-settings-grid" id="variantSettingsForm">
+                    <div class="form-group">
+                        <label for="variantBackgroundColor">Nền</label>
+                        <input type="color" id="variantBackgroundColor" data-variant-field="backgroundColor">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantTextColor">Màu chữ</label>
+                        <input type="color" id="variantTextColor" data-variant-field="textColor">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantBorderColor">Màu viền</label>
+                        <input type="color" id="variantBorderColor" data-variant-field="borderColor">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantBorderRadius">Bo góc</label>
+                        <input type="text" id="variantBorderRadius" data-variant-field="borderRadius" placeholder="Ví dụ: 999px">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantFontFamily">Font family</label>
+                        <input type="text" id="variantFontFamily" data-variant-field="fontFamily" placeholder="'Inter',sans-serif">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantHoverBackground">Hover nền</label>
+                        <input type="color" id="variantHoverBackground" data-variant-field="hoverBackgroundColor">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantHoverText">Hover chữ</label>
+                        <input type="color" id="variantHoverText" data-variant-field="hoverTextColor">
+                    </div>
+                    <div class="form-group">
+                        <label for="variantHoverBorder">Hover viền</label>
+                        <input type="color" id="variantHoverBorder" data-variant-field="hoverBorderColor">
+                    </div>
+                </div>
+                <div class="button-group" style="margin-top: 20px;">
+                    <button type="button" class="secondary" id="resetVariantSettings">Reset variant</button>
+                </div>
+            </div>
+
+            <div class="card full-width">
                 <div class="section-title">Preview</div>
                 <div class="preview-wrapper" id="preview">
                     <p class="preview-text">Nhập thông tin bên trái để xem button trong ngữ cảnh blog.</p>
@@ -400,6 +459,30 @@
     </div>
 
     <script>
+        const variantDefaults = {
+            jwl: {
+                backgroundColor: '#3F3E3D',
+                borderColor: '#3F3E3D',
+                borderRadius: '999px',
+                fontFamily: "'Inter',sans-serif",
+                textColor: '#FFFFFF',
+                hoverBackgroundColor: '#FFFFFF',
+                hoverTextColor: '#3F3E3D',
+                hoverBorderColor: '#3F3E3D'
+            },
+            jf: {
+                backgroundColor: '#0D0C0C',
+                borderColor: '#0D0C0C',
+                borderRadius: '5px',
+                fontFamily: "'Nunito Sans',sans-serif",
+                textColor: '#FFFFFF',
+                hoverBackgroundColor: '#FFFFFF',
+                hoverTextColor: '#0D0C0C',
+                hoverBorderColor: '#0D0C0C'
+            }
+        };
+
+        let variantSettings = JSON.parse(JSON.stringify(variantDefaults));
         let latestButtonMarkup = '';
 
         function initPage() {
@@ -410,8 +493,15 @@
                 const isCheckbox = element.type === 'checkbox';
                 const isSelect = element.tagName === 'SELECT';
                 const eventName = (isCheckbox || isSelect) ? 'change' : 'input';
-                element.addEventListener(eventName, refreshPreview);
+                element.addEventListener(eventName, function() {
+                    refreshPreview();
+                    if (fieldId === 'buttonVariant') {
+                        updateVariantSettingsForm(element.value);
+                    }
+                });
             });
+            initVariantSettingsForm();
+            updateVariantSettingsForm(getCurrentVariant());
             refreshPreview();
         }
 
@@ -437,6 +527,10 @@
             const element = document.getElementById(inputId);
             if (!element) return fallback;
             return element.value.trim() || fallback;
+        }
+        
+        function getCurrentVariant() {
+            return document.getElementById('buttonVariant')?.value || 'jwl';
         }
 
         function buildButtonMarkup(values) {
@@ -479,29 +573,7 @@
         }
 
         function getVariantConfig(variant) {
-            if (variant === 'jf') {
-                return {
-                    backgroundColor: '#0D0C0C',
-                    borderColor: '#0D0C0C',
-                    borderRadius: '5px',
-                    fontFamily: "'Nunito Sans',sans-serif",
-                    textColor: '#FFFFFF',
-                    hoverBackgroundColor: '#FFFFFF',
-                    hoverTextColor: '#0D0C0C',
-                    hoverBorderColor: '#0D0C0C'
-                };
-            }
-
-            return {
-                backgroundColor: '#3F3E3D',
-                borderColor: '#3F3E3D',
-                borderRadius: '999px',
-                fontFamily: "'Inter',sans-serif",
-                textColor: '#FFFFFF',
-                hoverBackgroundColor: '#FFFFFF',
-                hoverTextColor: '#3F3E3D',
-                hoverBorderColor: '#3F3E3D'
-            };
+            return variantSettings[variant] || variantDefaults.jwl;
         }
 
         function renderPreview(values, buttonMarkup) {
@@ -527,6 +599,70 @@
             outputElement.textContent = templateContent;
         }
 
+        function initVariantSettingsForm() {
+            const formElement = document.getElementById('variantSettingsForm');
+            if (!formElement) return;
+
+            const inputs = formElement.querySelectorAll('[data-variant-field]');
+            inputs.forEach(function(input) {
+                const eventName = input.type === 'color' ? 'input' : 'change';
+                input.addEventListener(eventName, function() {
+                    const field = input.dataset.variantField;
+                    const value = input.value;
+                    updateVariantSetting(getCurrentVariant(), field, value);
+                });
+            });
+
+            const resetButton = document.getElementById('resetVariantSettings');
+            if (resetButton) {
+                resetButton.addEventListener('click', function() {
+                    resetVariantSettings(getCurrentVariant());
+                });
+            }
+        }
+
+        function updateVariantSettingsForm(variant) {
+            const settings = getVariantConfig(variant);
+            if (!settings) return;
+
+            const label = document.getElementById('variantActiveLabel');
+            if (label) {
+                label.textContent = variant.toUpperCase();
+            }
+
+            setVariantInputValue('variantBackgroundColor', settings.backgroundColor);
+            setVariantInputValue('variantTextColor', settings.textColor);
+            setVariantInputValue('variantBorderColor', settings.borderColor);
+            setVariantInputValue('variantBorderRadius', settings.borderRadius);
+            setVariantInputValue('variantFontFamily', settings.fontFamily);
+            setVariantInputValue('variantHoverBackground', settings.hoverBackgroundColor);
+            setVariantInputValue('variantHoverText', settings.hoverTextColor);
+            setVariantInputValue('variantHoverBorder', settings.hoverBorderColor);
+        }
+
+        function setVariantInputValue(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.value = value;
+            }
+        }
+
+        function updateVariantSetting(variant, field, value) {
+            if (!variantSettings[variant]) {
+                const defaults = variantDefaults[variant] || variantDefaults.jwl;
+                variantSettings[variant] = { ...defaults };
+            }
+            variantSettings[variant][field] = value;
+            refreshPreview();
+        }
+
+        function resetVariantSettings(variant) {
+            const defaults = variantDefaults[variant] || variantDefaults.jwl;
+            variantSettings[variant] = JSON.parse(JSON.stringify(defaults));
+            updateVariantSettingsForm(variant);
+            refreshPreview();
+        }
+
         function loadSample() {
             setInputValue('buttonText', 'Khám phá thêm');
             setInputValue('buttonUrl', 'https://example.com/blog/cau-chuyen');
@@ -537,6 +673,7 @@
 
         function resetForm() {
             document.getElementById('buttonForm')?.reset();
+            updateVariantSettingsForm(getCurrentVariant());
             refreshPreview();
         }
 
