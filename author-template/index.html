@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Template Generator</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2965/2965333.png">
+    <style>
+        :root {
+            --color-background: #FAFAFA;
+            --color-accent: #5A9FFF;
+            --color-text-primary: #222F3E;
+            --color-text-secondary: #757575;
+            --color-border: #E0E0E0;
+            --color-white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            padding: 32px 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--color-text-primary);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--color-text-primary);
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 96px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--color-white);
+            background-color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(90, 159, 255, 0.2);
+        }
+
+        button:hover {
+            background-color: #4A8FEF;
+            border-color: #4A8FEF;
+            box-shadow: 0 2px 4px rgba(90, 159, 255, 0.3);
+        }
+
+        button:active {
+            background-color: #3A7FDF;
+            transform: translateY(1px);
+        }
+
+        button.secondary {
+            color: var(--color-text-secondary);
+            background-color: var(--color-white);
+            border-color: var(--color-border);
+            box-shadow: none;
+        }
+
+        button.secondary:hover {
+            color: var(--color-text-primary);
+            border-color: var(--color-accent);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        button.success {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        button.success:hover {
+            background-color: #4A8FEF;
+            border-color: #4A8FEF;
+        }
+
+        .preview-container {
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            background-color: var(--color-background);
+            min-height: 200px;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .template-output {
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            color: var(--color-text-primary);
+            margin-bottom: 24px;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .layout-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+
+        .preview-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+
+        .preview-container a {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+
+        .preview-container a:hover {
+            color: #4A8FEF;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--color-text-secondary);
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 32px;
+        }
+
+        .back-button:hover {
+            color: var(--color-text-primary);
+            border-color: var(--color-accent);
+            box-shadow: 0 2px 4px rgba(90, 159, 255, 0.1);
+        }
+
+        .back-button-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            border-left: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">
+            <span class="back-button-icon"></span>
+            <span>Quay lại</span>
+        </a>
+        <h1>Author Template Generator</h1>
+        
+        <div class="layout-grid">
+            <div class="card">
+                <h3>Nhập thông tin Author</h3>
+                <form id="authorForm">
+                    <div class="form-group">
+                        <label for="authorName">Tên Author</label>
+                        <input type="text" id="authorName" placeholder="Ví dụ: Yuzuki Tsukihana">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="authorImageUrl">URL hình ảnh</label>
+                        <input type="url" id="authorImageUrl" placeholder="https://example.com/image.png">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="authorDescription">Mô tả</label>
+                        <textarea id="authorDescription" rows="4" placeholder="Mô tả về author..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="authorTagUrl">URL tag</label>
+                        <input type="url" id="authorTagUrl" placeholder="https://example.com/tagged/author">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" onclick="loadSampleData()">Load dữ liệu mẫu</button>
+                        <button type="button" class="secondary" onclick="clearForm()">Xóa form</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3>Preview</h3>
+                <div class="preview-container" id="preview">
+                    <p class="preview-placeholder">Nhập thông tin bên trái để xem preview</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card full-width">
+            <h3>Template HTML Output</h3>
+            <div class="template-output" id="templateOutput"></div>
+            <button type="button" class="success" onclick="copyToClipboard()">Copy HTML</button>
+        </div>
+    </div>
+
+    <script>
+        const template = `<div style="display: flex; gap: 15px;">
+  <div style="flex: 0 0 20%; align-self: flex-start;">
+    <img width="150" height="150" 
+         style="width: 100%; height: auto; margin-top: 2rem;" 
+         src="{{ authorImageUrl }}" 
+         alt="author {{ authorName }}">
+  </div>
+
+  <div style="flex: 1; word-wrap: break-word; overflow-wrap: break-word;">
+    <p style="font-size: 1.75rem; font-weight: 600;">{{ authorName }}</p>
+
+    <div>
+      <p style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-word;">{{ authorDescription }}</p>
+    </div>
+
+    <a target="_blank" href="{{ authorTagUrl }}">
+      View articles by {{ authorName }}
+    </a>
+  </div>
+</div>`;
+
+        function initEventListeners() {
+            const inputIds = ['authorName', 'authorImageUrl', 'authorDescription', 'authorTagUrl'];
+            inputIds.forEach(function(inputId) {
+                const element = document.getElementById(inputId);
+                if (element) {
+                    element.addEventListener('input', updatePreview);
+                }
+            });
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const formData = getFormData();
+            const processedTemplate = processTemplate(formData);
+            renderPreview(processedTemplate, formData);
+            updateTemplateOutput(processedTemplate);
+        }
+
+        function getFormData() {
+            return {
+                authorName: getInputValue('authorName'),
+                authorImageUrl: getInputValue('authorImageUrl'),
+                authorDescription: getInputValue('authorDescription'),
+                authorTagUrl: getInputValue('authorTagUrl')
+            };
+        }
+
+        function getInputValue(inputId) {
+            const element = document.getElementById(inputId);
+            return element ? element.value : '';
+        }
+
+        function processTemplate(formData) {
+            const placeholders = {
+                'authorName': formData.authorName || '{{ authorName }}',
+                'authorImageUrl': formData.authorImageUrl || '{{ authorImageUrl }}',
+                'authorDescription': formData.authorDescription || '{{ authorDescription }}',
+                'authorTagUrl': formData.authorTagUrl || '{{ authorTagUrl }}'
+            };
+
+            let processed = template;
+            Object.keys(placeholders).forEach(function(key) {
+                const regex = new RegExp('\\{\\{\\s*' + key + '\\s*\\}\\}', 'g');
+                processed = processed.replace(regex, placeholders[key]);
+            });
+
+            return processed;
+        }
+
+        function renderPreview(processedTemplate, formData) {
+            const previewElement = document.getElementById('preview');
+            if (!previewElement) return;
+
+            const isEmpty = isFormEmpty(formData);
+            if (isEmpty) {
+                previewElement.innerHTML = '<p class="preview-placeholder">Nhập thông tin bên trái để xem preview</p>';
+            } else {
+                previewElement.innerHTML = processedTemplate;
+            }
+        }
+
+        function isFormEmpty(formData) {
+            const defaultValues = ['{{ authorName }}', '{{ authorImageUrl }}', '{{ authorDescription }}', '{{ authorTagUrl }}'];
+            return defaultValues.includes(formData.authorName) &&
+                   defaultValues.includes(formData.authorImageUrl) &&
+                   defaultValues.includes(formData.authorDescription) &&
+                   defaultValues.includes(formData.authorTagUrl);
+        }
+
+        function updateTemplateOutput(processedTemplate) {
+            const outputElement = document.getElementById('templateOutput');
+            if (outputElement) {
+                outputElement.textContent = processedTemplate;
+            }
+        }
+
+        function loadSampleData() {
+            setInputValue('authorName', 'Yuzuki Tsukihana');
+            setInputValue('authorImageUrl', 'https://cdn.shopify.com/s/files/1/0512/5429/6766/files/author-yuzuki-tsukihana-2_1000x.png?v=1751427548');
+            setInputValue('authorDescription', 'Yuzuki Tsukihana is a Japanese beauty writer and researcher...');
+            setInputValue('authorTagUrl', 'https://example.com/tagged/author-yuzuki-tsukihana');
+            updatePreview();
+        }
+
+        function setInputValue(inputId, value) {
+            const element = document.getElementById(inputId);
+            if (element) {
+                element.value = value;
+            }
+        }
+
+        function clearForm() {
+            const formElement = document.getElementById('authorForm');
+            if (formElement) {
+                formElement.reset();
+            }
+            updatePreview();
+        }
+
+        function copyToClipboard() {
+            const outputElement = document.getElementById('templateOutput');
+            if (!outputElement) return;
+
+            const templateText = outputElement.textContent;
+            navigator.clipboard.writeText(templateText).then(
+                function() {
+                    showCopySuccess();
+                },
+                function(err) {
+                    handleCopyError(err);
+                }
+            );
+        }
+
+        function showCopySuccess() {
+            alert('Đã copy HTML vào clipboard!');
+        }
+
+        function handleCopyError(err) {
+            console.error('Could not copy text: ', err);
+        }
+
+        document.addEventListener('DOMContentLoaded', initEventListeners);
+    </script>
+</body>
+</html>
