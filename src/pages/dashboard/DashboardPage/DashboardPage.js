@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import commitTypeMap from '../../../shared/config/commitTypes.json';
 import styles from './DashboardPage.module.css';
 
+const STATS_ENDPOINT = '/feature-stats.json';
+
 function DashboardPage() {
   const [stats, setStats] = useState([]);
   const [generatedAt, setGeneratedAt] = useState(null);
@@ -14,7 +16,7 @@ function DashboardPage() {
     async function fetchStats() {
       setStatus('loading');
       try {
-        const response = await fetch(`/feature-stats.json?ts=${Date.now()}`, {
+        const response = await fetch(`${STATS_ENDPOINT}?ts=${Date.now()}`, {
           signal: controller.signal,
         });
         if (!response.ok) {

@@ -35,6 +35,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate feature stats
+        run: npm run generate:feature-stats
+
+      - name: Commit feature stats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ -z "$(git status --porcelain public/feature-stats.json)" ]]; then
+            echo "Không có thay đổi cần commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/feature-stats.json
+          git commit -m "chore: update feature stats [skip ci]"
+          git push
+
       - name: Build
         run: npm run build
 
