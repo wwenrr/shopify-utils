@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-20T16:36:47.398Z",
+  "generatedAt": "2025-11-20T16:38:56.897Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 24,
+  "totalCommits": 26,
   "commits": [
+    {
+      "hash": "0e600c289d5675230c3d5139b34f8e3b7b097f43",
+      "author": "MK",
+      "date": "2025-11-20 23:37:34 +0700",
+      "message": "fix: update fallback route in App.js to redirect to the home page",
+      "type": "bugfix"
+    },
+    {
+      "hash": "2f382dadc5d256ca0e9df644d435bdb77ace3643",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:36:47 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "aa12e8bf7e133089ae3d6690edf6268aabcc1c8b",
       "author": "MK",
