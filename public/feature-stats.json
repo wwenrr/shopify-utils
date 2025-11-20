@@ -1,14 +1,175 @@
 {
-  "generatedAt": "2025-11-20T16:26:37.732Z",
+  "generatedAt": "2025-11-20T16:36:47.398Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 1,
+  "totalCommits": 24,
   "commits": [
+    {
+      "hash": "aa12e8bf7e133089ae3d6690edf6268aabcc1c8b",
+      "author": "MK",
+      "date": "2025-11-20 23:36:20 +0700",
+      "message": "chore: update routing and feature stats endpoint to support dynamic public URL",
+      "type": "chore"
+    },
+    {
+      "hash": "c21eb8cfe408d4921e4f28d354ce5d94fb7e4a4a",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:26:37 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "6009e07f34a3789f1235a1be0b761f99c73b3d64",
       "author": "MK",
       "date": "2025-11-20 23:25:25 +0700",
       "message": "Update feature stats with new commits and enhance file management by removing unused HTML templates and updating .gitignore",
+      "type": "other"
+    },
+    {
+      "hash": "9cdc9f7712e09c34016206767a18fb9f4f23641a",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:22:46 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
+      "author": "MK",
+      "date": "2025-11-20 23:22:16 +0700",
+      "message": "chore: update asset paths in build files and set homepage URL in package.json",
+      "type": "chore"
+    },
+    {
+      "hash": "4449d8cfb9d0fd7464f99b91377f358fff518c54",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:11:59 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+      "author": "MK",
+      "date": "2025-11-20 23:11:29 +0700",
+      "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+      "type": "chore"
+    },
+    {
+      "hash": "84ecd53a1054c499c2018d2a17b056696febbf65",
+      "author": "MK",
+      "date": "2025-11-20 23:01:46 +0700",
+      "message": "chore: add feature stats generation and commit process in GitHub Actions workflow",
+      "type": "chore"
+    },
+    {
+      "hash": "a81ece98ac5fe8bf99053dd07437e6897cc8d5f6",
+      "author": "MK",
+      "date": "2025-11-20 22:48:14 +0700",
+      "message": "feat: add new commit type 'fix' with associated color and background settings in commitTypes.json",
+      "type": "feature"
+    },
+    {
+      "hash": "c624b97283f4d8c1c2cf9c722b8ffacd000f8de0",
+      "author": "MK",
+      "date": "2025-11-20 22:47:20 +0700",
+      "message": "fix: update pathSegmentsToKeep in 404.html to retain one path segment for better URL handling",
+      "type": "bugfix"
+    },
+    {
+      "hash": "4a5342c3c23e8b97c33920a6d524e21f4f0e65aa",
+      "author": "MK",
+      "date": "2025-11-20 22:43:31 +0700",
+      "message": "chore: add cross-env dependency and update build script to disable ESLint plugin",
+      "type": "chore"
+    },
+    {
+      "hash": "3062a7e6af9e033f4e237ce3b0fab39b71293cc7",
+      "author": "MK",
+      "date": "2025-11-20 22:40:33 +0700",
+      "message": "chore: update asset paths in build files and set homepage in package.json",
+      "type": "chore"
+    },
+    {
+      "hash": "a066060d33544d36a4f8f7abe05b3062a94e54d6",
+      "author": "MK",
+      "date": "2025-11-20 22:31:32 +0700",
+      "message": "chore: artifact upload path for GitHub Pages",
+      "type": "chore"
+    },
+    {
+      "hash": "54a984e61ebb9890144413dcab4c4824ff831265",
+      "author": "MK",
+      "date": "2025-11-20 22:30:05 +0700",
+      "message": "chore: remove sample.html and update .gitignore to exclude build directory",
+      "type": "chore"
+    },
+    {
+      "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
+      "author": "MK",
+      "date": "2025-11-20 22:29:08 +0700",
+      "message": "chore: remove unused HTML templates and update .gitignore for better file management",
+      "type": "chore"
+    },
+    {
+      "hash": "2c06d3c748a2aaaca0fbf147b18881fd7c975198",
+      "author": "MK",
+      "date": "2025-11-20 13:30:28 +0700",
+      "message": "style: update font styles and add paragraph styling function in FAQs template",
+      "type": "style"
+    },
+    {
+      "hash": "d417408980c628e31657fd71bdf887e5f9afc07f",
+      "author": "MK",
+      "date": "2025-11-20 09:15:13 +0700",
+      "message": "feat: add FAQs Template Generator section to index.html",
+      "type": "feature"
+    },
+    {
+      "hash": "35799ba30893a6a0b73d351abe7bfd9982776be9",
+      "author": "MK",
+      "date": "2025-11-19 15:34:03 +0700",
+      "message": "feat: implement variant settings form with dynamic color and style options for blog button template",
+      "type": "feature"
+    },
+    {
+      "hash": "00f5bbb20b7c8e7e4da0845c04ee58441def43c7",
+      "author": "MK",
+      "date": "2025-11-19 15:26:14 +0700",
+      "message": "style: update font family settings for button variants in blog button template",
+      "type": "style"
+    },
+    {
+      "hash": "ba90c3e5a577bac412eef7171cae68eb0d54daeb",
+      "author": "MK",
+      "date": "2025-11-19 15:21:25 +0700",
+      "message": "feat: add button variant selection and dynamic styling to blog button template",
+      "type": "feature"
+    },
+    {
+      "hash": "8a08fb6e78b135577d061cc3c9125ae7c950156a",
+      "author": "MK",
+      "date": "2025-11-19 15:05:55 +0700",
+      "message": "style: enhance responsive design and layout adjustments for blog button template",
+      "type": "style"
+    },
+    {
+      "hash": "dc9ef188e5c18e71ae288992a47fefbeecf750b0",
+      "author": "MK",
+      "date": "2025-11-19 14:52:06 +0700",
+      "message": "style: update button template with height and font family adjustments",
+      "type": "style"
+    },
+    {
+      "hash": "fdb5e6b5df609b549e05e405fd9e96a99bc37bf6",
+      "author": "MK",
+      "date": "2025-11-19 14:40:33 +0700",
+      "message": "feat: initial project structure and setup",
+      "type": "feature"
+    },
+    {
+      "hash": "06d3a7549b496680af39b5d1907710365d6b6439",
+      "author": "MK",
+      "date": "2025-11-19 10:50:00 +0700",
+      "message": "Initial commit",
       "type": "other"
     }
   ],
@@ -17,44 +178,44 @@
       "feature": "author-generator",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "6009e07f34a3789f1235a1be0b761f99c73b3d64",
+        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
         "author": "MK",
-        "date": "2025-11-20 23:25:25 +0700",
-        "message": "Update feature stats with new commits and enhance file management by removing unused HTML templates and updating .gitignore",
-        "type": "other"
+        "date": "2025-11-20 22:29:08 +0700",
+        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
+        "type": "chore"
       }
     },
     {
       "feature": "blog-button",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "6009e07f34a3789f1235a1be0b761f99c73b3d64",
+        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
         "author": "MK",
-        "date": "2025-11-20 23:25:25 +0700",
-        "message": "Update feature stats with new commits and enhance file management by removing unused HTML templates and updating .gitignore",
-        "type": "other"
+        "date": "2025-11-20 22:29:08 +0700",
+        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
+        "type": "chore"
       }
     },
     {
       "feature": "editor",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "6009e07f34a3789f1235a1be0b761f99c73b3d64",
+        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
         "author": "MK",
-        "date": "2025-11-20 23:25:25 +0700",
-        "message": "Update feature stats with new commits and enhance file management by removing unused HTML templates and updating .gitignore",
-        "type": "other"
+        "date": "2025-11-20 22:29:08 +0700",
+        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
+        "type": "chore"
       }
     },
     {
       "feature": "faqs-generator",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "6009e07f34a3789f1235a1be0b761f99c73b3d64",
+        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
         "author": "MK",
-        "date": "2025-11-20 23:25:25 +0700",
-        "message": "Update feature stats with new commits and enhance file management by removing unused HTML templates and updating .gitignore",
-        "type": "other"
+        "date": "2025-11-20 22:29:08 +0700",
+        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
+        "type": "chore"
       }
     }
   ]
