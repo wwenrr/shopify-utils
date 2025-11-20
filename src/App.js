@@ -7,9 +7,14 @@ import DashboardPage from './pages/dashboard/DashboardPage/DashboardPage';
 import EditorPage from './pages/editor/EditorPage/EditorPage';
 import HtmlAlignmentPage from './pages/html-structure/HtmlAlignmentPage/HtmlAlignmentPage';
 
+const ROUTER_BASENAME =
+  process.env.PUBLIC_URL && process.env.PUBLIC_URL !== '.'
+    ? process.env.PUBLIC_URL
+    : '/';
+
 function App() {
   return (
-    <Router>
+    <Router basename={ROUTER_BASENAME}>
       <MainLayout>
         <Routes>
           <Route path="/" element={<DashboardPage />} />
@@ -18,7 +23,7 @@ function App() {
           <Route path="/faqs" element={<FaqsGenerator />} />
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/html-alignment" element={<HtmlAlignmentPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to={ROUTER_BASENAME} replace />} />
         </Routes>
       </MainLayout>
     </Router>

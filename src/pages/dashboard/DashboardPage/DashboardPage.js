@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import commitTypeMap from '../../../shared/config/commitTypes.json';
 import styles from './DashboardPage.module.css';
 
-const STATS_ENDPOINT = '/feature-stats.json';
+const STATS_ENDPOINT = `${process.env.PUBLIC_URL}/feature-stats.json`;
 
 function DashboardPage() {
   const [stats, setStats] = useState([]);
