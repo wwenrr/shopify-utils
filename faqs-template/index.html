@@ -489,29 +489,30 @@
         function buildFaqTemplate(data) {
             const styles = {
                 section: 'background-color:#F7F7F7;border:1px solid #E3E3E3;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:24px;',
-                heading: 'font-size:30px;font-weight:600;color:#2B2B2B;margin:0;',
-                intro: 'color:#666666;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px',
+                heading: "font-size:1.5rem;font-weight:600;font-family:'Inter',sans-serif;color:#2B2B2B;margin:0;",
+                intro: "color:#666666;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px;font-family:'Inter',sans-serif;",
                 items: 'display:flex;flex-direction:column;margin:0;padding:0;',
                 details: 'border-bottom:1px solid #DCDCDC;padding:18px 0;',
                 firstDetailBorder: '',
                 summary: 'list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;',
-                question: 'font-size:18px;font-weight:600;color:#333333;margin:0;',
+                question: "font-size:18px;font-weight:700;font-family:'Inter',sans-serif;color:#333333;margin:0;",
                 icon: 'font-size:18px;color:#777777;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;',
-                answer: 'margin-top:12px;color:#555555;line-height:1.7;font-size:16px;'
+                answer: "margin-top:12px;color:#555555;line-height:1.7;font-size:16px;font-family:'Inter',sans-serif;"
             };
 
-            const introBlock = data.intro ? applyIntroInlineStyle(data.intro, styles.intro) : '';
+            const introBlock = data.intro ? applyParagraphStyles(applyIntroInlineStyle(data.intro, styles.intro)) : '';
 
             const items = data.questions.map(function(item, index) {
                 const openAttr = index === 0 ? ' open' : '';
                 const detailStyle = `${styles.details}${index === 0 ? styles.firstDetailBorder : ''}`;
+                const styledAnswer = applyParagraphStyles(item.answer);
                 return `<details style="${detailStyle}"${openAttr}>
     <summary style="${styles.summary}">
         <h3 style="${styles.question}">${item.question}</h3>
         <span style="${styles.icon}">▾</span>
     </summary>
     <div style="${styles.answer}">
-        ${item.answer}
+        ${styledAnswer}
     </div>
 </details>`;
             }).join('\n');
@@ -546,6 +547,19 @@ ${introBlock}
         function mergeInlineStyles(existing, addition) {
             const normalizedExisting = existing.trim().replace(/;?\s*$/, ';');
             return `${normalizedExisting}${addition}`;
+        }
+
+        function applyParagraphStyles(html) {
+            if (!html) return html;
+            return html.replace(/<p([^>]*)>/gi, function(match, attrs) {
+                if (/style="/i.test(attrs)) {
+                    return match.replace(/style="([^"]*)"/i, function(styleMatch, existingStyle) {
+                        const merged = mergeInlineStyles(existingStyle, "font-weight:400;font-family:'Inter',sans-serif;");
+                        return `style="${merged}"`;
+                    });
+                }
+                return `<p style="font-weight:400;font-family:'Inter',sans-serif;"${attrs}>`;
+            });
         }
 
         function renderPreview(html) {
