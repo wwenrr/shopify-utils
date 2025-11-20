@@ -34,7 +34,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "postbuild": "node scripts/copyConfigFiles.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -60,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "patch-package": "^8.0.1",
     "postinstall-postinstall": "^2.1.0"
   }
