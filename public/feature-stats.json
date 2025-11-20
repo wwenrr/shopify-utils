@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2025-11-20T16:11:59.210Z",
+  "generatedAt": "2025-11-20T16:22:46.483Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "totalCommits": 1,
   "commits": [
     {
-      "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+      "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
       "author": "MK",
-      "date": "2025-11-20 23:11:29 +0700",
-      "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+      "date": "2025-11-20 23:22:16 +0700",
+      "message": "chore: update asset paths in build files and set homepage URL in package.json",
       "type": "chore"
     }
   ],
@@ -17,10 +17,10 @@
       "feature": "author-generator",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+        "date": "2025-11-20 23:22:16 +0700",
+        "message": "chore: update asset paths in build files and set homepage URL in package.json",
         "type": "chore"
       }
     },
@@ -28,10 +28,10 @@
       "feature": "blog-button",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+        "date": "2025-11-20 23:22:16 +0700",
+        "message": "chore: update asset paths in build files and set homepage URL in package.json",
         "type": "chore"
       }
     },
@@ -39,10 +39,10 @@
       "feature": "editor",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+        "date": "2025-11-20 23:22:16 +0700",
+        "message": "chore: update asset paths in build files and set homepage URL in package.json",
         "type": "chore"
       }
     },
@@ -50,10 +50,10 @@
       "feature": "faqs-generator",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+        "date": "2025-11-20 23:22:16 +0700",
+        "message": "chore: update asset paths in build files and set homepage URL in package.json",
         "type": "chore"
       }
     }
