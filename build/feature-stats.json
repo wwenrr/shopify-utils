@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2025-11-20T08:21:26.053Z",
+  "repoRoot": "/home/mk/Documents/Github/Dogo/dogo-utils",
+  "appRoot": "/home/mk/Documents/Github/Dogo/dogo-utils/workspace",
+  "totalCommits": 9,
+  "commits": [
+    {
+      "hash": "2c06d3c748a2aaaca0fbf147b18881fd7c975198",
+      "author": "MK",
+      "date": "2025-11-20 13:30:28 +0700",
+      "message": "style: update font styles and add paragraph styling function in FAQs template",
+      "type": "style"
+    },
+    {
+      "hash": "d417408980c628e31657fd71bdf887e5f9afc07f",
+      "author": "MK",
+      "date": "2025-11-20 09:15:13 +0700",
+      "message": "feat: add FAQs Template Generator section to index.html",
+      "type": "feature"
+    },
+    {
+      "hash": "35799ba30893a6a0b73d351abe7bfd9982776be9",
+      "author": "MK",
+      "date": "2025-11-19 15:34:03 +0700",
+      "message": "feat: implement variant settings form with dynamic color and style options for blog button template",
+      "type": "feature"
+    },
+    {
+      "hash": "00f5bbb20b7c8e7e4da0845c04ee58441def43c7",
+      "author": "MK",
+      "date": "2025-11-19 15:26:14 +0700",
+      "message": "style: update font family settings for button variants in blog button template",
+      "type": "style"
+    },
+    {
+      "hash": "ba90c3e5a577bac412eef7171cae68eb0d54daeb",
+      "author": "MK",
+      "date": "2025-11-19 15:21:25 +0700",
+      "message": "feat: add button variant selection and dynamic styling to blog button template",
+      "type": "feature"
+    },
+    {
+      "hash": "8a08fb6e78b135577d061cc3c9125ae7c950156a",
+      "author": "MK",
+      "date": "2025-11-19 15:05:55 +0700",
+      "message": "style: enhance responsive design and layout adjustments for blog button template",
+      "type": "style"
+    },
+    {
+      "hash": "dc9ef188e5c18e71ae288992a47fefbeecf750b0",
+      "author": "MK",
+      "date": "2025-11-19 14:52:06 +0700",
+      "message": "style: update button template with height and font family adjustments",
+      "type": "style"
+    },
+    {
+      "hash": "fdb5e6b5df609b549e05e405fd9e96a99bc37bf6",
+      "author": "MK",
+      "date": "2025-11-19 14:40:33 +0700",
+      "message": "feat: initial project structure and setup",
+      "type": "feature"
+    },
+    {
+      "hash": "06d3a7549b496680af39b5d1907710365d6b6439",
+      "author": "MK",
+      "date": "2025-11-19 10:50:00 +0700",
+      "message": "Initial commit",
+      "type": "other"
+    }
+  ],
+  "features": [
+    {
+      "feature": "author-generator",
+      "commitCount": 0,
+      "lastCommit": null
+    }
+  ]
+}
