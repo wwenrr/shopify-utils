@@ -23,7 +23,7 @@ function App() {
           <Route path="/faqs" element={<FaqsGenerator />} />
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/html-alignment" element={<HtmlAlignmentPage />} />
-          <Route path="*" element={<Navigate to={ROUTER_BASENAME} replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </MainLayout>
     </Router>
