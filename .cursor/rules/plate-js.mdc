@@ -1,0 +1,331 @@
+---
+alwaysApply: false
+---
+
+# Research Plate.js - Thư viện Rich Text Editor cho React
+
+Dựa trên file bạn đính kèm và research chi tiết, đây là tổng hợp về Plate.js và cách chuyển đổi Slate content sang HTML:
+
+## 📋 Tổng quan về Plate.js
+
+**Plate.js** là một framework rich-text editor mạnh mẽ cho React, được xây dựng trên nền tảng Slate.js với TypeScript.[1][2]
+
+### Đặc điểm nổi bật:
+
+- **Kiến trúc mở và linh hoạt**: Plugin-based architecture cho phép tùy biến cao
+- **Headless components**: Không có style mặc định, bạn tự styling theo ý muốn
+- **Built-in với shadcn/ui**: Tích hợp tốt với hệ thống design shadcn/ui và Radix UI
+- **SSR support**: Hỗ trợ server-side rendering và React Server Components
+- **AI-ready**: Thiết kế thân thiện với AI tools và MCP (Model Context Protocol)
+
+### So sánh với các editor khác:
+
+| Tính năng | Plate.js (Free & OSS) | Tiptap |
+|-----------|----------------------|---------|
+| AI | ✅ | Paid Extension |
+| Comments | ✅ | Paid Extension |
+| Suggestions | ✅ | Paid |
+| Emoji Picker | ✅ | Paid Extension |
+| Table of Contents | ✅ | Paid Extension |
+| Drag Handle | ✅ | Paid Extension |
+| Collaboration (Yjs) | ✅ | Hocuspocus (OSS/Paid) |
+
+## 🔧 Cài đặt
+
+### Cài đặt cơ bản:
+
+```bash
+npm install platejs @platejs/basic-nodes
+```
+
+### Cài đặt đầy đủ với các dependencies cần thiết:
+
+```bash
+npm install platejs slate slate-react slate-history slate-hyperscript react react-dom
+```
+
+### Cài đặt với BaseEditorKit (recommended):
+
+```bash
+npm install @platejs/basic-nodes @platejs/code-block @platejs/table @platejs/media
+```
+
+## 🎯 Slate to HTML - Chức năng chính
+
+### 1. **Server-Side HTML Serialization** (Slate → HTML)
+
+Đây là chức năng chuyển đổi nội dung Plate editor (Slate nodes) thành HTML string, thường được sử dụng ở server-side.
+
+#### Cú pháp cơ bản:
+
+```typescript
+import { createSlateEditor, serializeHtml } from 'platejs';
+import { BaseEditorKit } from '@/components/editor/editor-base-kit';
+
+const editor = createSlateEditor({
+  plugins: BaseEditorKit,
+  value: [
+    { type: 'h1', children: [{ text: 'Hello World' }] },
+    { type: 'p', children: [{ text: 'This content will be serialized to HTML.' }] },
+  ],
+});
+
+// Serialize to HTML
+const html = await serializeHtml(editor);
+```
+
+#### Ví dụ chi tiết từ file bạn gửi:
+
+```typescript
+import * as React from 'react';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {
+  type Value,
+  createStaticEditor,
+  normalizeNodeId,
+  serializeHtml,
+} from 'platejs';
+import { BaseEditorKit } from '@/components/editor/editor-base-kit';
+import { EditorStatic } from '@/components/ui/editor-static';
+
+export default async function SlateToHtmlBlock() {
+  const createValue = (): Value =>
+    normalizeNodeId([
+      ...basicBlocksValue,
+      ...basicMarksValue,
+      ...linkValue,
+      ...tableValue,
+      // ... các values khác
+    ]);
+
+  const editor = createStaticEditor({
+    plugins: BaseEditorKit,
+    value: createValue(),
+  });
+
+  const tailwindCss = await getCachedTailwindCss();
+  const katexCDN = `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/[email protected]/dist/katex.css" ... >`;
+
+  // Serialize editor content to HTML
+  const editorHtml = await serializeHtml(editor, {
+    editorComponent: EditorStatic,
+    props: { style: { padding: '0 calc(50% - 350px)', paddingBottom: '' } },
+  });
+
+  // Create full HTML document
+  const html = createHtmlDocument({
+    editorHtml,
+    katexCDN,
+    tailwindCss,
+    theme: 'light',
+  });
+
+  return (
+    <div className="grid grid-cols-3 px-4">
+      {/* Editor, EditorView, HTML Iframe */}
+    </div>
+  );
+}
+```
+
+### 2. **API `serializeHtml()`**
+
+```typescript
+serializeHtml(editor, options)
+```
+
+**Parameters:**
+- `editor`: Server-side Plate editor instance (tạo bằng `createSlateEditor`)
+- `options`: Object chứa config
+
+**Options:**
+- `editorComponent`: Component wrapper cho editor (mặc định là `PlateStatic`)
+- `props`: Props truyền vào `editorComponent`
+- `value`: Plate nodes cần serialize (mặc định dùng `editor.children`)
+- `stripClassNames`: Xóa class names (mặc định `true`)
+- `preserveClassNames`: Array các class prefix được giữ lại
+- `stripDataAttributes`: Xóa `data-*` attributes (mặc định `true`)
+
+**Returns:** Promise resolving thành HTML string
+
+### 3. **Static Components cho Server-Side**
+
+⚠️ **Quan trọng**: Khi dùng server-side serialization, phải sử dụng static components (không có React hooks, không có browser APIs).
+
+```typescript
+import React from 'react';
+import type { SlateElementProps } from 'platejs';
+
+// Example static paragraph component
+export function ParagraphElementStatic(props: SlateElementProps) {
+  return (
+    <SlateElement {...props} className={cn('m-0 px-0 py-1')}>
+      {props.children}
+    </SlateElement>
+  );
+}
+```
+
+### 4. **HTML to Slate** (HTML → Slate nodes)
+
+Chức năng deserialize HTML string hoặc DOM elements về Plate format.
+
+```typescript
+import { usePlateEditor } from 'platejs/react';
+import { HeadingPlugin } from '@platejs/basic-nodes/react';
+
+function MyHtmlImporter({ htmlString }: { htmlString: string }) {
+  const editor = usePlateEditor({
+    plugins: [
+      HeadingPlugin,
+      // ... các plugins khác
+    ],
+  });
+
+  const handleImport = () => {
+    const slateValue = editor.api.html.deserialize(htmlString);
+    editor.tf.setValue(slateValue);
+  };
+
+  return <button onClick={handleImport}>Import HTML</button>;
+}
+```
+
+### 5. **Plugin Deserialization Rules**
+
+Mỗi plugin có thể định nghĩa rules để xử lý HTML tags cụ thể:
+
+| HTML Element | Plate Plugin | Kết quả |
+|--------------|-------------|---------|
+| `<strong>`, `<b>` | `BoldPlugin` | `bold: true` mark |
+| `<em>`, `<i>` | `ItalicPlugin` | `italic: true` mark |
+| `<u>` | `UnderlinePlugin` | `underline: true` mark |
+| `<h1>` - `<h6>` | `HeadingPlugin` | heading elements |
+| `<ul>`, `<ol>` | `ListPlugin` | list elements |
+| `<table>` | `TablePlugin` | table element |
+| `<a>` | `LinkPlugin` | link element với `url` |
+| `<img>` | `ImagePlugin` | image element |
+
+## 🎨 BaseEditorKit
+
+BaseEditorKit là tập hợp các plugins cơ bản được pre-configured:
+
+```typescript
+export const BaseEditorKit = [
+  ...BaseBasicBlocksKit,      // h1-h6, p, blockquote, hr
+  ...BaseCodeBlockKit,         // code blocks
+  ...BaseTableKit,             // tables
+  ...BaseMediaKit,             // images, videos
+  ...BaseLinkKit,              // links
+  ...BaseBasicMarksKit,        // bold, italic, underline, etc.
+  ...BaseFontKit,              // font family, size, color
+  ...BaseListKit,              // ul, ol
+  ...BaseAlignKit,             // text align
+  ...MarkdownKit,              // markdown support
+  // ... và nhiều kit khác
+];
+```
+
+## 🔑 Key Concepts
+
+### 1. **Server-Side vs Client-Side**
+
+**Server-Side (Node.js, RSC):**
+- Import từ base paths: `platejs`, `@platejs/basic-nodes`
+- Sử dụng `createSlateEditor()` hoặc `createStaticEditor()`
+- **KHÔNG** import từ `/react` subpaths
+
+**Client-Side:**
+- Import từ `/react` paths: `platejs/react`, `@platejs/basic-nodes/react`
+- Sử dụng `usePlateEditor()` hoặc `createPlateEditor()`
+
+### 2. **PlateStatic vs PlateView vs Plate**
+
+- **PlateStatic**: Server-side rendering, không có interactivity
+- **PlateView**: Client-side, read-only editor với interactivity
+- **Plate + readOnly**: Full editor với readOnly mode
+
+### 3. **Styling Serialized HTML**
+
+`serializeHtml()` chỉ trả về HTML content, không có styles. Bạn cần wrap HTML trong document hoàn chỉnh với CSS:
+
+```typescript
+const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/path/to/tailwind.css" />
+  <title>Serialized Content</title>
+</head>
+<body>
+  <div class="prose dark:prose-invert">
+    ${editorHtmlContent}
+  </div>
+</body>
+</html>`;
+```
+
+## 💡 Use Cases phổ biến
+
+1. **Blog/CMS**: Lưu content dưới dạng Slate JSON, render HTML cho readers
+2. **Email templates**: Convert editor content sang HTML để gửi email
+3. **Export to PDF**: Serialize HTML rồi convert sang PDF
+4. **Server-side preview**: Render preview của content mà không cần client-side editor
+5. **Content migration**: Import/export content từ các format khác
+
+## 🎯 Best Practices
+
+1. **Luôn dùng BaseEditorKit** cho serialization để có đầy đủ plugin support
+2. **Tạo static components riêng** cho server-side rendering
+3. **Cache CSS files** khi tạo full HTML documents (như trong example)
+4. **Normalize node IDs** trước khi serialize: `normalizeNodeId(value)`
+5. **Include external dependencies** (như KaTeX cho math equations) trong final HTML
+
+## 📚 Resources
+
+- **Documentation**: https://platejs.org/docs
+- **GitHub**: https://github.com/udecode/plate (15.5k stars)[3]
+- **Discord Community**: Join để được support
+- **Examples**: https://platejs.org/docs/examples/slate-to-html
+
+Plate.js là một giải pháp rất mạnh mẽ và linh hoạt cho rich text editing trong React ecosystem. Với khả năng serialize/deserialize HTML tốt, nó phù hợp cho nhiều use cases từ CMS, blog platforms đến collaborative editing tools.
+
+[1](https://platejs.org/docs/examples/slate-to-html)
+[2](https://platejs.org/docs)
+[3](https://github.com/udecode/plate)
+[4](https://slashdot.org/software/comparison/Plate-JS-vs-Slate.js/)
+[5](https://platejs.org/docs/feature-kits)
+[6](https://www.npmjs.com/package/@slate-serializers/html)
+[7](https://sourceforge.net/software/compare/Editor.js-vs-Plate-JS/)
+[8](https://www.reddit.com/r/reactjs/comments/1hbiaoc/platejs_vs_tiptap/)
+[9](https://stackoverflow.com/questions/77549872/platejs-serializing-html)
+[10](https://liveblocks.io/blog/which-rich-text-editor-framework-should-you-choose-in-2025)
+[11](https://platejs.org/docs/installation/docs)
+[12](https://platejs.org/docs/html)
+[13](https://tiptap.dev/alternatives/plate-vs-tiptap)
+[14](https://docs.slatejs.org)
+[15](https://payloadcms.com/community-help/discord/html-to-richtext-slatejs)
+[16](https://discuss.prosemirror.net/t/do-you-know-platejs-what-do-you-think-about/6170)
+[17](https://docs.slatejs.org/concepts/10-serializing)
+[18](https://github.com/udecode/plate/discussions/2523)
+[19](https://platejs.org)
+[20](https://github.com/udecode/plate/discussions/433)
+[21](https://libraries.io/npm/@platejs%2Fcore)
+[22](https://next.platejs.org/docs/plugin)
+[23](https://platejs.org/docs/static)
+[24](https://next.platejs.org/docs/getting-started)
+[25](https://pro.platejs.org/docs/installation)
+[26](https://www.npmjs.com/package/@udecode/plate-basic-nodes)
+[27](https://platejs.org/docs/examples/server-side)
+[28](https://platejs.org/docs/installation)
+[29](https://github.com/udecode/plate/discussions/4380)
+[30](https://shadcnregistry.com/plate/static-docs)
+[31](https://www.npmjs.com/package/platejs?activeTab=readme)
+[32](https://codesandbox.io/examples/package/@udecode/plate-node-id)
+[33](https://stackoverflow.com/questions/78060138/how-to-create-a-new-plugin-a-tool-for-plate-rich-text-editor)
+[34](https://www.npmjs.com/package/platejs?activeTab=code)
+[35](https://pro.platejs.org/docs/examples/basic-nodes)
+[36](https://github.com/udecode/plate/discussions/1847)
+[37](https://www.npmjs.com/package/platejs)
+[38](https://www.npmjs.com/package/@platejs/basic-nodes)

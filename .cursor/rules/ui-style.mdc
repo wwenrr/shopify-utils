@@ -1,0 +1,907 @@
+---
+alwaysApply: true
+---
+
+# Chi Tiết Phong Cách UI 
+
+## Tổng Quan Phong Cách UI
+
+Giao diện này thể hiện phong cách **Minimalist (Tối giản) hiện đại** với đặc trưng **Clean UI** và **Data-Driven Design**. Đây là thiết kế quản trị (Admin Dashboard) tập trung vào trải nghiệm người dùng, sự rõ ràng và khả năng quét thông tin nhanh chóng.[1][2][3]
+
+## Chi Tiết Màu Sắc
+
+### Bảng Màu Chủ Đạo
+
+**Màu nền chính:**
+- **Trắng tinh khiết (#FFFFFF)**: Chiếm 85-90% diện tích giao diện, tạo cảm giác thoáng đãng, sạch sẽ[3][4][5]
+- Mục đích: Giảm tải nhận thức (cognitive load), tạo không gian thở cho nội dung[4][1]
+
+**Màu nhấn chính (Accent Color):**
+- **Xanh lá cây mềm mại** (ước lượng #40C57C hoặc #3DB97F): Sử dụng cho sidebar, logo, và nút hành động quan trọng[6][7][8]
+- Công dụng:
+  - Biểu tượng thương hiệu và nhận diện
+  - Nút "Create New" - hành động chính (Primary CTA)
+  - Highlight trạng thái hoạt động trong navigation[9][7]
+- Tại sao màu xanh lá: Thể hiện sự tăng trưởng, tin cậy, ổn định và hành động tích cực trong UI/UX[7][8][6]
+
+**Màu phụ và trung tính:**
+- **Xám nhạt (#F8F9FA - #FAFAFA)**: Nền của các dòng table xen kẽ (zebra striping)[10][11]
+- **Xám vừa (#6C757D - #7F8C9B)**: Text phụ, mô tả, placeholder[12][11]
+- **Xám đậm (#212529 - #2D3748)**: Text chính, tiêu đề[13][14]
+- **Viền nhẹ (#DEE2E6 - #E5E7EB)**: Đường phân cách giữa các dòng và cột[11][10]
+
+### Quy Tắc Sử Dụng Màu
+
+1. **Giới hạn 3 màu chủ đạo**: Trắng (nền), Xanh lá (nhấn), Xám (phụ trợ)[15][3][4]
+2. **Tỷ lệ tương phản WCAG AA**: 
+   - Text thường: tối thiểu 4.5:1 với nền[16][17][18]
+   - Text lớn (18px+): tối thiểu 3:1 với nền[18][19][16]
+   - UI components: tối thiểu 3:1[19][20]
+3. **Màu xanh cho hành động tích cực**: Confirmation, success, create, active state[8][6][7]
+
+## Không Gian Trắng (White Space)
+
+### Nguyên Tắc White Space
+
+**Macro White Space (Không gian lớn):**
+- Khoảng cách giữa sidebar và content chính: 24-32px[5][21][22]
+- Padding nội dung chính: 32-48px từ các cạnh[21][5]
+- Khoảng cách giữa các section lớn: 40-56px[23][24][25]
+
+**Micro White Space (Không gian nhỏ):**
+- Padding trong table cell: 12-16px (vertical), 16-24px (horizontal)[12][10][11]
+- Khoảng cách giữa các dòng table: 1px border line[10][11]
+- Line height cho text: 1.5-1.6 lần font size[14][13][23]
+- Khoảng cách giữa icon và text: 8-12px[24][25][23]
+
+### Hệ Thống 8px Grid
+
+**Quy tắc cốt lõi:**
+- Tất cả spacing, margin, padding phải là bội số của 8: 8, 16, 24, 32, 40, 48, 56, 64, 80px[25][26][23][24]
+- Ngoại lệ: Có thể dùng 4px cho spacing cực kỳ chặt chẽ[26][23][25]
+
+**Áp dụng cụ thể:**
+- Padding nút: 12px (vertical) × 24px (horizontal)[23][24]
+- Margin giữa các thành phần: 16px, 24px, 32px[24][25][23]
+- Line height: Bội số của 8 hoặc 4 để kiểm soát typography chính xác[25][23]
+
+**Lý do sử dụng 8px:**
+- Scalability: Chia hết cho 2, 4, tương thích với mọi độ phân giải màn hình[23][24][25]
+- Efficiency: Dễ giao tiếp giữa designer và developer[24][23]
+- Aesthetics: Tạo rhythm thị giác hài hòa[25][23][24]
+
+**Nguyên tắc Internal ≤ External:**
+- Padding bên trong element ≤ Margin bên ngoài element[23]
+- Giúp phân biệt rõ ràng các nhóm và element riêng lẻ[23]
+
+### Lợi Ích White Space
+
+1. **Cải thiện khả năng đọc**: Giảm visual noise, tăng focus vào nội dung quan trọng[1][3][5][21]
+2. **Tạo visual hierarchy**: Hướng dẫn mắt người dùng theo thứ tự ưu tiên[2][27][5][21]
+3. **Giảm cognitive load**: Ít element hơn = dễ xử lý thông tin hơn[3][4][21][1]
+4. **Tăng tính thẩm mỹ**: Cảm giác sang trọng, hiện đại, tinh tế[28][4][1][3]
+
+## Typography (Chữ)
+
+### Font Family
+
+**Lựa chọn tối ưu:**
+- **Sans-serif fonts**: Dễ đọc trên màn hình, hiện đại, sạch sẽ[29][30][13][14]
+- Các font được khuyến nghị:
+  - **Inter**: Universal, variable font, dễ đọc, x-height cao[13][14]
+  - **Roboto**: Google Material Design standard[14][13]
+  - **Open Sans**: Phổ biến, an toàn, dễ đọc[13][14]
+  - **Public Sans**: Neutral, professional[14]
+  - **Manrope**: Modern, geometric[13]
+
+**Lý do tránh serif fonts:**
+- Serif font tạo thêm visual noise không cần thiết trong data table[10]
+- Sans-serif dễ đọc hơn ở kích thước nhỏ trên màn hình[30][14][13]
+
+### Font Size & Weight
+
+**Cấp bậc Typography:**
+- **Header chính**: 24-32px, font-weight: 600-700 (semibold/bold)[14][13]
+- **Section title**: 18-20px, font-weight: 600[13][14]
+- **Table header**: 14-16px, font-weight: 600-700 (bold để phân biệt với data)[11][12][10]
+- **Body text/Table data**: 14-16px, font-weight: 400 (regular)[14][13]
+- **Secondary text**: 12-14px, font-weight: 400[13][14]
+
+**Đặc điểm font tốt cho UI:**
+- X-height cao: Phần chữ thường cao, dễ đọc ở kích thước nhỏ[14][13]
+- Letter spacing thoải mái: Không quá chặt[13][14]
+- Variable fonts: Tiết kiệm bandwidth, flexible styling[14][13]
+- Low contrast stroke: Độ dày đồng đều, minimal look[13]
+
+### Typography Best Practices
+
+1. **KHÔNG dùng ALL CAPS**: Giảm readability nghiêm trọng[10]
+2. **KHÔNG overuse bold và italic**: Tạo visual noise[10]
+3. **Line height**: 1.5-1.6× font size cho body text, 1.2-1.3× cho headings[25][23]
+4. **Căn chỉnh (Alignment)**:
+   - Text: Left-align[31]
+   - Numbers: Right-align (dễ so sánh giá trị)[32][31]
+   - Tiêu đề cột: Match với data bên dưới[32][31]
+
+## Bố Cục (Layout)
+
+### Cấu Trúc Tổng Thể
+
+**Left Sidebar Navigation:**
+- **Width**: 240-280px (expanded), 56-64px (collapsed)[33][34][9]
+- **Position**: Fixed, luôn hiển thị[9][33]
+- **Background**: Màu xanh lá nhạt hoặc trắng với accent xanh[33][9]
+- **Padding**: 16-24px[9][33]
+
+**Main Content Area:**
+- **Background**: Trắng tinh khiết[4][3]
+- **Padding**: 32-48px từ các cạnh[5][21]
+- **Max-width**: 1440-1600px cho desktop[23]
+- **Margin auto**: Center content khi màn hình rộng[23]
+
+### Grid System
+
+**12-Column Grid (Bootstrap standard):**
+- **Columns**: 12 cột[23]
+- **Gutter**: 24px (1.5rem)[23]
+- **Margin**: 60px mỗi bên cho desktop 1440px[23]
+- **Responsive breakpoints**:
+  - Mobile: <768px
+  - Tablet: 768-1024px
+  - Desktop: >1024px[23]
+
+## Thiết Kế Sidebar Navigation
+
+### Cấu Trúc Sidebar
+
+**Thành phần chính:**
+1. **Logo/Brand**: Phía trên cùng, 48-56px height[33][9]
+2. **Navigation items**: List vertical, icon + text[34][9][33]
+3. **Active state**: Background highlight, bold text, accent color[9][33]
+4. **Hover state**: Subtle background change[33][9]
+5. **Bottom section**: User profile hoặc updates[9][33]
+
+**Spacing trong Sidebar:**
+- Padding item: 12px (vertical) × 16px (horizontal)[33][9]
+- Margin giữa items: 4-8px[9][33]
+- Margin giữa sections: 24-32px[33][9]
+
+**Icon Design:**
+- Size: 20-24px[35][9][33]
+- Style: Line icons, consistent stroke width (1.5-2px)[35]
+- Spacing: 12px giữa icon và label[9][33]
+
+### Best Practices Sidebar
+
+1. **Optimal width**: 240-300px expanded, 48-64px collapsed[33][9]
+2. **Highlight active section**: Background, bold text, accent border[9][33]
+3. **Expandable sub-items**: Chevron icon, smooth animation[33][9]
+4. **Quick search**: Ở đầu sidebar cho navigation nhanh[34][9]
+5. **Responsive**: Collapse trên mobile, hamburger menu[34][9][33]
+
+## Thiết Kế Data Table
+
+### Cấu Trúc Table
+
+**Table Header:**
+- **Background**: Xám nhạt (#F8F9FA) hoặc trắng với border dày[12][11][10]
+- **Text**: Bold (font-weight: 600-700), left-align text, right-align numbers[31][32][12]
+- **Padding**: 12-16px vertical, 16-24px horizontal[11][12][10]
+- **Border bottom**: 1-2px solid, màu đậm hơn data rows[12][11][10]
+
+**Table Body:**
+- **Row height**: 48-56px (thoải mái cho clicking)[11][12][10]
+- **Cell padding**: 12-16px vertical, 16-24px horizontal[12][11][10]
+- **Border**: 1px solid #E5E7EB giữa các dòng[11][10]
+- **Zebra striping**: Alternating background (#FAFAFA và #FFFFFF)[12][10][11]
+
+**Alignment:**
+- **Text columns**: Left-align[32][31]
+- **Number columns**: Right-align[31][32]
+- **Date columns**: Left-align[32][31]
+- **Action columns**: Center hoặc right-align[36][37]
+
+### Hover & Interactive States
+
+**Row Hover:**
+- **Background**: Xám rất nhạt (#F3F4F6)[38][39][40][41]
+- **Transition**: 150-200ms ease[39][41]
+- **Cursor**: Pointer nếu row clickable[40][38]
+- **Z-index**: Không cần tăng, chỉ background change[41][39]
+
+**Implementation Tips:**
+- Apply hover lên toàn bộ `<tr>` trong `<tbody>`[38][40]
+- Dùng class `.table-hover` (Bootstrap) hoặc `:hover` pseudo-class[40][38]
+- Đảm bảo hover không conflict với button/icon hover bên trong cell[39][41]
+
+### Action Buttons trong Table
+
+**Vị trí:**
+- **Action column**: Cột cuối cùng bên phải[37][36]
+- **Alignment**: Right-align hoặc center[36][37]
+
+**Thiết kế Button:**
+- **Style**: Icon-only buttons hoặc text buttons, KHÔNG dùng filled buttons[37][36]
+- **Size**: 32-40px (touch-friendly)[42][36][37]
+- **Spacing**: 8-12px giữa các button[36][37]
+- **Icons**: View, Edit, Delete, More (3-dot menu)[37][36]
+
+**Best Practices:**
+- **Giới hạn số lượng**: Tối đa 3-4 actions visible, phần còn lại vào dropdown menu[36][37]
+- **Overflow menu**: Dùng 3-dot icon cho nhiều actions[37][36]
+- **Hover**: Hiển thị tooltip cho icon-only buttons[36][37]
+- **Color coding**: Destructive actions (delete) dùng màu đỏ[37][36]
+
+### Pagination Design
+
+**Vị trí & Layout:**
+- **Position**: Bottom của table, center-aligned[43][44][45][46]
+- **Spacing**: 32-48px margin từ table[44][45][43]
+
+**Thành phần:**
+1. **Page numbers**: 1, 2, 3, 4, 5[45][46][43][44]
+2. **Current page**: Bold, background highlight, accent color[46][43][44][45]
+3. **Previous/Next buttons**: "< Previous" và "Next >"[43][44][45][46]
+4. **First/Last**: Optional, "« First" và "Last »"[44][45][46][43]
+5. **Ellipsis**: "..." cho large page ranges[45][46][43]
+
+**Spacing & Sizing:**
+- **Clickable area**: Tối thiểu 40×40px (touch-friendly)[42][43][44]
+- **Margin giữa items**: 4-8px[43][44][45]
+- **Font size**: 14-16px[44][43]
+- **Border radius**: 4-8px cho page buttons[43][44]
+
+**Best Practices:**
+1. **Large clickable areas**: 40×40px minimum[42][44][43]
+2. **KHÔNG underline**: Gây nhầm lẫn với hyperlinks[45][44][43]
+3. **Identify current page**: Bold + background + accent color[46][44][45][43]
+4. **Space out page links**: Đủ khoảng cách để tránh misclick[44][45][43]
+5. **Show context**: "Page 5 of 20" hoặc "1-10 of 200 items"[46]
+6. **Items per page**: Cho phép user chọn 10, 25, 50, 100[47][46]
+
+### Responsive Table Design
+
+**Mobile Strategies:**
+
+**1. Horizontal Scroll (Simplest):**
+- Wrap table trong container có `overflow-x: auto`[48][49][50]
+- Sticky header khi scroll[50][48][32]
+- Pros: Đơn giản, giữ nguyên structure[49][48]
+- Cons: Dual-axis scrolling khó chịu[48][50]
+
+**2. Card Layout (Recommended):**
+- Mỗi row thành 1 card vertical[51][49][50][48]
+- Header column thành label cho mỗi field[51][50]
+- Pros: Native mobile experience, dễ đọc[49][50][51]
+- Cons: Phải viết thêm CSS[51][49]
+
+**3. Collapsed Columns:**
+- Ẩn các cột ít quan trọng trên mobile[48][49]
+- Cho phép user chọn columns hiển thị[48]
+- Pros: Linh hoạt, user control[49][48]
+- Cons: Thông tin bị ẩn[48]
+
+**CSS Implementation (Card Layout):**
+```css
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr { 
+    display: block; 
+  }
+  thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  tr { border: 1px solid #ccc; }
+  td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+  td:before {
+    position: absolute;
+    left: 6px;
+    width: 45%;
+    white-space: nowrap;
+    content: attr(data-label);
+    font-weight: bold;
+  }
+}
+```
+
+## Icon Design
+
+### Đặc Điểm Icon
+
+**Style:**
+- **Line icons**: Outline style, không fill[52][53][35]
+- **Stroke width**: 1.5-2px, consistent[52][35]
+- **Style**: Minimal, geometric, modern[53][35][52]
+- **Corners**: Smooth rounded corners (border-radius: 1-2px)[35]
+
+**Size:**
+- **Sidebar navigation**: 20-24px[35][9]
+- **Table actions**: 16-20px[35][36]
+- **Buttons**: 16-20px[35][37]
+- **Large icons**: 32-48px (features, empty states)[35]
+
+**Icon Library Recommendations:**
+- **Heroicons**: Clean, consistent, free[35]
+- **Feather Icons**: Minimal, beautiful[35]
+- **Untitled UI Icons**: Professional, 4600+ icons[35]
+- **Lucide**: Modern fork of Feather[35]
+
+### Icon Usage
+
+1. **Sidebar navigation**: Icon + label cho clarity[9][33]
+2. **Action buttons**: Icon-only nếu rõ nghĩa (edit, delete, view)[36][37]
+3. **Tooltip**: Luôn có tooltip cho icon-only buttons[37][36]
+4. **Consistency**: Dùng 1 icon library cho toàn bộ project[35]
+5. **Optical alignment**: Điều chỉnh position để balance với text[35]
+
+## Button Design
+
+### Button Types
+
+**Primary Button (CTA chính):**
+- **Background**: Accent color (xanh lá)[54][37]
+- **Text**: Trắng, font-weight: 600[54][37]
+- **Padding**: 12px vertical × 24px horizontal[54][37]
+- **Border radius**: 6-8px[55][56][57][58][59]
+- **Example**: "Create New" button[37]
+
+**Secondary Button:**
+- **Style**: Outline, border 1-2px solid[37]
+- **Color**: Accent color text + border[37]
+- **Background**: Transparent hoặc hover với background nhạt[37]
+- **Use case**: Actions ít quan trọng hơn[37]
+
+**Text Button:**
+- **Style**: No background, no border[37]
+- **Color**: Accent color hoặc gray[37]
+- **Hover**: Underline hoặc background nhạt[37]
+- **Use case**: Tertiary actions, cancel[37]
+
+**Icon Button:**
+- **Size**: 32-40px (square hoặc circle)[54][37]
+- **Icon**: 16-20px[54][37]
+- **Background**: Transparent, hover với background[54][37]
+- **Use case**: Table actions, toolbar[36][54][37]
+
+### Button States
+
+**Default:**
+- Màu sắc chuẩn, shadow nhẹ (optional)[37]
+
+**Hover:**
+- Background tối hơn 10-15%[37]
+- Cursor: pointer[37]
+- Transition: 150-200ms ease[37]
+- Optional: Subtle scale (1.02) hoặc shadow tăng[37]
+
+**Active (Pressed):**
+- Background tối hơn 20-25%[37]
+- Optional: Scale down (0.98)[37]
+
+**Disabled:**
+- Opacity: 0.5-0.6[37]
+- Cursor: not-allowed[37]
+- KHÔNG clickable[37]
+- Có tooltip giải thích tại sao disabled[37]
+
+**Focus:**
+- Outline: 2-3px solid accent color[37]
+- Offset: 2px[37]
+- Đảm bảo keyboard navigation[37]
+
+### Border Radius Guidelines
+
+**Common Values:**
+- **4px**: Subtle, professional, safe choice[58][59][55]
+- **6-8px**: Modern, friendly, balanced[56][57][59][55][58]
+- **12-16px**: Innovative, playful[59]
+- **50% / 100vh**: Fully rounded pill buttons[57][55][56]
+
+**Recommendations:**
+- Buttons nhỏ: 4-6px[55][58][59]
+- Buttons vừa: 6-8px[56][57][58][55]
+- Buttons lớn: 8-12px[58][59][55]
+- Icon buttons: 50% (circle) hoặc 6-8px (rounded square)[57][55][56]
+
+**Consistency:**
+- Dùng cùng border-radius cho tất cả buttons cùng loại[55][58]
+- Có thể khác nhau giữa primary và secondary[58][55]
+
+## Accessibility (Khả Năng Tiếp Cận)
+
+### Color Contrast
+
+**WCAG AA Requirements:**
+- **Regular text (< 18px)**: Minimum 4.5:1 contrast ratio[17][60][16][18][19]
+- **Large text (≥ 18px hoặc ≥ 14px bold)**: Minimum 3:1[16][17][18][19]
+- **UI components**: Minimum 3:1 (buttons, borders, icons)[61][20][19]
+
+**WCAG AAA (Enhanced):**
+- **Regular text**: 7:1[20][17][18][19]
+- **Large text**: 4.5:1[17][18][19][20]
+
+**Tools kiểm tra:**
+- WebAIM Contrast Checker[20]
+- Figma plugins: Stark, A11y[62][7]
+- Chrome DevTools Accessibility tab[60][16]
+
+### Keyboard Navigation
+
+1. **Tab order**: Logical, left-to-right, top-to-bottom[63][32]
+2. **Focus indicators**: Rõ ràng, contrast cao[63][32]
+3. **Table navigation**: Arrow keys để di chuyển cells[63][32]
+4. **Skip to content**: Link bỏ qua navigation[63][32]
+
+### Screen Reader Support
+
+1. **Semantic HTML**: `<table>`, `<th>`, `<td>`, proper structure[32][63]
+2. **ARIA labels**: `aria-label`, `aria-describedby` cho icons[63][32]
+3. **Table headers**: `scope="col"` và `scope="row"`[32][63]
+4. **Alternative text**: Cho icons và images[63][32]
+
+## Quy Tắc Thiết Kế Tổng Hợp
+
+### Visual Hierarchy
+
+1. **Size**: Larger = More important[27][2][15]
+2. **Weight**: Bold = More emphasis[2][27][15]
+3. **Color**: Accent color = Primary action/info[27][15][2]
+4. **Position**: Top-left = Most important (F-pattern)[2][27]
+5. **White space**: More space around = More important[21][27][5][2]
+
+### Consistency Rules
+
+1. **Spacing**: Luôn dùng 8px grid system[26][24][25][23]
+2. **Colors**: Stick to 3 main colors[15][3][4]
+3. **Typography**: Maximum 2-3 font sizes per section[14][13]
+4. **Icons**: 1 icon library, consistent size[35]
+5. **Border radius**: Same value cho cùng component type[55][58]
+6. **Shadows**: Subtle, consistent elevation system[64]
+
+### Performance
+
+1. **Variable fonts**: Reduce font file size[13][14]
+2. **Icon sprites**: Combine icons into sprite sheet[35]
+3. **Lazy loading**: Load table data on demand[49][46]
+4. **Virtual scrolling**: For large datasets[49][32]
+5. **Optimize images**: WebP format, compression[65]
+
+### Responsive Design
+
+**Breakpoints:**
+- Mobile: < 768px[23]
+- Tablet: 768px - 1024px[23]
+- Desktop: > 1024px[23]
+
+**Strategies:**
+- Sidebar: Collapse to hamburger menu on mobile[34][33][9]
+- Table: Card layout hoặc horizontal scroll[50][51][48][49]
+- Padding: Reduce từ 48px (desktop) xuống 16-24px (mobile)[23]
+- Font size: Scale down 1-2px on mobile[14][13]
+
+### Design System Structure
+
+**Components:**
+1. **Atoms**: Buttons, inputs, icons[24][23]
+2. **Molecules**: Search bar, pagination, table header[24][23]
+3. **Organisms**: Sidebar, data table, header[24][23]
+4. **Templates**: Dashboard layout, list page[24][23]
+
+**Tokens:**
+- **Colors**: Primary, secondary, gray scale[62]
+- **Spacing**: 8px scale[26][25][24][23]
+- **Typography**: Font family, size scale, weights[13][14]
+- **Shadows**: Elevation system[64]
+- **Border radius**: Small (4px), medium (8px), large (12px)[59][56][58][55]
+
+## Ví Dụ Code Mẫu
+
+### HTML Structure
+```html
+<div class="container">
+  <aside class="sidebar">
+    <div class="logo">AFusion</div>
+    <nav class="nav">
+      <a href="#" class="nav-item">
+        <icon class="nav-icon">📊</icon>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item active">
+        <icon class="nav-icon">👥</icon>
+        <span>Tenants</span>
+      </a>
+    </nav>
+  </aside>
+  
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Tenants</h1>
+      <button class="btn-primary">Create New</button>
+    </div>
+    
+    <div class="table-container">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="text-right">Number of Users</th>
+            <th class="text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Testing</td>
+            <td>Tenant for testing</td>
+            <td class="text-right">14</td>
+            <td class="text-right">
+              <button class="btn-icon">👁️</button>
+              <button class="btn-icon">✏️</button>
+              <button class="btn-icon">⋯</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="pagination">
+        <button class="page-item">1</button>
+        <button class="page-item active">2</button>
+        <button class="page-item">Next</button>
+      </div>
+    </div>
+  </main>
+</div>
+```
+
+### CSS Variables (Design Tokens)
+```css
+:root {
+  /* Colors */
+  --color-primary: #40C57C;
+  --color-primary-hover: #36B26D;
+  --color-white: #FFFFFF;
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #F3F4F6;
+  --color-gray-300: #DEE2E6;
+  --color-gray-600: #6C757D;
+  --color-gray-900: #212529;
+  
+  /* Spacing (8px scale) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, sans-serif;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height: 1.5;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+  
+  /* Layout */
+  --sidebar-width: 256px;
+  --sidebar-width-collapsed: 64px;
+  --content-max-width: 1440px;
+}
+```
+
+### Component Styles
+```css
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-white);
+  padding: var(--space-3);
+  border-right: 1px solid var(--color-gray-300);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-gray-600);
+  transition: background 200ms ease;
+}
+
+.nav-item:hover {
+  background: var(--color-gray-100);
+}
+
+.nav-item.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-white);
+}
+
+.table thead th {
+  background: var(--color-gray-50);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-900);
+  border-bottom: 2px solid var(--color-gray-300);
+}
+
+.table tbody td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-gray-300);
+  font-size: var(--font-size-sm);
+}
+
+.table-hover tbody tr:hover {
+  background: var(--color-gray-100);
+  transition: background 150ms ease;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.btn-icon:hover {
+  background: var(--color-gray-100);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  gap: var(--space-1);
+  justify-content: center;
+  padding: var(--space-4) 0;
+}
+
+.page-item {
+  min-width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-white);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.page-item:hover {
+  background: var(--color-gray-100);
+}
+
+.page-item.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+```
+
+## Checklist Thiết Kế Hoàn Chỉnh
+
+### Color & Contrast
+- [ ] Sử dụng tối đa 3 màu chủ đạo
+- [ ] Kiểm tra contrast ratio ≥ 4.5:1 cho text thường
+- [ ] Kiểm tra contrast ratio ≥ 3:1 cho large text và UI components
+- [ ] Xanh lá cho actions tích cực, đỏ cho destructive actions
+
+### Spacing & Layout
+- [ ] Tất cả spacing là bội số của 8px
+- [ ] Internal padding ≤ External margin
+- [ ] Sidebar width: 240-280px expanded
+- [ ] Content padding: 32-48px từ các cạnh
+- [ ] Line height: 1.5-1.6× font size
+
+### Typography
+- [ ] Dùng sans-serif font (Inter, Roboto, Open Sans)
+- [ ] Font size: 14-16px cho body, 24-32px cho heading
+- [ ] Font weight: 600-700 cho header, 400 cho body
+- [ ] KHÔNG dùng ALL CAPS
+- [ ] Text left-align, numbers right-align
+
+### Table Design
+- [ ] Row height: 48-56px
+- [ ] Cell padding: 12-16px vertical, 16-24px horizontal
+- [ ] Zebra striping cho dễ đọc
+- [ ] Hover state: background xám nhạt
+- [ ] Action buttons: icon-only, tối đa 3-4 visible
+
+### Buttons
+- [ ] Primary: filled với accent color
+- [ ] Secondary: outline
+- [ ] Border radius: 6-8px
+- [ ] Padding: 12px × 24px
+- [ ] Min height: 40px (touch-friendly)
+- [ ] Hover transition: 150-200ms
+
+### Icons
+- [ ] Line style, stroke width 1.5-2px
+- [ ] Size: 20-24px navigation, 16-20px actions
+- [ ] Consistent library (1 icon set)
+- [ ] Tooltip cho icon-only buttons
+
+### Pagination
+- [ ] Clickable area: 40×40px minimum
+- [ ] Current page: bold + background + accent
+- [ ] Spacing: 4-8px giữa items
+- [ ] Show context: "Page X of Y"
+
+### Accessibility
+- [ ] Color contrast đạt WCAG AA
+- [ ] Keyboard navigation: tab order logical
+- [ ] Focus indicators rõ ràng
+- [ ] Semantic HTML
+- [ ] ARIA labels cho icons
+
+### Responsive
+- [ ] Sidebar collapse trên mobile
+- [ ] Table: card layout hoặc scroll
+- [ ] Touch targets: ≥ 40×40px
+- [ ] Reduce padding trên mobile
+
+## Kết Luận
+
+Giao diện này là ví dụ xuất sắc của **Minimalist UI Design** hiện đại, kết hợp:
+
+1. **White space tối đa** để tạo sự thoáng đãng và tập trung[1][3][4][5][21]
+2. **Màu sắc hạn chế** (3 màu chính) để tạo sự hài hòa[3][15][4]
+3. **Typography rõ ràng** với sans-serif fonts dễ đọc[30][14][13]
+4. **8px grid system** cho consistency và scalability[26][25][24][23]
+5. **Data table tối ưu** với zebra striping, hover states, và pagination[10][11][12][32]
+6. **Accessibility compliance** đạt WCAG AA standards[18][19][16][17]
+
+Phong cách này đặc biệt phù hợp cho **admin dashboards, SaaS platforms, enterprise applications** nơi người dùng cần xử lý nhiều thông tin một cách hiệu quả và nhanh chóng.[66][64][1][2][3]
+
+[1](https://accelfintech.com/insights/power-of-minimalist-ui-ux-design)
+[2](https://blog.tubikstudio.com/lean-and-mean-power-of-minimalism-in-ui-design/)
+[3](https://www.stan.vision/journal/minimalist-ui-design-how-less-is-more-in-web-design)
+[4](https://www.bighuman.com/blog/guide-to-minimalistic-user-interface-design)
+[5](https://dev.to/margishpatel/clean-ui-guide-15-white-space-design-tips-3fkg)
+[6](https://www.figma.com/resource-library/shades-of-green/)
+[7](https://www.figma.com/colors/green/)
+[8](https://muffingroup.com/blog/green-color-palette/)
+[9](https://uxplanet.org/best-ux-practices-for-designing-a-sidebar-9174ee0ecaa2)
+[10](https://www.halo-lab.com/blog/the-ultimate-guide-to-designing-data-tables)
+[11](https://www.denovers.com/blog/enterprise-table-ux-design)
+[12](https://uxplanet.org/best-practices-for-usable-and-efficient-data-table-in-applications-4a1d1fb29550)
+[13](https://www.linkedin.com/posts/adhamdannaway_ui-design-typefaces-activity-7325889658918174720-M0S0)
+[14](https://www.designmonks.co/blog/best-fonts-for-ui-design)
+[15](https://webflow.com/blog/minimalist-graphic-design)
+[16](https://www.a11y-collective.com/glossary/colour-contrast/)
+[17](https://www.oregon.gov/ode/accessibility/checklist/pages/contrast.aspx)
+[18](https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Understanding_WCAG/Perceivable/Color_contrast)
+[19](https://accessibleweb.com/color-contrast-checker/)
+[20](https://webaim.org/resources/contrastchecker/)
+[21](https://www.paralect.com/blog/post/5-ways-to-design-better-white-space-in-your-product-ui)
+[22](https://cieden.com/book/sub-atomic/spacing/white-space)
+[23](https://cieden.com/book/sub-atomic/spacing/spacing-best-practices)
+[24](https://atlassian.design/foundations/spacing)
+[25](https://uxplanet.org/everything-you-should-know-about-8-point-grid-system-in-ux-design-b69cb945b18d)
+[26](https://blog.prototypr.io/the-8pt-grid-consistent-spacing-in-ui-design-with-sketch-577e4f0fd520)
+[27](https://mockflow.com/blog/Embracing-Simplicity-The-Powerful-Impact-of-minimalism-in-UI-design)
+[28](https://www.linkedin.com/posts/adhamdannaway_ui-design-tip-use-more-white-space-activity-7320816222499962880-PdlE)
+[29](https://www.typewolf.com/top-10-sans-serif-fonts)
+[30](https://www.figma.com/fonts/sans-serif/)
+[31](https://www.pencilandpaper.io/articles/ux-pattern-analysis-enterprise-data-tables)
+[32](https://www.justinmind.com/ui-design/data-table)
+[33](https://www.nngroup.com/articles/vertical-nav/)
+[34](https://www.navbar.gallery/blog/sidebar-navigation)
+[35](https://www.untitledui.com/icons)
+[36](https://uxmovement.substack.com/p/how-to-fit-8-action-buttons-in-a)
+[37](https://nixstech.com/news/how-to-design-buttons-in-an-interface-a-practical-guide-to-design-patterns/)
+[38](https://datatables.net/examples/styling/hover.html)
+[39](https://www.reddit.com/r/FigmaDesign/comments/1bzrh8v/how_to_add_row_hover_state_in_a_column_based_table/)
+[40](https://getbootstrap.com/docs/5.0/content/tables/)
+[41](https://www.youtube.com/watch?v=urLsjxShaIQ)
+[42](https://www.interaction-design.org/literature/topics/pagination)
+[43](https://www.smashingmagazine.com/2007/11/pagination-gallery-examples-and-good-practices/)
+[44](https://framerbite.com/blog/pagination-design-inspiration)
+[45](https://arounda.agency/blog/top-14-pagination-design-examples)
+[46](https://uxpatterns.dev/patterns/navigation/pagination)
+[47](https://app.uxcel.com/courses/ui-components-best-practices/best-practices-005)
+[48](https://www.reddit.com/r/web_design/comments/1b4nzud/best_way_to_design_tables_on_mobile/)
+[49](https://ninjatables.com/responsive-tables/)
+[50](https://www.uxmatters.com/mt/archives/2020/07/designing-mobile-tables.php)
+[51](https://viblo.asia/p/responsive-table-hieu-qua-voi-html-css-Do754qw3KM6)
+[52](https://dribbble.com/tags/minimalist-icons)
+[53](https://www.flaticon.com/free-icons/minimal)
+[54](https://m2.material.io/components/buttons-floating-action-button)
+[55](https://stackoverflow.com/questions/69219052/which-border-radius-for-a-round-button)
+[56](https://tailwindcss.com/docs/border-radius)
+[57](https://www.w3schools.com/howto/howto_css_round_buttons.asp)
+[58](https://www.reddit.com/r/webdev/comments/1gpqw0m/what_is_a_good_border_radius_for_buttonshover/)
+[59](https://www.ux-republic.com/en/which-border-radius-to-adopt-for-your-cta-copy/)
+[60](https://www.accessibilitychecker.org/wcag-guides/ensure-the-contrast-between-foreground-and-background-colors-meets-wcag-2-aa-minimum-contrast-ratio-thresholds/)
+[61](https://www.w3.org/TR/WCAG21/)
+[62](https://m2.material.io/design/color/the-color-system.html)
+[63](https://www.nngroup.com/articles/data-tables/)
+[64](https://www.wrappixel.com/templates/category/admin-dashboard-templates/)
+[65](https://muffingroup.com/blog/white-space-in-web-design/)
+[66](https://tailadmin.com)
+[67](https://www.behance.net/search/projects/modern%20admin%20template)
+[68](https://muz.li/inspiration/dashboard-inspiration/)
+[69](https://www.nngroup.com/articles/aesthetic-minimalist-design/)
+[70](https://adminlte.io)
+[71](https://www.uiprep.com/blog/the-ultimate-guide-to-designing-data-tables)
+[72](https://www.figma.com/templates/dashboard-designs/)
+[73](https://coolors.co/palettes/trending/green)
+[74](https://support.atlassian.com/navigation/docs/navigation-best-practices/)
+[75](https://colorhunt.co/palettes/green)
+[76](https://community.weweb.io/t/sidebar-menu-best-practices/6051)
+[77](https://uxplanet.org/the-power-of-whitespace-a1a95e45f82b)
+[78](https://spectrum.adobe.com/page/side-navigation/)
+[79](https://cssgradient.io/shades-of-green/)
+[80](https://www.youtube.com/watch?v=8gu4lFtVcyY)
+[81](https://www.shutterstock.com/search/minimal-ui-icon)
+[82](https://www.istockphoto.com/illustrations/minimal-logo)
+[83](https://www.myfonts.com/pages/tags/ui%20sans-serif-fonts/)
+[84](https://dribbble.com/tags/sans-serif-fonts)
+[85](https://www.vecteezy.com/free-vector/flat-minimal-icons)
+[86](https://dribbble.com/search/table-hover)
+[87](https://www.facebook.com/groups/uiuxdesigner.vietnam/posts/2771042683090473/)
+[88](https://www.behance.net/search/projects/minimalist%20icons)
+[89](https://readymadeui.com/tailwind/component/table-with-action-button)
+[90](https://dribbble.com/search/table-actions)
+[91](https://dribbble.com/search/responsive-table)
+[92](https://dribbble.com/search/table-button)
+[93](https://dev.to/pragativerma18/unlocking-the-power-of-api-pagination-best-practices-and-strategies-4b49)
+[94](https://dribbble.com/tags/responsive-table)
+[95](https://notadesigner.io/p/8px-grid)
+[96](https://www.linkedin.com/posts/nbabich_ui-uidesign-productdesign-activity-7327274737221451777-iKyo)
+[97](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-radius)
+[98](https://www.reddit.com/r/UXDesign/comments/xfyr1p/is_it_always_important_to_follow_a_8px_or_4x_grid/)

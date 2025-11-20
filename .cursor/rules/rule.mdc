@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+- mỗi component luôn luôn dùng module css để tránh xung đột UI
+- tuyệt đối tuân thủ quy tắt tổ chức code
+- tuyệt đối tuân thủ quy tắt thiết kế UI
+- kêu gì làm đó, tuyệt đối không làm thừa, không tự thêm logic, tính năng không liên quan

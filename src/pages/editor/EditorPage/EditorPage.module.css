@@ -1,0 +1,253 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  color: #1f2937;
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6c757d;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4b5563;
+  max-width: 640px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.primary {
+  background-color: #40c57c;
+  border-color: #40c57c;
+  color: #ffffff;
+}
+
+.primary:hover {
+  background-color: #36b26d;
+  border-color: #36b26d;
+}
+
+.secondary {
+  background-color: #ffffff;
+  border-color: #cbd5f5;
+  color: #1f2937;
+}
+
+.secondary:hover {
+  border-color: #40c57c;
+  color: #0f172a;
+}
+
+.editorCard {
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.editorWrapper {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.toolbar {
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8f9fa;
+  padding: 8px 16px;
+}
+
+.wrapper {
+  background-color: #ffffff;
+}
+
+.editor {
+  padding: 24px;
+  min-height: 320px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.toolbar :global(.rdw-option-wrapper),
+.toolbar :global(.rdw-inline-wrapper),
+.toolbar :global(.rdw-list-wrapper),
+.toolbar :global(.rdw-link-wrapper),
+.toolbar :global(.rdw-colorpicker-wrapper),
+.toolbar :global(.rdw-history-wrapper),
+.toolbar :global(.rdw-block-wrapper),
+.toolbar :global(.rdw-fontsize-wrapper),
+.toolbar :global(.rdw-text-align-wrapper) {
+  margin-right: 8px;
+}
+
+.toolbar :global(.rdw-option-wrapper),
+.toolbar :global(.rdw-dropdown-wrapper) {
+  border-radius: 8px;
+  border-color: transparent;
+}
+
+.toolbar :global(.rdw-option-wrapper:hover),
+.toolbar :global(.rdw-dropdown-wrapper:hover) {
+  background-color: #e5f4ec;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.statCard,
+.jsonCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.statLabel {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.statRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.statValue {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.statCaption {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.textButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #40c57c;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.textButton:hover {
+  background-color: rgba(64, 197, 124, 0.1);
+}
+
+.codeBlock {
+  margin: 0;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #0f172a;
+  color: #f3f4f6;
+  font-size: 13px;
+  line-height: 1.5;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.feedback {
+  margin: 0;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+@media (max-width: 768px) {
+  .actionButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .editorCard {
+    padding: 24px;
+  }
+
+  .editor {
+    padding: 16px;
+  }
+}
+

@@ -1,0 +1,256 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hero {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+.hero h1 {
+  margin: 8px 0 16px;
+  font-size: 36px;
+  color: #1f2937;
+}
+
+.hero p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.heroMeta {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.metaMuted {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.cardHeader h2 {
+  margin: 4px 0 0;
+  font-size: 24px;
+  color: #1f2937;
+}
+
+.metaBadge {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background-color: #f3f4f6;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.refresh {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: #40c57c;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.refresh:hover {
+  background-color: #2ea266;
+}
+
+.refresh:active {
+  transform: translateY(1px);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+.table thead tr {
+  background-color: #f8f9fa;
+}
+
+.table th {
+  text-align: left;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  padding: 14px 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.table td {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+  color: #1f2937;
+}
+
+.table tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.featureBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background-color: rgba(64, 197, 124, 0.18);
+  color: #087443;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.featureCell {
+  min-width: 160px;
+}
+
+.numberCell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.hashCell {
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  letter-spacing: 0.04em;
+}
+
+.messageCell {
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.state,
+.stateError {
+  margin: 0;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  color: #6b7280;
+  text-align: center;
+}
+
+.stateError {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+@media (max-width: 720px) {
+  .hero,
+  .card {
+    padding: 24px;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  }
+
+  .table td {
+    border-bottom: 1px solid #edf0f4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6b7280;
+    font-size: 12px;
+    flex: 1;
+    text-align: left;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  .numberCell {
+    justify-content: space-between;
+  }
+
+  .messageCell {
+    white-space: normal;
+  }
+}
+

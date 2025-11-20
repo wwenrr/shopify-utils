@@ -1,0 +1,1348 @@
+---
+alwaysApply: true
+---
+
+Dựa trên nghiên cứu về Feature-Based Architecture và Feature-Sliced Design, tôi sẽ tạo một file markdown rule hoàn chỉnh cho Cursor:
+
+# React Feature-Based Architecture - Quy Tắc Tổ Chức Code
+
+## Nguyên Tắc Cốt Lõi
+
+### 1. Tổ Chức Theo Feature, Không Theo Technical Layer
+- Mỗi feature là một module độc lập, tự quản lý (self-contained)
+- Tất cả code liên quan đến một feature (components, hooks, services, styles, tests) được nhóm lại với nhau[1][2][3]
+- Tránh tổ chức theo kiểu: `/components`, `/hooks`, `/services` ở root level[4][5]
+
+### 2. Encapsulation và Independence
+- Mỗi feature hoạt động như một "black box" có thể thêm, xóa, thay đổi mà không ảnh hưởng phần còn lại[5][6][1]
+- Features giao tiếp với nhau qua props hoặc public API rõ ràng[2][5]
+- Tránh dependencies phức tạp giữa các features[7][8][5]
+
+### 3. Scalability Through Decomposition
+- Dự án lớn được phân tách thành các "nanoservices" nhỏ[5]
+- Mỗi team có thể làm việc độc lập trên features riêng[9][5]
+- Dễ dàng mở rộng bằng cách thêm features mới[3][6][8]
+
+## Cấu Trúc Thư Mục Chuẩn
+
+### Root Structure
+
+```
+src/
+├── app/                    # Application core, initialization, providers
+│   ├── App.tsx            # Root component
+│   ├── router.tsx         # Main routing configuration
+│   ├── providers.tsx      # Global providers (Theme, Query, etc.)
+│   └── store.ts           # Global store setup (if using Redux)
+│
+├── features/              # Business features (feature modules)
+│   ├── auth/
+│   ├── todos/
+│   ├── projects/
+│   └── users/
+│
+├── entities/              # Business entities (domain models)
+│   ├── user/
+│   ├── todo/
+│   └── project/
+│
+├── widgets/               # Complex composite UI blocks
+│   ├── header/
+│   ├── sidebar/
+│   └── footer/
+│
+├── pages/                 # Application pages/routes
+│   ├── home/
+│   ├── dashboard/
+│   ├── login/
+│   └── not-found/
+│
+├── shared/                # Reusable shared utilities
+│   ├── ui/               # Shared UI components
+│   ├── lib/              # Third-party library wrappers
+│   ├── api/              # API client configuration
+│   ├── config/           # App configuration
+│   ├── hooks/            # Global hooks
+│   ├── utils/            # Utility functions
+│   └── types/            # Global TypeScript types
+│
+└── assets/               # Static assets
+    ├── images/
+    ├── fonts/
+    └── styles/
+```
+
+### Feature Module Structure (Chi Tiết)
+
+Mỗi feature trong `features/` tuân theo cấu trúc chuẩn sau:[10][1][2][5]
+
+```
+features/
+└── auth/                          # Feature name (kebab-case)
+    ├── components/                # Feature-specific components
+    │   ├── LoginForm/
+    │   │   ├── LoginForm.tsx
+    │   │   ├── LoginForm.test.tsx
+    │   │   └── LoginForm.module.css
+    │   ├── SignupForm/
+    │   │   ├── SignupForm.tsx
+    │   │   ├── SignupForm.test.tsx
+    │   │   └── SignupForm.module.css
+    │   └── index.ts              # Barrel export
+    │
+    ├── hooks/                     # Feature-specific hooks
+    │   ├── useAuth.ts
+    │   ├── useLogin.ts
+    │   └── index.ts
+    │
+    ├── services/                  # Business logic and API calls
+    │   ├── authService.ts
+    │   ├── authValidation.ts
+    │   └── index.ts
+    │
+    ├── stores/                    # Feature state management
+    │   ├── authStore.ts          # Redux/Zustand store slice
+    │   ├── authSelectors.ts
+    │   └── index.ts
+    │
+    ├── queries/                   # React Query hooks (optional)
+    │   ├── useLoginMutation.ts
+    │   ├── useUserQuery.ts
+    │   └── index.ts
+    │
+    ├── types/                     # Feature-specific TypeScript types
+    │   ├── auth.types.ts
+    │   ├── user.types.ts
+    │   └── index.ts
+    │
+    ├── utils/                     # Feature-specific utilities
+    │   ├── tokenHelper.ts
+    │   ├── authUtils.ts
+    │   └── index.ts
+    │
+    ├── constants/                 # Feature constants
+    │   └── authConstants.ts
+    │
+    └── index.ts                   # Public API - Only export what's needed
+```
+
+### Entity Module Structure
+
+Entities đại diện cho business domain models:[6][2][7]
+
+```
+entities/
+└── user/
+    ├── model/                     # Domain model
+    │   ├── types.ts              # User type definitions
+    │   ├── schema.ts             # Validation schemas (Zod/Yup)
+    │   └── index.ts
+    │
+    ├── api/                       # Entity API methods
+    │   ├── userApi.ts
+    │   └── index.ts
+    │
+    ├── ui/                        # Reusable entity UI components
+    │   ├── UserCard/
+    │   ├── UserAvatar/
+    │   └── index.ts
+    │
+    └── index.ts                   # Public API
+```
+
+### Widget Module Structure
+
+Widgets là các composite UI blocks phức tạp:[11][6][7]
+
+```
+widgets/
+└── header/
+    ├── ui/
+    │   ├── Header.tsx
+    │   ├── Header.module.css
+    │   └── index.ts
+    │
+    ├── model/                     # Widget-specific logic
+    │   └── headerStore.ts
+    │
+    └── index.ts
+```
+
+### Page Module Structure
+
+Pages kết hợp widgets và features thành màn hình hoàn chỉnh:[12][9][10]
+
+```
+pages/
+└── dashboard/
+    ├── ui/
+    │   ├── DashboardPage.tsx
+    │   ├── DashboardPage.module.css
+    │   └── index.ts
+    │
+    ├── model/                     # Page-specific logic (if needed)
+    │   └── dashboardModel.ts
+    │
+    └── index.ts
+```
+
+### Shared Module Structure
+
+Shared chứa reusable code dùng chung cho toàn app:[1][9][5]
+
+```
+shared/
+├── ui/                            # Shared UI components (Design System)
+│   ├── Button/
+│   │   ├── Button.tsx
+│   │   ├── Button.test.tsx
+│   │   ├── Button.stories.tsx    # Storybook
+│   │   ├── Button.module.css
+│   │   └── index.ts
+│   ├── Input/
+│   ├── Modal/
+│   └── index.ts
+│
+├── lib/                           # Third-party library configurations
+│   ├── react-query/
+│   │   └── queryClient.ts
+│   ├── axios/
+│   │   └── axiosInstance.ts
+│   └── index.ts
+│
+├── api/                           # Base API configuration
+│   ├── baseApi.ts
+│   ├── apiClient.ts
+│   └── index.ts
+│
+├── hooks/                         # Global reusable hooks
+│   ├── useLocalStorage.ts
+│   ├── useDebounce.ts
+│   ├── useMediaQuery.ts
+│   └── index.ts
+│
+├── utils/                         # Global utility functions
+│   ├── formatters/
+│   │   ├── dateFormatter.ts
+│   │   ├── numberFormatter.ts
+│   │   └── index.ts
+│   ├── validators/
+│   │   ├── emailValidator.ts
+│   │   └── index.ts
+│   └── index.ts
+│
+├── types/                         # Global TypeScript types
+│   ├── common.types.ts
+│   ├── api.types.ts
+│   └── index.ts
+│
+└── config/                        # App-wide configuration
+    ├── env.ts
+    ├── routes.ts
+    └── index.ts
+```
+
+## Quy Tắc Import và Dependencies
+
+### Hierarchy Rules (Quan Trọng)
+
+**Quy tắc phân cấp Feature-Sliced Design:**[13][3][6][7]
+
+```
+app → pages → widgets → features → entities → shared
+```
+
+**Nguyên tắc:**
+- Layer cao hơn CÓ THỂ import từ layer thấp hơn
+- Layer thấp hơn KHÔNG ĐƯỢC import từ layer cao hơn
+- Cùng layer: features/widgets KHÔNG import trực tiếp lẫn nhau[8][7][13]
+
+**Ví dụ:**
+
+```typescript
+// ✅ ĐÚNG - pages import từ features
+// pages/dashboard/ui/DashboardPage.tsx
+import { TodoList } from '@/features/todos'
+import { ProjectList } from '@/features/projects'
+
+// ✅ ĐÚNG - features import từ entities
+// features/todos/services/todoService.ts
+import { User } from '@/entities/user'
+
+// ✅ ĐÚNG - mọi layer import từ shared
+// features/auth/components/LoginForm.tsx
+import { Button, Input } from '@/shared/ui'
+import { validateEmail } from '@/shared/utils'
+
+// ❌ SAI - feature không import feature khác trực tiếp
+// features/todos/components/TodoList.tsx
+import { getUserData } from '@/features/auth' // ❌ KHÔNG
+
+// ❌ SAI - entity không import từ feature
+// entities/user/api/userApi.ts
+import { authService } from '@/features/auth' // ❌ KHÔNG
+
+// ❌ SAI - shared không import từ features
+// shared/ui/Button/Button.tsx
+import { useAuth } from '@/features/auth' // ❌ KHÔNG
+```
+
+### Cross-Feature Communication
+
+Khi features cần giao tiếp với nhau:[7][8][5]
+
+**Phương pháp 1: Thông qua Pages (Khuyến nghị)**
+```typescript
+// pages/dashboard/ui/DashboardPage.tsx
+import { useTodos } from '@/features/todos'
+import { useUser } from '@/features/auth'
+
+export const DashboardPage = () => {
+  const { user } = useUser()
+  const { todos } = useTodos(user.id) // Pass data via props
+  
+  return (
+    <div>
+      <TodoList todos={todos} userId={user.id} />
+    </div>
+  )
+}
+```
+
+**Phương pháp 2: Thông qua Shared Store**
+```typescript
+// shared/store/userStore.ts
+export const useUserStore = create((set) => ({
+  currentUser: null,
+  setUser: (user) => set({ currentUser: user })
+}))
+
+// features/todos/hooks/useTodos.ts
+import { useUserStore } from '@/shared/store'
+
+export const useTodos = () => {
+  const currentUser = useUserStore(state => state.currentUser)
+  // Use current user
+}
+```
+
+**Phương pháp 3: Thông qua Events/PubSub**
+```typescript
+// shared/lib/eventBus.ts
+export const eventBus = new EventEmitter()
+
+// features/auth/services/authService.ts
+eventBus.emit('user:login', user)
+
+// features/todos/hooks/useTodos.ts
+useEffect(() => {
+  eventBus.on('user:login', handleUserLogin)
+}, [])
+```
+
+### Path Aliases
+
+Cấu hình TypeScript path mapping:[14][9][5]
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/app/*": ["app/*"],
+      "@/pages/*": ["pages/*"],
+      "@/widgets/*": ["widgets/*"],
+      "@/features/*": ["features/*"],
+      "@/entities/*": ["entities/*"],
+      "@/shared/*": ["shared/*"],
+      "@/assets/*": ["assets/*"]
+    }
+  }
+}
+```
+
+## Quy Tắc Đặt Tên
+
+### File Naming Conventions
+
+**Components:**
+- PascalCase cho component files: `LoginForm.tsx`, `UserCard.tsx`
+- Mỗi component trong folder riêng với tên trùng khớp[9][10]
+- Test file: `ComponentName.test.tsx` hoặc `ComponentName.spec.tsx`
+- Style file: `ComponentName.module.css` (CSS Modules)
+- Story file: `ComponentName.stories.tsx` (Storybook)
+
+**Hooks:**
+- camelCase với prefix `use`: `useAuth.ts`, `useTodos.ts`[5][9]
+- Custom hooks luôn bắt đầu bằng `use`
+- Test file: `useHookName.test.ts`
+
+**Services/Utils:**
+- camelCase: `authService.ts`, `dateFormatter.ts`[2][5]
+- Tên rõ ràng thể hiện chức năng
+
+**Types:**
+- PascalCase: `User`, `TodoItem`, `AuthResponse`
+- File types: `*.types.ts` hoặc `types.ts`[2][5]
+
+**Constants:**
+- SCREAMING_SNAKE_CASE: `API_BASE_URL`, `MAX_RETRY_COUNT`
+- File: `constants.ts` hoặc `featureConstants.ts`
+
+**Folders:**
+- kebab-case: `user-profile/`, `todo-list/`, `auth/`[1][9]
+- Tên ngắn gọn, rõ nghĩa
+
+### Export Patterns
+
+**Barrel Exports (index.ts):**
+
+Mỗi module/folder có `index.ts` để export public API:[10][11][5]
+
+```typescript
+// features/auth/index.ts - Public API only
+export { LoginForm, SignupForm } from './components'
+export { useAuth, useLogin } from './hooks'
+export { authService } from './services'
+export type { AuthUser, LoginCredentials } from './types'
+
+// KHÔNG export internal implementation
+// ❌ export { authValidation } from './services/authValidation' 
+// (nếu chỉ dùng internal)
+```
+
+**Named Exports (Khuyến nghị):**
+```typescript
+// ✅ Preferred - Named exports
+export const Button = ({ children, ...props }) => {
+  return <button {...props}>{children}</button>
+}
+
+export const Input = ({ ...props }) => {
+  return <input {...props} />
+}
+```
+
+**Avoid Default Exports:**
+```typescript
+// ❌ Tránh - Default export gây khó rename và import
+export default function Button() { ... }
+
+// ✅ Better - Named export
+export const Button = () => { ... }
+```
+
+## Component Organization
+
+### Component File Structure
+
+Mỗi component trong folder riêng:[9][10]
+
+```
+Button/
+├── Button.tsx              # Component implementation
+├── Button.test.tsx         # Unit tests
+├── Button.stories.tsx      # Storybook stories
+├── Button.module.css       # Scoped styles (CSS Modules)
+├── Button.types.ts         # Component-specific types (optional)
+└── index.ts                # Export
+```
+
+**Component Template:**
+
+```typescript
+// Button.tsx
+import { FC } from 'react'
+import styles from './Button.module.css'
+import { ButtonProps } from './Button.types'
+
+export const Button: FC<ButtonProps> = ({ 
+  children, 
+  variant = 'primary',
+  size = 'medium',
+  ...props 
+}) => {
+  return (
+    <button 
+      className={`${styles.button} ${styles[variant]} ${styles[size]}`}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+
+// Button.types.ts
+export interface ButtonProps 
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline'
+  size?: 'small' | 'medium' | 'large'
+}
+
+// index.ts
+export { Button } from './Button'
+export type { ButtonProps } from './Button.types'
+```
+
+### Nesting Limits
+
+**Quy tắc 3-4 levels nesting maximum (React recommendation):**[5][9]
+
+```
+✅ GOOD - 3 levels
+features/
+└── auth/                    # Level 1
+    └── components/          # Level 2
+        └── LoginForm/       # Level 3
+            └── LoginForm.tsx
+
+❌ BAD - Quá nhiều nesting
+features/
+└── auth/
+    └── components/
+        └── forms/
+            └── login/
+                └── sections/
+                    └── credentials/
+                        └── LoginForm.tsx  # Level 7 - Quá sâu!
+```
+
+**Khi nesting quá sâu → Split into smaller features/packages**[5]
+
+### Component Composition
+
+**Presentational vs Container Pattern:**
+
+```typescript
+// features/todos/components/TodoList/TodoList.tsx
+// ✅ Presentational - Pure UI, no business logic
+export const TodoList: FC<TodoListProps> = ({ todos, onToggle, onDelete }) => {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <TodoItem 
+          key={todo.id}
+          todo={todo}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
+      ))}
+    </ul>
+  )
+}
+
+// features/todos/components/TodoListContainer/TodoListContainer.tsx
+// ✅ Container - Handles logic and data
+export const TodoListContainer = () => {
+  const { todos, toggleTodo, deleteTodo } = useTodos()
+  
+  return (
+    <TodoList 
+      todos={todos}
+      onToggle={toggleTodo}
+      onDelete={deleteTodo}
+    />
+  )
+}
+```
+
+## State Management
+
+### State Organization by Scope
+
+**Local State:**
+- Dùng `useState` trong component khi state chỉ dùng local[9][5]
+
+**Feature State:**
+- State của một feature → feature's store[11][2][5]
+```typescript
+// features/todos/stores/todoStore.ts
+export const useTodoStore = create<TodoStore>((set) => ({
+  todos: [],
+  addTodo: (todo) => set((state) => ({ 
+    todos: [...state.todos, todo] 
+  })),
+}))
+```
+
+**Global State:**
+- State dùng bởi nhiều features → `app/store` hoặc `shared/store`[2][5]
+
+**Server State:**
+- Dùng React Query/SWR, đặt trong `features/*/queries`[11][2]
+```typescript
+// features/todos/queries/useTodosQuery.ts
+export const useTodosQuery = () => {
+  return useQuery({
+    queryKey: ['todos'],
+    queryFn: () => todoApi.fetchAll()
+  })
+}
+```
+
+### Store Organization
+
+**Redux Toolkit (nếu dùng):**
+```
+app/
+└── store/
+    ├── index.ts              # Root store configuration
+    ├── rootReducer.ts        # Combine reducers
+    └── middleware.ts         # Custom middleware
+
+features/
+└── auth/
+    └── stores/
+        ├── authSlice.ts      # Feature slice
+        ├── authSelectors.ts  # Memoized selectors
+        └── index.ts
+```
+
+**Zustand (khuyến nghị cho simple state):**
+```typescript
+// features/auth/stores/authStore.ts
+import create from 'zustand'
+import { devtools, persist } from 'zustand/middleware'
+
+interface AuthStore {
+  user: User | null
+  token: string | null
+  login: (credentials: Credentials) => Promise<void>
+  logout: () => void
+}
+
+export const useAuthStore = create<AuthStore>()(
+  devtools(
+    persist(
+      (set) => ({
+        user: null,
+        token: null,
+        login: async (credentials) => {
+          const { user, token } = await authApi.login(credentials)
+          set({ user, token })
+        },
+        logout: () => set({ user: null, token: null }),
+      }),
+      { name: 'auth-storage' }
+    )
+  )
+)
+```
+
+## API Layer Organization
+
+### API Client Setup
+
+```typescript
+// shared/api/apiClient.ts
+import axios from 'axios'
+import { API_BASE_URL } from '@/shared/config'
+
+export const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+// Interceptors
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Global error handling
+    return Promise.reject(error)
+  }
+)
+```
+
+### Feature API Layer
+
+```typescript
+// features/todos/services/todoApi.ts
+import { apiClient } from '@/shared/api'
+import type { Todo, CreateTodoDto } from '../types'
+
+export const todoApi = {
+  fetchAll: async (): Promise<Todo[]> => {
+    const { data } = await apiClient.get('/todos')
+    return data
+  },
+
+  fetchById: async (id: string): Promise<Todo> => {
+    const { data } = await apiClient.get(`/todos/${id}`)
+    return data
+  },
+
+  create: async (dto: CreateTodoDto): Promise<Todo> => {
+    const { data } = await apiClient.post('/todos', dto)
+    return data
+  },
+
+  update: async (id: string, dto: Partial<Todo>): Promise<Todo> => {
+    const { data } = await apiClient.patch(`/todos/${id}`, dto)
+    return data
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await apiClient.delete(`/todos/${id}`)
+  },
+}
+```
+
+### React Query Integration
+
+```typescript
+// features/todos/queries/useTodosQuery.ts
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { todoApi } from '../services/todoApi'
+
+// Query keys
+export const todoKeys = {
+  all: ['todos'] as const,
+  detail: (id: string) => ['todos', id] as const,
+}
+
+// Queries
+export const useTodosQuery = () => {
+  return useQuery({
+    queryKey: todoKeys.all,
+    queryFn: todoApi.fetchAll,
+  })
+}
+
+export const useTodoQuery = (id: string) => {
+  return useQuery({
+    queryKey: todoKeys.detail(id),
+    queryFn: () => todoApi.fetchById(id),
+    enabled: !!id,
+  })
+}
+
+// Mutations
+export const useCreateTodoMutation = () => {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: todoApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: todoKeys.all })
+    },
+  })
+}
+
+export const useDeleteTodoMutation = () => {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: todoApi.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: todoKeys.all })
+    },
+  })
+}
+```
+
+## Testing Strategy
+
+### Test Organization
+
+Tests nằm cùng folder với code:[10][11][9]
+
+```
+features/
+└── auth/
+    └── components/
+        └── LoginForm/
+            ├── LoginForm.tsx
+            ├── LoginForm.test.tsx        # Unit test
+            └── LoginForm.module.css
+```
+
+### Test Types
+
+**Unit Tests (Jest + React Testing Library):**
+```typescript
+// LoginForm.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react'
+import { LoginForm } from './LoginForm'
+
+describe('LoginForm', () => {
+  it('renders email and password inputs', () => {
+    render(<LoginForm onSubmit={jest.fn()} />)
+    
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
+  })
+
+  it('calls onSubmit with form data', () => {
+    const handleSubmit = jest.fn()
+    render(<LoginForm onSubmit={handleSubmit} />)
+    
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'test@example.com' }
+    })
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' }
+    })
+    fireEvent.click(screen.getByRole('button', { name: /login/i }))
+    
+    expect(handleSubmit).toHaveBeenCalledWith({
+      email: 'test@example.com',
+      password: 'password123'
+    })
+  })
+})
+```
+
+**Integration Tests:**
+```typescript
+// features/todos/integration/todoFlow.test.tsx
+import { renderWithProviders } from '@/shared/test-utils'
+import { TodoListContainer } from '../components'
+
+describe('Todo Feature Integration', () => {
+  it('completes full todo lifecycle', async () => {
+    const { user } = renderWithProviders(<TodoListContainer />)
+    
+    // Add todo
+    const input = screen.getByPlaceholderText(/add todo/i)
+    await user.type(input, 'New todo')
+    await user.click(screen.getByRole('button', { name: /add/i }))
+    
+    // Verify todo appears
+    expect(screen.getByText('New todo')).toBeInTheDocument()
+    
+    // Toggle todo
+    await user.click(screen.getByRole('checkbox'))
+    expect(screen.getByRole('checkbox')).toBeChecked()
+    
+    // Delete todo
+    await user.click(screen.getByRole('button', { name: /delete/i }))
+    expect(screen.queryByText('New todo')).not.toBeInTheDocument()
+  })
+})
+```
+
+**E2E Tests (Cypress/Playwright):**
+```
+cypress/
+└── e2e/
+    ├── auth/
+    │   └── login.cy.ts
+    └── todos/
+        └── todo-crud.cy.ts
+```
+
+## TypeScript Best Practices
+
+### Type Organization
+
+```typescript
+// features/todos/types/todo.types.ts
+
+// Entity types
+export interface Todo {
+  id: string
+  title: string
+  completed: boolean
+  userId: string
+  createdAt: string
+  updatedAt: string
+}
+
+// DTO types (Data Transfer Objects)
+export interface CreateTodoDto {
+  title: string
+  userId: string
+}
+
+export interface UpdateTodoDto {
+  title?: string
+  completed?: boolean
+}
+
+// API Response types
+export interface TodosResponse {
+  data: Todo[]
+  total: number
+  page: number
+}
+
+// Form types
+export interface TodoFormData {
+  title: string
+}
+
+// Store types
+export interface TodoStore {
+  todos: Todo[]
+  loading: boolean
+  error: string | null
+  fetchTodos: () => Promise<void>
+  addTodo: (todo: CreateTodoDto) => Promise<void>
+  updateTodo: (id: string, dto: UpdateTodoDto) => Promise<void>
+  deleteTodo: (id: string) => Promise<void>
+}
+```
+
+### Generic Types for Reusability
+
+```typescript
+// shared/types/common.types.ts
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+export interface ApiError {
+  message: string
+  code: string
+  status: number
+}
+
+export type AsyncState<T> = {
+  data: T | null
+  loading: boolean
+  error: ApiError | null
+}
+
+// Usage
+import type { PaginatedResponse, AsyncState } from '@/shared/types'
+import type { Todo } from '../types'
+
+type TodosState = AsyncState<PaginatedResponse<Todo>>
+```
+
+## Routing Organization
+
+### React Router Setup
+
+```typescript
+// app/router.tsx
+import { createBrowserRouter } from 'react-router-dom'
+import { MainLayout } from '@/widgets/layouts'
+import { HomePage } from '@/pages/home'
+import { TodosPage } from '@/pages/todos'
+import { LoginPage } from '@/pages/login'
+import { NotFoundPage } from '@/pages/not-found'
+
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'todos',
+        element: <TodosPage />,
+      },
+    ],
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
+  },
+])
+```
+
+### Route Constants
+
+```typescript
+// shared/config/routes.ts
+export const ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+  SIGNUP: '/signup',
+  DASHBOARD: '/dashboard',
+  TODOS: '/todos',
+  TODO_DETAIL: (id: string) => `/todos/${id}`,
+  PROFILE: '/profile',
+  SETTINGS: '/settings',
+} as const
+
+// Usage
+import { ROUTES } from '@/shared/config/routes'
+import { useNavigate } from 'react-router-dom'
+
+const navigate = useNavigate()
+navigate(ROUTES.TODO_DETAIL('123'))
+```
+
+## Performance Optimization
+
+### Code Splitting
+
+```typescript
+// app/router.tsx - Lazy load pages
+import { lazy } from 'react'
+
+const TodosPage = lazy(() => import('@/pages/todos'))
+const DashboardPage = lazy(() => import('@/pages/dashboard'))
+
+// Use with Suspense
+import { Suspense } from 'react'
+import { Outlet } from 'react-router-dom'
+import { LoadingSpinner } from '@/shared/ui'
+
+const Layout = () => (
+  <Suspense fallback={<LoadingSpinner />}>
+    <Outlet />
+  </Suspense>
+)
+```
+
+### Memoization
+
+```typescript
+// features/todos/components/TodoList.tsx
+import { memo, useMemo } from 'react'
+
+export const TodoList = memo<TodoListProps>(({ todos, filter }) => {
+  // Memoize expensive computations
+  const filteredTodos = useMemo(() => {
+    return todos.filter(todo => {
+      if (filter === 'completed') return todo.completed
+      if (filter === 'active') return !todo.completed
+      return true
+    })
+  }, [todos, filter])
+
+  return (
+    <ul>
+      {filteredTodos.map(todo => (
+        <TodoItem key={todo.id} todo={todo} />
+      ))}
+    </ul>
+  )
+})
+```
+
+## Documentation
+
+### Feature README
+
+Mỗi feature lớn nên có README.md:[15][5]
+
+```markdown
+# Auth Feature
+
+## Overview
+Handles user authentication, including login, signup, and session management.
+
+## Components
+- `LoginForm` - Login form with validation
+- `SignupForm` - User registration form
+- `AuthProvider` - Context provider for auth state
+
+## Hooks
+- `useAuth()` - Access current auth state and actions
+- `useLogin()` - Handle login flow
+- `useLogout()` - Handle logout
+
+## API
+- `authApi.login(credentials)` - Login user
+- `authApi.signup(data)` - Register new user
+- `authApi.logout()` - Logout current user
+- `authApi.refreshToken()` - Refresh auth token
+
+## Store
+- `useAuthStore` - Zustand store for auth state
+
+## Usage Example
+```
+import { useAuth } from '@/features/auth'
+
+const MyComponent = () => {
+  const { user, isAuthenticated, login, logout } = useAuth()
+  
+  if (!isAuthenticated) {
+    return <LoginForm onSubmit={login} />
+  }
+  
+  return <div>Welcome, {user.name}</div>
+}
+```
+
+## Dependencies
+- `@/entities/user` - User entity types
+- `@/shared/api` - API client
+- `@/shared/hooks` - useLocalStorage
+```
+
+## Checklist Tạo Feature Mới
+
+Khi tạo feature mới, tuân theo checklist này:
+
+- [ ] Tạo folder feature trong `src/features/feature-name`
+- [ ] Tạo các subfolder chuẩn: `components/`, `hooks/`, `services/`, `stores/`, `types/`
+- [ ] Tạo `index.ts` để export public API
+- [ ] Implement business logic trong `services/`
+- [ ] Tạo React components trong `components/`
+- [ ] Tạo custom hooks trong `hooks/`
+- [ ] Define TypeScript types trong `types/`
+- [ ] Setup state management trong `stores/` (nếu cần)
+- [ ] Setup API queries trong `queries/` (nếu dùng React Query)
+- [ ] Viết unit tests cho mỗi component/hook
+- [ ] Tạo Storybook stories cho UI components (optional)
+- [ ] Viết integration tests cho feature flow
+- [ ] Tạo README.md documentation
+- [ ] Verify không có circular dependencies
+- [ ] Verify tuân thủ hierarchy rules (không import từ layer cao hơn)
+- [ ] Code review và refactor nếu cần
+
+## Anti-Patterns Cần Tránh
+
+### ❌ Circular Dependencies
+```typescript
+// features/auth/hooks/useAuth.ts
+import { useTodos } from '@/features/todos' // ❌
+
+// features/todos/hooks/useTodos.ts
+import { useAuth } from '@/features/auth' // ❌
+```
+
+**Giải pháp:** Dùng shared store hoặc lift state lên pages[7][5]
+
+### ❌ Deep Nesting
+```typescript
+// ❌ Quá nhiều levels
+features/
+└── auth/
+    └── components/
+        └── forms/
+            └── login/
+                └── fields/
+                    └── email/
+                        └── EmailInput.tsx
+```
+
+**Giải pháp:** Flatten structure, split feature nếu quá phức tạp[9][5]
+
+### ❌ God Components
+```typescript
+// ❌ Component làm quá nhiều việc (1000+ lines)
+export const Dashboard = () => {
+  // Handles auth
+  // Fetches todos
+  // Manages projects
+  // Renders everything
+  // ...
+}
+```
+
+**Giải pháp:** Decompose thành smaller components và features[10][5]
+
+### ❌ Tight Coupling
+```typescript
+// ❌ Feature phụ thuộc cứng vào implementation của feature khác
+// features/todos/services/todoService.ts
+import { authStore } from '@/features/auth/stores/authStore'
+
+const userId = authStore.getState().user.id // ❌ Tight coupling
+```
+
+**Giải pháp:** Pass dependencies via props/params, dùng dependency injection[7][5]
+
+### ❌ Shared State Pollution
+```typescript
+// ❌ Feature state leak ra global scope
+// features/todos/stores/todoStore.ts
+window.globalTodos = [] // ❌ Global pollution
+```
+
+**Giải pháp:** Encapsulate state trong feature hoặc dùng proper global store[7][5]
+
+## Migration Strategy
+
+### Từ Traditional Structure sang Feature-Based
+
+**Bước 1: Tạo features folder**
+```bash
+mkdir -p src/features
+```
+
+**Bước 2: Identify features**
+- List tất cả features/domains trong app
+- Group related components/logic
+
+**Bước 3: Migrate từng feature một**
+```bash
+# Di chuyển auth-related code
+mv src/components/LoginForm src/features/auth/components/
+mv src/hooks/useAuth src/features/auth/hooks/
+mv src/services/authService src/features/auth/services/
+```
+
+**Bước 4: Update imports**
+- Sử dụng find-and-replace hoặc automated refactoring tools
+- Update từ `@/components/LoginForm` → `@/features/auth`
+
+**Bước 5: Refactor dependencies**
+- Remove circular dependencies
+- Enforce hierarchy rules
+
+**Bước 6: Test thoroughly**
+- Verify app vẫn hoạt động đúng
+- Fix broken imports
+
+## Tools và Automation
+
+### ESLint Rules
+
+```javascript
+// .eslintrc.js
+module.exports = {
+  rules: {
+    // Enforce import order
+    'import/order': ['error', {
+      'groups': [
+        'builtin',
+        'external',
+        'internal',
+        'parent',
+        'sibling',
+        'index'
+      ],
+      'pathGroups': [
+        {
+          pattern: '@/app/**',
+          group: 'internal',
+          position: 'before'
+        },
+        {
+          pattern: '@/pages/**',
+          group: 'internal',
+          position: 'before'
+        },
+        {
+          pattern: '@/widgets/**',
+          group: 'internal',
+          position: 'before'
+        },
+        {
+          pattern: '@/features/**',
+          group: 'internal',
+          position: 'before'
+        },
+        {
+          pattern: '@/entities/**',
+          group: 'internal',
+          position: 'before'
+        },
+        {
+          pattern: '@/shared/**',
+          group: 'internal',
+          position: 'before'
+        }
+      ],
+      'pathGroupsExcludedImportTypes': ['builtin'],
+      'alphabetize': {
+        'order': 'asc',
+        'caseInsensitive': true
+      }
+    }],
+    
+    // Prevent circular dependencies
+    'import/no-cycle': 'error',
+    
+    // Prevent relative imports from parent directories
+    'import/no-relative-parent-imports': 'off',
+  }
+}
+```
+
+### VS Code Extensions
+
+Recommended extensions:
+- **ES7+ React/Redux/React-Native snippets** - Code snippets
+- **ESLint** - Linting
+- **Prettier** - Code formatting
+- **Auto Import** - Auto import suggestions
+- **Path Intellisense** - Autocomplete path aliases
+
+### Plop Generator (Template Generator)
+
+```javascript
+// plopfile.js - Tạo feature template tự động
+module.exports = function (plop) {
+  plop.setGenerator('feature', {
+    description: 'Create a new feature',
+    prompts: [
+      {
+        type: 'input',
+        name: 'name',
+        message: 'Feature name (kebab-case):',
+      },
+    ],
+    actions: [
+      {
+        type: 'addMany',
+        destination: 'src/features/{{name}}',
+        templateFiles: 'plop-templates/feature/**',
+        base: 'plop-templates/feature',
+      },
+    ],
+  })
+}
+```
+
+## Kết Luận
+
+Feature-Based Architecture mang lại:
+
+1. **Scalability** - Dễ dàng thêm features mới mà không ảnh hưởng existing code[3][6][1][5]
+2. **Maintainability** - Code rõ ràng, dễ tìm, dễ refactor[4][3][9]
+3. **Team Collaboration** - Teams làm việc song song trên features khác nhau[10][5]
+4. **Testability** - Dễ dàng test isolated features[11][9][10]
+5. **Reusability** - Shared components và utilities tái sử dụng cao[1][9]
+6. **Clear Boundaries** - Rõ ràng về dependencies và responsibilities[8][5][7]
+
+**Nguyên tắc vàng:**
+- Tổ chức theo **business features**, không theo technical layers[4][3][1]
+- **Encapsulation** - Mỗi feature độc lập[6][8][2]
+- **Hierarchy** - Tuân thủ dependency rules nghiêm ngặt[13][3][7]
+- **3-4 levels nesting maximum**[5][9]
+- **Public API** - Chỉ export những gì cần thiết[10][5]
+
+Áp dụng architecture này sẽ giúp React codebase của bạn clean, scalable, và maintainable trong dài hạn.[15][3][6][5]
+
+[1](https://blog.stackademic.com/react-folder-file-structure-patterns-and-tips-part-1-b8e55bda446f)
+[2](https://www.linkedin.com/pulse/building-react-apps-feature-sliced-design-domain-driven-ajithkumar-s-ge6oc)
+[3](https://feature-sliced.design)
+[4](https://profy.dev/article/react-folder-structure)
+[5](https://www.developerway.com/posts/react-project-structure)
+[6](https://www.godeltech.com/blog/feature-sliced-design-a-guide-to-scalable-frontend-architecture/)
+[7](https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj)
+[8](https://careers.moneyforward.vn/blog/feature-sliced-design-in-frontend)
+[9](https://www.robinwieruch.de/react-folder-structure/)
+[10](https://blog.webdevsimplified.com/2022-07/react-folder-structure/)
+[11](https://github.com/yurisldk/realworld-react-fsd)
+[12](https://www.reddit.com/r/reactjs/comments/1gh3io4/react_folder_structure_with_features_and_pages/)
+[13](https://philrich.dev/fsd-vs-clean-architecture/)
+[14](https://dev.to/naserrasouli/scalable-react-projects-with-feature-based-architecture-117c)
+[15](https://github.com/alan2207/bulletproof-react)
+[16](https://www.linkedin.com/posts/alpnap_reactjs-webdevelopment-frontenddeveloper-activity-7364159693608378369-k1aB)
+[17](https://dzone.com/articles/production-grade-react-project-structure)
+[18](https://javascript.plainenglish.io/stop-organizing-react-projects-like-a-junior-developer-f0af8c4d6f98)
+[19](https://www.youtube.com/watch?v=_bIJoOriBxA)
+[20](https://www.reddit.com/r/reactjs/comments/14zqs61/react_folder_structure/)

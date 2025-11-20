@@ -1,0 +1,33 @@
+{
+  "feature": {
+    "label": "Feature",
+    "color": "#0f8b48",
+    "background": "rgba(64, 197, 124, 0.18)"
+  },
+  "bugfix": {
+    "label": "Bugfix",
+    "color": "#b91c1c",
+    "background": "rgba(248, 113, 113, 0.2)"
+  },
+  "enhancement": {
+    "label": "Enhancement",
+    "color": "#155e75",
+    "background": "rgba(125, 211, 252, 0.24)"
+  },
+  "chore": {
+    "label": "Chore",
+    "color": "#6b21a8",
+    "background": "rgba(233, 213, 255, 0.32)"
+  },
+  "style": {
+    "label": "Style",
+    "color": "#92400e",
+    "background": "rgba(251, 191, 36, 0.24)"
+  },
+  "other": {
+    "label": "Other",
+    "color": "#475569",
+    "background": "rgba(148, 163, 184, 0.3)"
+  }
+}
+
