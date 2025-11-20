@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs Template Generator</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2965/2965333.png">
+    <style>
+        :root {
+            --color-background: #FAFAFA;
+            --color-accent: #5A9FFF;
+            --color-text-primary: #222F3E;
+            --color-text-secondary: #757575;
+            --color-border: #E0E0E0;
+            --color-white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            padding: 32px 16px 64px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 32px;
+            color: var(--color-text-primary);
+        }
+
+        .layout-grid {
+            display: grid;
+            gap: 32px;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 960px) {
+            .layout-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+
+        .card {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 280px;
+            resize: vertical;
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            padding: 16px;
+            font-size: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--color-text-primary);
+            transition: border-color 0.2s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+        }
+
+        button.primary {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+            color: var(--color-white);
+            box-shadow: 0 1px 2px rgba(90, 159, 255, 0.2);
+        }
+
+        button.primary:hover {
+            background-color: #4A8FEF;
+            border-color: #4A8FEF;
+        }
+
+        button.secondary {
+            background-color: var(--color-white);
+            border-color: var(--color-border);
+            color: var(--color-text-secondary);
+        }
+
+        button.secondary:hover {
+            border-color: var(--color-accent);
+            color: var(--color-text-primary);
+        }
+
+        .preview-wrapper {
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 24px;
+            background-color: var(--color-background);
+            min-height: 300px;
+        }
+
+        .template-output {
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            background-color: var(--color-background);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 220px;
+            overflow-x: auto;
+        }
+
+        .faq-preview-empty {
+            text-align: center;
+            color: var(--color-text-secondary);
+        }
+
+        .faq-block {
+            background-color: #F7F7F7;
+            border: 1px solid #E3E3E3;
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .faq-block h2 {
+            font-size: 30px;
+            font-weight: 600;
+            color: #2B2B2B;
+        }
+
+        .faq-intro {
+            color: #666666;
+            line-height: 1.7;
+            font-size: 16px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #DCDCDC;
+            margin-bottom: 0;
+        }
+
+        .faq-items {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #DCDCDC;
+            padding: 18px 0;
+        }
+
+        .faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item[open] .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            color: #333333;
+        }
+
+        .faq-icon {
+            font-size: 18px;
+            line-height: 1;
+            color: #777777;
+            transition: transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .faq-answer {
+            margin-top: 12px;
+            color: #555555;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .inline-alert {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            background-color: #FF4D4F;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            min-width: 200px;
+        }
+
+        .inline-alert.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .inline-alert.success {
+            background-color: #2ECC71;
+        }
+
+        .inline-alert.error {
+            background-color: #FF4D4F;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 24px 16px 48px;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .faq-block {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;font-size:16px;font-weight:500;color:var(--color-text-secondary);background-color:var(--color-white);border:1px solid var(--color-border);border-radius:12px;text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,0.05);margin-bottom:24px;">
+            <span style="width:16px;height:16px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);display:inline-block;"></span>
+            <span>Quay lại</span>
+        </a>
+
+        <h1>FAQs Template Generator</h1>
+
+        <div class="layout-grid">
+            <div class="card">
+                <div class="section-title">Nhập HTML FAQs</div>
+                <div class="form-group">
+                    <label for="faqInput">Dán nội dung HTML (h2/h3/p...). Nếu không phải HTML sẽ báo lỗi.</label>
+                    <textarea style = "min-height: 580px;" id="faqInput" placeholder="Nhập HTML FAQs tại đây"></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="primary" onclick="handleScan()">Scan HTML</button>
+                    <button type="button" class="secondary" onclick="loadSample()">Load sample</button>
+                    <button type="button" class="secondary" onclick="clearInput()">Xóa input</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Preview</div>
+                <div class="preview-wrapper" id="preview">
+                    <p class="faq-preview-empty">Nhập HTML bên trái rồi bấm Scan để xem preview.</p>
+                </div>
+            </div>
+
+            <div class="card full-width">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <div class="section-title" style="margin:0;">Output HTML</div>
+                    <button type="button" class="primary" onclick="copyTemplate()">Copy HTML</button>
+                </div>
+                <div class="template-output" id="templateOutput"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inline-alert" id="inlineAlert" role="status" aria-live="polite"></div>
+
+    <script>
+        const textarea = document.getElementById('faqInput');
+        const previewEl = document.getElementById('preview');
+        const outputEl = document.getElementById('templateOutput');
+        const alertEl = document.getElementById('inlineAlert');
+        let alertTimeout = null;
+        const sampleHtml = `<h2>5. FAQs - People also asked about best sleeves for Pokémon cards</h2>
+<p>Before wrapping up, let’s answer some common questions collectors and players ask about the best sleeves for Pokémon cards.</p>
+<h3>5.1 Which sleeves to use for Pokémon cards?</h3>
+<p>Pokémon cards fit standard-size sleeves, typically 63.5mm x 88mm. Choose high-quality brands like Dragon Shield or KMC for maximum protection.</p>
+<h3>5.2 Are official Pokémon sleeves better?</h3>
+<p>Official Pokémon sleeves are attractive but not the most durable. We would consider them weaker than premium brands, so they are best for casual use or display.</p>
+<h3>5.3 What are the rules for Pokémon card sleeves?</h3>
+<p>Tournament rules require sleeves to be uniform, opaque, and free from markings. Clear sleeves are allowed for storage, but competitive play usually demands consistency.</p>
+<h3>5.4 Should I double penny sleeve Pokémon cards?</h3>
+<p>Yes, double-sleeving with penny sleeves inside and a durable outer sleeve provides maximum protection against dirt, moisture, and bending.</p>
+<h3>5.5 Why are Dragon Shield sleeves the best?</h3>
+<p>Dragon Shield sleeves are 120 microns thick, making them the thickest on the market. Their durability and shuffle feel make them a favorite among competitive players.</p>`;
+
+        textarea.addEventListener('paste', handleClipboardPaste);
+        textarea.addEventListener('paste', function() {
+            setTimeout(function() {
+                if (textarea.value.trim()) {
+                    handleScan();
+                }
+            }, 100);
+        });
+
+        function handleScan() {
+            const raw = textarea.value.trim();
+            if (!raw) {
+                showInlineAlert('Vui lòng nhập HTML FAQs trước khi scan.');
+                return;
+            }
+
+            const normalized = normalizeInput(raw);
+
+            if (!isLikelyHtml(normalized)) {
+                showInlineAlert('Nội dung phải là HTML hợp lệ (có thẻ).');
+                return;
+            }
+
+            const parsed = parseHtml(normalized);
+            if (!parsed) {
+                showInlineAlert('Không thể đọc HTML. Vui lòng kiểm tra lại.');
+                return;
+            }
+
+            const faqData = extractFaqData(parsed);
+            if (!faqData || faqData.questions.length === 0) {
+                showInlineAlert('Không tìm thấy thẻ h3 cho câu hỏi. Vui lòng kiểm tra HTML.');
+                return;
+            }
+
+            const html = buildFaqTemplate(faqData);
+            renderPreview(html);
+            outputEl.textContent = html;
+            showInlineAlert('Đã tạo FAQs preview thành công.', 'success');
+        }
+
+        function isLikelyHtml(content) {
+            return /<([a-z][\s\S]*?)>/i.test(content);
+        }
+
+        function normalizeInput(content) {
+            if (/&lt;|&gt;|&amp;|&quot;|&#39;/i.test(content)) {
+                const decoder = document.createElement('textarea');
+                decoder.innerHTML = content;
+                return decoder.value;
+            }
+            return content;
+        }
+
+        function parseHtml(content) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, 'text/html');
+            if (doc.querySelector('parsererror')) {
+                return null;
+            }
+            return doc;
+        }
+
+        function handleClipboardPaste(event) {
+            const htmlData = event.clipboardData?.getData('text/html');
+            if (htmlData && isLikelyHtml(htmlData.trim())) {
+                event.preventDefault();
+                textarea.value = htmlData.trim();
+                showInlineAlert('Đã dán HTML từ clipboard.', 'success');
+                return;
+            }
+
+            const textData = event.clipboardData?.getData('text/plain');
+            if (textData) {
+                const decoded = normalizeInput(textData);
+                if (isLikelyHtml(decoded)) {
+                    event.preventDefault();
+                    textarea.value = decoded;
+                    showInlineAlert('Đã dán HTML (giải mã) từ clipboard.', 'success');
+                }
+            }
+        }
+
+        function extractFaqData(doc) {
+            const h2 = doc.querySelector('h2');
+            const title = h2 ? h2.textContent.trim() : 'FAQs';
+
+            const introNodes = [];
+            let node = h2 ? h2.nextSibling : doc.body.firstChild;
+            while (node) {
+                if (node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'h3') {
+                    break;
+                }
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    introNodes.push(node.outerHTML);
+                }
+                node = node.nextSibling;
+            }
+
+            const questions = [];
+            const h3List = doc.querySelectorAll('h3');
+            h3List.forEach(function(h3) {
+                const question = h3.textContent.trim();
+                const answers = [];
+                let sibling = h3.nextSibling;
+                while (sibling) {
+                    if (sibling.nodeType === Node.ELEMENT_NODE && sibling.tagName.toLowerCase() === 'h3') {
+                        break;
+                    }
+                    if (sibling.nodeType === Node.ELEMENT_NODE) {
+                        answers.push(sibling.outerHTML);
+                    }
+                    sibling = sibling.nextSibling;
+                }
+                questions.push({
+                    question,
+                    answer: answers.join('\n') || '<p>Nội dung đang cập nhật.</p>'
+                });
+            });
+
+            return { title, intro: introNodes.join('\n'), questions };
+        }
+
+        function buildFaqTemplate(data) {
+            const styles = {
+                section: 'background-color:#F7F7F7;border:1px solid #E3E3E3;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:24px;',
+                heading: 'font-size:30px;font-weight:600;color:#2B2B2B;margin:0;',
+                intro: 'color:#666666;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px',
+                items: 'display:flex;flex-direction:column;margin:0;padding:0;',
+                details: 'border-bottom:1px solid #DCDCDC;padding:18px 0;',
+                firstDetailBorder: '',
+                summary: 'list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;',
+                question: 'font-size:18px;font-weight:600;color:#333333;margin:0;',
+                icon: 'font-size:18px;color:#777777;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;',
+                answer: 'margin-top:12px;color:#555555;line-height:1.7;font-size:16px;'
+            };
+
+            const introBlock = data.intro ? applyIntroInlineStyle(data.intro, styles.intro) : '';
+
+            const items = data.questions.map(function(item, index) {
+                const openAttr = index === 0 ? ' open' : '';
+                const detailStyle = `${styles.details}${index === 0 ? styles.firstDetailBorder : ''}`;
+                return `<details style="${detailStyle}"${openAttr}>
+    <summary style="${styles.summary}">
+        <h3 style="${styles.question}">${item.question}</h3>
+        <span style="${styles.icon}">▾</span>
+    </summary>
+    <div style="${styles.answer}">
+        ${item.answer}
+    </div>
+</details>`;
+            }).join('\n');
+
+            return `<h2 style="${styles.heading}">${data.title}</h2>
+${introBlock}
+<div style="${styles.items}">
+    ${items}
+</div>`;
+        }
+
+        function applyIntroInlineStyle(introHtml, styleString) {
+            const trimmed = introHtml.trim();
+            if (!trimmed) {
+                return '';
+            }
+
+            const firstTagMatch = trimmed.match(/^<([a-z0-9]+)([^>]*)>/i);
+            if (firstTagMatch && firstTagMatch[1].toLowerCase() === 'div') {
+                if (/style="/i.test(firstTagMatch[2])) {
+                    return trimmed.replace(/style="([^"]*)"/i, function(_, existing) {
+                        const merged = mergeInlineStyles(existing, styleString);
+                        return `style="${merged}"`;
+                    });
+                }
+                return trimmed.replace('<div', `<div style="${styleString}"`);
+            }
+
+            return `<div style="${styleString}">${introHtml}</div>`;
+        }
+
+        function mergeInlineStyles(existing, addition) {
+            const normalizedExisting = existing.trim().replace(/;?\s*$/, ';');
+            return `${normalizedExisting}${addition}`;
+        }
+
+        function renderPreview(html) {
+            previewEl.innerHTML = html;
+        }
+
+        function loadSample() {
+            textarea.value = sampleHtml;
+            handleScan();
+            showInlineAlert('Đã load sample FAQs.', 'success');
+        }
+
+        function clearInput() {
+            textarea.value = '';
+            previewEl.innerHTML = '<p class="faq-preview-empty">Nhập HTML bên trái rồi bấm Scan để xem preview.</p>';
+            outputEl.textContent = '';
+            showInlineAlert('Đã xóa nội dung.', 'success');
+        }
+
+        function copyTemplate() {
+            const text = outputEl.textContent.trim();
+            if (!text) {
+                showInlineAlert('Chưa có HTML để copy.');
+                return;
+            }
+            const htmlString = text;
+
+            if (navigator.clipboard && window.ClipboardItem) {
+                const data = {
+                    'text/html': new Blob([htmlString], { type: 'text/html' }),
+                    'text/plain': new Blob([htmlString], { type: 'text/plain' })
+                };
+                navigator.clipboard.write([new ClipboardItem(data)]).then(function() {
+                    showInlineAlert('Đã copy FAQs dạng HTML hiển thị.', 'success');
+                }).catch(function() {
+                    fallbackCopy(htmlString);
+                });
+            } else {
+                fallbackCopy(htmlString);
+            }
+        }
+
+        function fallbackCopy(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showInlineAlert('Đã copy HTML FAQs (plain text).', 'success');
+            }).catch(function() {
+                showInlineAlert('Không thể copy. Vui lòng thử lại.');
+            });
+        }
+
+        function showInlineAlert(message, type = 'error') {
+            if (!alertEl) return;
+            alertEl.textContent = message;
+            alertEl.classList.remove('success', 'error', 'show');
+            alertEl.classList.add(type === 'success' ? 'success' : 'error');
+            requestAnimationFrame(function() {
+                alertEl.classList.add('show');
+            });
+            if (alertTimeout) {
+                clearTimeout(alertTimeout);
+            }
+            alertTimeout = setTimeout(hideInlineAlert, 3200);
+        }
+
+        function hideInlineAlert() {
+            if (!alertEl) return;
+            alertEl.classList.remove('show');
+        }
+
+        // init sample on load
+        loadSample();
+    </script>
+</body>
+</html>
+
