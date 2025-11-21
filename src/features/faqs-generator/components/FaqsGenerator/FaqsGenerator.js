@@ -14,11 +14,49 @@ const SAMPLE_HTML = `<h2>5. FAQs - People also asked about best sleeves for Pok�
 <h3>5.5 Why are Dragon Shield sleeves the best?</h3>
 <p>Dragon Shield sleeves are 120 microns thick, making them the thickest on the market. Their durability and shuffle feel make them a favorite among competitive players.</p>`;
 
+const DEFAULT_TEMPLATE = 'jwl';
+
+const TEMPLATE_CONFIG = {
+  jwl: {
+    heading: "font-size:1.5rem;font-weight:600;font-family:'Inter',sans-serif;color:#2B2B2B;margin:0;",
+    intro:
+      "color:#666666;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px;font-family:'Inter',sans-serif;border-bottom:1px solid #DCDCDC;",
+    items: 'display:flex;flex-direction:column;margin:0;padding:0;',
+    details: 'border-bottom:1px solid #DCDCDC;padding:18px 0;',
+    summary: 'list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;',
+    question: "font-size:18px;font-weight:700;font-family:'Inter',sans-serif;color:#333333;margin:0;",
+    icon: 'font-size:18px;color:#777777;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;',
+    answer: "margin-top:12px;color:#555555;line-height:1.7;font-size:16px;font-family:'Inter',sans-serif;",
+    paragraph: "font-weight:400;font-family:'Inter',sans-serif;",
+    wrapper: '',
+  },
+  jf: {
+    heading:
+      "font-size:1.875rem;font-weight:600;letter-spacing:-0.03rem;font-family:'Sofia Sans Semi Condensed',sans-serif;color:#FFFFFF;margin:0;",
+    intro:
+      "color:#FFFFFF;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px;font-family:'Sofia Sans Semi Condensed',sans-serif;border-bottom:1px solid #FFFFFF;",
+    items: 'display:flex;flex-direction:column;margin:0;padding:0;',
+    details: 'border-bottom:1px solid #FFFFFF;padding:18px 0;',
+    summary:
+      "list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;color:#FFFFFF;font-family:'Sofia Sans Semi Condensed',sans-serif;",
+    question:
+      "font-size:1.125rem;font-weight:400;line-height:1.6;font-family:'Sofia Sans Semi Condensed',sans-serif;color:#FFFFFF;margin:0;",
+    icon:
+      "font-size:16px;font-weight:400;color:#555555;line-height:1.7;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;",
+    answer:
+      "margin-top:12px;color:#555555;line-height:1.7;font-size:16px;font-family:'Sofia Sans Semi Condensed',sans-serif;",
+    paragraph: "font-weight:400;font-family:'Sofia Sans Semi Condensed',sans-serif;color:#555555;line-height:1.7;",
+    wrapper: 'background-color:rgb(13,12,12);padding:24px;border-radius:18px;',
+  },
+};
+
 function FaqsGenerator() {
   const [input, setInput] = useState('');
   const [outputHtml, setOutputHtml] = useState('');
   const [previewHtml, setPreviewHtml] = useState('');
   const [inlineAlert, setInlineAlert] = useState({ message: '', type: 'error', visible: false });
+  const [templateType, setTemplateType] = useState(DEFAULT_TEMPLATE);
+  const [lastFaqData, setLastFaqData] = useState(null);
   const alertTimeoutRef = useRef(null);
   const showAlert = (message, type = 'error') => {
     setInlineAlert({ message, type, visible: true });
@@ -37,10 +75,10 @@ function FaqsGenerator() {
   }, []);
 
   const handleScanClick = () => {
-    handleScan(input);
+    handleScan(input, templateType);
   };
 
-  const handleScan = (rawInput) => {
+  const handleScan = (rawInput, type = DEFAULT_TEMPLATE) => {
     const raw = rawInput.trim();
     if (!raw) {
       showAlert('Vui lòng nhập HTML FAQs trước khi scan.');
@@ -65,7 +103,8 @@ function FaqsGenerator() {
       return;
     }
 
-    const html = buildFaqTemplate(faqData);
+    const html = buildFaqTemplate(faqData, type);
+    setLastFaqData(faqData);
     setPreviewHtml(html);
     setOutputHtml(html);
     showAlert('Đã tạo FAQs preview thành công.', 'success');
@@ -73,7 +112,7 @@ function FaqsGenerator() {
 
   const handleLoadSample = () => {
     setInput(SAMPLE_HTML);
-    handleScan(SAMPLE_HTML);
+    handleScan(SAMPLE_HTML, templateType);
     showAlert('Đã load sample FAQs.', 'success');
   };
 
@@ -81,6 +120,7 @@ function FaqsGenerator() {
     setInput('');
     setPreviewHtml('');
     setOutputHtml('');
+    setLastFaqData(null);
     showAlert('Đã xóa nội dung.', 'success');
   };
 
@@ -108,6 +148,13 @@ function FaqsGenerator() {
     }
   };
 
+  useEffect(() => {
+    if (!lastFaqData) return;
+    const rebuiltHtml = buildFaqTemplate(lastFaqData, templateType);
+    setPreviewHtml(rebuiltHtml);
+    setOutputHtml(rebuiltHtml);
+  }, [templateType, lastFaqData]);
+
   return (
     <div className={styles.page}>
       <section className={styles.header}>
@@ -130,6 +177,13 @@ function FaqsGenerator() {
               rows={18}
               placeholder="Nhập HTML FAQs tại đây"
             />
+          </label>
+          <label className={styles.field}>
+            <span>Chọn template</span>
+            <select value={templateType} onChange={(event) => setTemplateType(event.target.value)}>
+              <option value="jwl">JWL</option>
+              <option value="jf">JF</option>
+            </select>
           </label>
           <div className={styles.buttonRow}>
             <button type="button" className={styles.primary} onClick={handleScanClick}>
@@ -241,42 +295,38 @@ function extractFaqData(doc) {
   return { title, intro: introNodes.join('\n'), questions };
 }
 
-function buildFaqTemplate(data) {
-  const styles = {
-    heading: "font-size:1.5rem;font-weight:600;font-family:'Inter',sans-serif;color:#2B2B2B;margin:0;",
-    intro: "color:#666666;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px;font-family:'Inter',sans-serif;border-bottom:1px solid #DCDCDC;",
-    items: 'display:flex;flex-direction:column;margin:0;padding:0;',
-    details: 'border-bottom:1px solid #DCDCDC;padding:18px 0;',
-    summary: 'list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;',
-    question: "font-size:18px;font-weight:700;font-family:'Inter',sans-serif;color:#333333;margin:0;",
-    icon: 'font-size:18px;color:#777777;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;',
-    answer: "margin-top:12px;color:#555555;line-height:1.7;font-size:16px;font-family:'Inter',sans-serif;",
-  };
-
-  const introBlock = data.intro ? wrapIntroBlock(data.intro, styles.intro) : '';
+function buildFaqTemplate(data, templateType = DEFAULT_TEMPLATE) {
+  const config = TEMPLATE_CONFIG[templateType] ?? TEMPLATE_CONFIG[DEFAULT_TEMPLATE];
+  const introBlock = data.intro ? wrapIntroBlock(data.intro, config.intro) : '';
 
   const items = data.questions
     .map((item, index) => {
       const openAttr = index === 0 ? ' open' : '';
-      const detailStyle = styles.details;
-      const styledAnswer = applyParagraphStyles(item.answer);
+      const detailStyle = config.details;
+      const styledAnswer = applyParagraphStyles(item.answer, config.paragraph);
       return `<details style="${detailStyle}"${openAttr}>
-  <summary style="${styles.summary}">
-    <h3 style="${styles.question}">${item.question}</h3>
-    <span style="${styles.icon}">▾</span>
+  <summary style="${config.summary}">
+    <h3 style="${config.question}">${item.question}</h3>
+    <span style="${config.icon}">▾</span>
   </summary>
-  <div style="${styles.answer}">
+  <div style="${config.answer}">
     ${styledAnswer}
   </div>
 </details>`;
     })
     .join('\n');
 
-  return `<h2 style="${styles.heading}">${data.title}</h2>
+  const content = `<h2 style="${config.heading}">${data.title}</h2>
 ${introBlock}
-<div style="${styles.items}">
+<div style="${config.items}">
   ${items}
 </div>`;
+
+  if (config.wrapper) {
+    return `<div style="${config.wrapper}">${content}</div>`;
+  }
+
+  return content;
 }
 
 function wrapIntroBlock(html, baseStyle) {
@@ -299,18 +349,17 @@ function mergeInlineStyles(existing, addition) {
   return `${normalizedExisting}${addition}`;
 }
 
-function applyParagraphStyles(html) {
+function applyParagraphStyles(html, paragraphStyle) {
   if (!html) return html;
   return html.replace(/<p([^>]*)>/gi, (match, attrs) => {
     if (/style="/i.test(attrs)) {
       return match.replace(/style="([^"]*)"/i, (styleMatch, existingStyle) => {
-        const merged = mergeInlineStyles(existingStyle, "font-weight:400;font-family:'Inter',sans-serif;");
+        const merged = mergeInlineStyles(existingStyle, paragraphStyle);
         return `style="${merged}"`;
       });
     }
-    return `<p style="font-weight:400;font-family:'Inter',sans-serif;"${attrs}>`;
+    return `<p style="${paragraphStyle}"${attrs}>`;
   });
 }
 
 export default FaqsGenerator;
-
