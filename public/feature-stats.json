@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-21T07:12:13.772Z",
+  "generatedAt": "2025-11-21T10:01:45.357Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 28,
+  "totalCommits": 30,
   "commits": [
+    {
+      "hash": "0fec3922ea8d6b919d4c282cf4686c62853fc93a",
+      "author": "MK",
+      "date": "2025-11-21 17:01:16 +0700",
+      "message": "refactor: streamline FAQs generator by removing unused constants and enhancing styling options",
+      "type": "other"
+    },
+    {
+      "hash": "0efbb2bbaf89e7e9f468ea1abd0fb7d96fe75c41",
+      "author": "github-actions[bot]",
+      "date": "2025-11-21 07:12:13 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "06d3526ba0eae06b405df7f71b9b21f51598a892",
       "author": "MK",
@@ -237,13 +251,13 @@
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 2,
+      "commitCount": 3,
       "lastCommit": {
-        "hash": "06d3526ba0eae06b405df7f71b9b21f51598a892",
+        "hash": "0fec3922ea8d6b919d4c282cf4686c62853fc93a",
         "author": "MK",
-        "date": "2025-11-21 14:11:45 +0700",
-        "message": "feat: add template selection and styling options to FAQs generator",
-        "type": "feature"
+        "date": "2025-11-21 17:01:16 +0700",
+        "message": "refactor: streamline FAQs generator by removing unused constants and enhancing styling options",
+        "type": "other"
       }
     }
   ]
