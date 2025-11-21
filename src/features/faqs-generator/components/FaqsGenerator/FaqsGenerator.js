@@ -1,54 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './FaqsGenerator.module.css';
-
-const SAMPLE_HTML = `<h2>5. FAQs - People also asked about best sleeves for Pokémon cards</h2>
-<p>Before wrapping up, let’s answer some common questions collectors and players ask about the best sleeves for Pokémon cards.</p>
-<h3>5.1 Which sleeves to use for Pokémon cards?</h3>
-<p>Pokémon cards fit standard-size sleeves, typically 63.5mm x 88mm. Choose high-quality brands like Dragon Shield or KMC for maximum protection.</p>
-<h3>5.2 Are official Pokémon sleeves better?</h3>
-<p>Official Pokémon sleeves are attractive but not the most durable. We would consider them weaker than premium brands, so they are best for casual use or display.</p>
-<h3>5.3 What are the rules for Pokémon card sleeves?</h3>
-<p>Tournament rules require sleeves to be uniform, opaque, and free from markings. Clear sleeves are allowed for storage, but competitive play usually demands consistency.</p>
-<h3>5.4 Should I double penny sleeve Pokémon cards?</h3>
-<p>Yes, double-sleeving with penny sleeves inside and a durable outer sleeve provides maximum protection against dirt, moisture, and bending.</p>
-<h3>5.5 Why are Dragon Shield sleeves the best?</h3>
-<p>Dragon Shield sleeves are 120 microns thick, making them the thickest on the market. Their durability and shuffle feel make them a favorite among competitive players.</p>`;
-
-const DEFAULT_TEMPLATE = 'jwl';
-
-const TEMPLATE_CONFIG = {
-  jwl: {
-    heading: "font-size:1.5rem;font-weight:600;font-family:'Inter',sans-serif;color:#2B2B2B;margin:0;",
-    intro:
-      "color:#666666;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px;font-family:'Inter',sans-serif;border-bottom:1px solid #DCDCDC;",
-    items: 'display:flex;flex-direction:column;margin:0;padding:0;',
-    details: 'border-bottom:1px solid #DCDCDC;padding:18px 0;',
-    summary: 'list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;',
-    question: "font-size:18px;font-weight:700;font-family:'Inter',sans-serif;color:#333333;margin:0;",
-    icon: 'font-size:18px;color:#777777;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;',
-    answer: "margin-top:12px;color:#555555;line-height:1.7;font-size:16px;font-family:'Inter',sans-serif;",
-    paragraph: "font-weight:400;font-family:'Inter',sans-serif;",
-    wrapper: '',
-  },
-  jf: {
-    heading:
-      "font-size:1.875rem;font-weight:600;letter-spacing:-0.03rem;font-family:'Sofia Sans Semi Condensed',sans-serif;color:#FFFFFF;margin:0;",
-    intro:
-      "color:#FFFFFF;font-size:16px;line-height:1.7;margin:0;padding-bottom:18px;font-family:'Sofia Sans Semi Condensed',sans-serif;border-bottom:1px solid #FFFFFF;",
-    items: 'display:flex;flex-direction:column;margin:0;padding:0;',
-    details: 'border-bottom:1px solid #FFFFFF;padding:18px 0;',
-    summary:
-      "list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;color:#FFFFFF;font-family:'Sofia Sans Semi Condensed',sans-serif;",
-    question:
-      "font-size:1.125rem;font-weight:400;line-height:1.6;font-family:'Sofia Sans Semi Condensed',sans-serif;color:#FFFFFF;margin:0;",
-    icon:
-      "font-size:16px;font-weight:400;color:#555555;line-height:1.7;display:inline-flex;align-items:center;justify-content:center;transition:transform 0.2s ease;",
-    answer:
-      "margin-top:12px;color:#555555;line-height:1.7;font-size:16px;font-family:'Sofia Sans Semi Condensed',sans-serif;",
-    paragraph: "font-weight:400;font-family:'Sofia Sans Semi Condensed',sans-serif;color:#555555;line-height:1.7;",
-    wrapper: 'background-color:rgb(13,12,12);padding:24px;border-radius:18px;',
-  },
-};
+import { DEFAULT_TEMPLATE, SAMPLE_HTML, TEMPLATE_CONFIG } from './FaqsGenerator.constants';
 
 function FaqsGenerator() {
   const [input, setInput] = useState('');
@@ -148,6 +100,15 @@ function FaqsGenerator() {
     }
   };
 
+  const handlePaste = (event) => {
+    const clipboard = event.clipboardData;
+    if (!clipboard) return;
+    const htmlData = clipboard.getData('text/html');
+    if (!htmlData) return;
+    event.preventDefault();
+    setInput(htmlData);
+  };
+
   useEffect(() => {
     if (!lastFaqData) return;
     const rebuiltHtml = buildFaqTemplate(lastFaqData, templateType);
@@ -174,15 +135,17 @@ function FaqsGenerator() {
             <textarea
               value={input}
               onChange={(event) => setInput(event.target.value)}
+              onPaste={handlePaste}
               rows={18}
               placeholder="Nhập HTML FAQs tại đây"
             />
           </label>
           <label className={styles.field}>
-            <span>Chọn template</span>
+            <span>Chọn kiểu template</span>
             <select value={templateType} onChange={(event) => setTemplateType(event.target.value)}>
               <option value="jwl">JWL</option>
               <option value="jf">JF</option>
+              <option value="kichiin">Kichiin</option>
             </select>
           </label>
           <div className={styles.buttonRow}>
@@ -297,34 +260,45 @@ function extractFaqData(doc) {
 
 function buildFaqTemplate(data, templateType = DEFAULT_TEMPLATE) {
   const config = TEMPLATE_CONFIG[templateType] ?? TEMPLATE_CONFIG[DEFAULT_TEMPLATE];
-  const introBlock = data.intro ? wrapIntroBlock(data.intro, config.intro) : '';
+  const introStyle = styleToString(config.introDiv);
+  const itemsStyle = styleToString(config.itemsDiv);
+  const detailsStyle = styleToString(config.details);
+  const summaryStyle = styleToString(config.summary);
+  const h3Style = styleToString(config.h3);
+  const iconStyle = styleToString(config.span);
+  const answerStyle = styleToString(config.answerDiv);
+  const paragraphStyle = styleToString(config.p);
+  const headingStyle = styleToString(config.h2);
+  const introBlock = data.intro ? wrapIntroBlock(data.intro, introStyle) : '';
 
   const items = data.questions
     .map((item, index) => {
       const openAttr = index === 0 ? ' open' : '';
-      const detailStyle = config.details;
-      const styledAnswer = applyParagraphStyles(item.answer, config.paragraph);
-      return `<details style="${detailStyle}"${openAttr}>
-  <summary style="${config.summary}">
-    <h3 style="${config.question}">${item.question}</h3>
-    <span style="${config.icon}">▾</span>
+      const styledAnswer = applyParagraphStyles(item.answer, paragraphStyle);
+      const detailsAttr = styleAttr(detailsStyle);
+      const summaryAttr = styleAttr(summaryStyle);
+      const headingAttr = styleAttr(h3Style);
+      const iconAttr = styleAttr(iconStyle);
+      const answerAttr = styleAttr(answerStyle);
+      return `<details${detailsAttr}${openAttr}>
+  <summary${summaryAttr}>
+    <h3${headingAttr}>${item.question}</h3>
+    <span${iconAttr}>▾</span>
   </summary>
-  <div style="${config.answer}">
+  <div${answerAttr}>
     ${styledAnswer}
   </div>
 </details>`;
     })
     .join('\n');
 
-  const content = `<h2 style="${config.heading}">${data.title}</h2>
+  const headingAttr = styleAttr(headingStyle);
+  const itemsAttr = styleAttr(itemsStyle);
+  const content = `<h2${headingAttr}>${data.title}</h2>
 ${introBlock}
-<div style="${config.items}">
+<div${itemsAttr}>
   ${items}
 </div>`;
-
-  if (config.wrapper) {
-    return `<div style="${config.wrapper}">${content}</div>`;
-  }
 
   return content;
 }
@@ -332,6 +306,9 @@ ${introBlock}
 function wrapIntroBlock(html, baseStyle) {
   const trimmed = html.trim();
   if (!trimmed) return '';
+  if (!baseStyle) {
+    return /^<div/i.test(trimmed) ? trimmed : `<div>${html}</div>`;
+  }
   if (/^<div/i.test(trimmed) && /style="/i.test(trimmed)) {
     return trimmed.replace(/style="([^"]*)"/i, (_, existing) => {
       const merged = mergeInlineStyles(existing, baseStyle);
@@ -341,16 +318,20 @@ function wrapIntroBlock(html, baseStyle) {
   if (/^<div/i.test(trimmed)) {
     return trimmed.replace('<div', `<div style="${baseStyle}"`);
   }
-  return `<div style="${baseStyle}">${html}</div>`;
+  return `<div${styleAttr(baseStyle)}>${html}</div>`;
 }
 
 function mergeInlineStyles(existing, addition) {
+  if (!existing && !addition) return '';
+  if (existing && !addition) return existing;
+  if (!existing && addition) return addition;
   const normalizedExisting = existing.trim().replace(/;?\s*$/, ';');
   return `${normalizedExisting}${addition}`;
 }
 
 function applyParagraphStyles(html, paragraphStyle) {
   if (!html) return html;
+  if (!paragraphStyle) return html;
   return html.replace(/<p([^>]*)>/gi, (match, attrs) => {
     if (/style="/i.test(attrs)) {
       return match.replace(/style="([^"]*)"/i, (styleMatch, existingStyle) => {
@@ -360,6 +341,23 @@ function applyParagraphStyles(html, paragraphStyle) {
     }
     return `<p style="${paragraphStyle}"${attrs}>`;
   });
+}
+
+function styleToString(style) {
+  if (!style) return '';
+  if (typeof style === 'string') return style;
+  return Object.entries(style)
+    .map(([property, value]) => `${camelToKebab(property)}:${value}`)
+    .join(';');
+}
+
+function camelToKebab(value) {
+  return value.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+}
+
+function styleAttr(style) {
+  if (!style) return '';
+  return ` style="${style}"`;
 }
 
 export default FaqsGenerator;

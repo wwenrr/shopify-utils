@@ -82,7 +82,7 @@ function MainLayout({ children }) {
           </div>
         </div>
         <div className={styles.headerRight}>
-          <span className={styles.status}>Online</span>
+          <span className={styles.status}>Beta</span>
         </div>
       </header>
 
