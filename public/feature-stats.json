@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-20T16:38:56.897Z",
+  "generatedAt": "2025-11-21T07:12:13.772Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 26,
+  "totalCommits": 28,
   "commits": [
+    {
+      "hash": "06d3526ba0eae06b405df7f71b9b21f51598a892",
+      "author": "MK",
+      "date": "2025-11-21 14:11:45 +0700",
+      "message": "feat: add template selection and styling options to FAQs generator",
+      "type": "feature"
+    },
+    {
+      "hash": "6de1741808b8373628bc8da51755f0d3bec5780d",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:38:56 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "0e600c289d5675230c3d5139b34f8e3b7b097f43",
       "author": "MK",
@@ -223,13 +237,13 @@
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 1,
+      "commitCount": 2,
       "lastCommit": {
-        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
+        "hash": "06d3526ba0eae06b405df7f71b9b21f51598a892",
         "author": "MK",
-        "date": "2025-11-20 22:29:08 +0700",
-        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
-        "type": "chore"
+        "date": "2025-11-21 14:11:45 +0700",
+        "message": "feat: add template selection and styling options to FAQs generator",
+        "type": "feature"
       }
     }
   ]
