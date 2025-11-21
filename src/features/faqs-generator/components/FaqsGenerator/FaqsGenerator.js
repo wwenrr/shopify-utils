@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './FaqsGenerator.module.css';
-import { DEFAULT_TEMPLATE, SAMPLE_HTML, TEMPLATE_CONFIG } from './FaqsGenerator.constants';
+import { SAMPLE_HTML, TEMPLATE_CONFIG } from './FaqsGenerator.constants';
 
 function FaqsGenerator() {
   const [input, setInput] = useState('');
   const [outputHtml, setOutputHtml] = useState('');
   const [previewHtml, setPreviewHtml] = useState('');
   const [inlineAlert, setInlineAlert] = useState({ message: '', type: 'error', visible: false });
-  const [templateType, setTemplateType] = useState(DEFAULT_TEMPLATE);
   const [lastFaqData, setLastFaqData] = useState(null);
   const alertTimeoutRef = useRef(null);
   const showAlert = (message, type = 'error') => {
@@ -27,10 +26,10 @@ function FaqsGenerator() {
   }, []);
 
   const handleScanClick = () => {
-    handleScan(input, templateType);
+    handleScan(input);
   };
 
-  const handleScan = (rawInput, type = DEFAULT_TEMPLATE) => {
+  const handleScan = (rawInput) => {
     const raw = rawInput.trim();
     if (!raw) {
       showAlert('Vui lòng nhập HTML FAQs trước khi scan.');
@@ -55,7 +54,7 @@ function FaqsGenerator() {
       return;
     }
 
-    const html = buildFaqTemplate(faqData, type);
+    const html = buildFaqTemplate(faqData);
     setLastFaqData(faqData);
     setPreviewHtml(html);
     setOutputHtml(html);
@@ -64,7 +63,7 @@ function FaqsGenerator() {
 
   const handleLoadSample = () => {
     setInput(SAMPLE_HTML);
-    handleScan(SAMPLE_HTML, templateType);
+    handleScan(SAMPLE_HTML);
     showAlert('Đã load sample FAQs.', 'success');
   };
 
@@ -111,10 +110,10 @@ function FaqsGenerator() {
 
   useEffect(() => {
     if (!lastFaqData) return;
-    const rebuiltHtml = buildFaqTemplate(lastFaqData, templateType);
+    const rebuiltHtml = buildFaqTemplate(lastFaqData);
     setPreviewHtml(rebuiltHtml);
     setOutputHtml(rebuiltHtml);
-  }, [templateType, lastFaqData]);
+  }, [lastFaqData]);
 
   return (
     <div className={styles.page}>
@@ -139,14 +138,6 @@ function FaqsGenerator() {
               rows={18}
               placeholder="Nhập HTML FAQs tại đây"
             />
-          </label>
-          <label className={styles.field}>
-            <span>Chọn kiểu template</span>
-            <select value={templateType} onChange={(event) => setTemplateType(event.target.value)}>
-              <option value="jwl">JWL</option>
-              <option value="jf">JF</option>
-              <option value="kichiin">Kichiin</option>
-            </select>
           </label>
           <div className={styles.buttonRow}>
             <button type="button" className={styles.primary} onClick={handleScanClick}>
@@ -258,8 +249,8 @@ function extractFaqData(doc) {
   return { title, intro: introNodes.join('\n'), questions };
 }
 
-function buildFaqTemplate(data, templateType = DEFAULT_TEMPLATE) {
-  const config = TEMPLATE_CONFIG[templateType] ?? TEMPLATE_CONFIG[DEFAULT_TEMPLATE];
+function buildFaqTemplate(data) {
+  const config = TEMPLATE_CONFIG;
   const introStyle = styleToString(config.introDiv);
   const itemsStyle = styleToString(config.itemsDiv);
   const detailsStyle = styleToString(config.details);

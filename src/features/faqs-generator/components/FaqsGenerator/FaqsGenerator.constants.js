@@ -11,103 +11,44 @@ export const SAMPLE_HTML = `<h2>5. FAQs - People also asked about best sleeves f
 <h3>5.5 Why are Dragon Shield sleeves the best?</h3>
 <p>Dragon Shield sleeves are 120 microns thick, making them the thickest on the market. Their durability and shuffle feel make them a favorite among competitive players.</p>`;
 
-export const DEFAULT_TEMPLATE = 'jwl';
-
 export const TEMPLATE_CONFIG = {
-  jwl: {
-    h2: {},
-    introDiv: {},
-    itemsDiv: {
-      display: 'flex',
-      flexDirection: 'column',
-      margin: 0,
-      padding: 0,
-      gap: '0px',
-    },
-    details: {
-      borderBottom: '1px solid #E0E0E0',
-    },
-    summary: {
-      listStyle: 'none',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: '16px',
-    },
-    h3: {
-    },
-    span: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      transition: 'transform 0.2s ease',
-    },
-    answerDiv: {
-      lineHeight: 1.7,
-    },
-    p: {},
-    wrapper: {
-      backgroundColor: '#F7F7F7',
-      border: '1px solid #E0E0E0',
-      borderRadius: '12px',
-      padding: '18px 22px',
-    },
-    sharedCss: {},
+  h2: {},
+  introDiv: {},
+  itemsDiv: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 0,
+    padding: 0,
+    gap: '0px',
   },
-  jf: {
-    h2: {},
-    introDiv: {},
-    itemsDiv: {},
-    details: {},
-    summary: {},
-    h3: {},
-    span: {},
-    answerDiv: {},
-    p: {},
-    wrapper: {},
-    sharedCss: {},
+  details: {
+    borderBottom: '1px solid #E0E0E0',
   },
-  kichiin: {
-    h2: {},
-    introDiv: {},
-    itemsDiv: {
-      display: 'flex',
-      flexDirection: 'column',
-      margin: 0,
-      padding: 0,
-      gap: '0px',
-    },
-    details: {
-      borderBottom: '1px solid #E0E0E0',
-    },
-    summary: {
-      listStyle: 'none',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: '16px',
-    },
-    h3: {
-    },
-    span: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      transition: 'transform 0.2s ease',
-    },
-    answerDiv: {
-      lineHeight: 1.7,
-    },
-    p: {},
-    wrapper: {
-      backgroundColor: '#F7F7F7',
-      border: '1px solid #E0E0E0',
-      borderRadius: '12px',
-      padding: '18px 22px',
-    },
-    sharedCss: {},
+  summary: {
+    listStyle: 'none',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '16px',
   },
+  h3: {},
+  span: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'transform 0.2s ease',
+  },
+  answerDiv: {
+    lineHeight: 1.7,
+  },
+  p: {},
+  wrapper: {
+    backgroundColor: '#F7F7F7',
+    border: '1px solid #E0E0E0',
+    borderRadius: '12px',
+    padding: '18px 22px',
+  },
+  sharedCss: {},
 };
 
