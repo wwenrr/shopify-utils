@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-21T10:01:45.357Z",
+  "generatedAt": "2025-11-21T10:10:36.907Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 30,
+  "totalCommits": 32,
   "commits": [
+    {
+      "hash": "3abdb3e7d8ea6c49ef5d23a4ea6ed2275e56f3bc",
+      "author": "MK",
+      "date": "2025-11-21 17:10:10 +0700",
+      "message": "refactor: remove unused template constants and simplify FAQs generator logic",
+      "type": "other"
+    },
+    {
+      "hash": "7ef3559bdd849ec6fd5f2e2bee580022d499474d",
+      "author": "github-actions[bot]",
+      "date": "2025-11-21 10:01:45 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "0fec3922ea8d6b919d4c282cf4686c62853fc93a",
       "author": "MK",
@@ -251,12 +265,12 @@
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 3,
+      "commitCount": 4,
       "lastCommit": {
-        "hash": "0fec3922ea8d6b919d4c282cf4686c62853fc93a",
+        "hash": "3abdb3e7d8ea6c49ef5d23a4ea6ed2275e56f3bc",
         "author": "MK",
-        "date": "2025-11-21 17:01:16 +0700",
-        "message": "refactor: streamline FAQs generator by removing unused constants and enhancing styling options",
+        "date": "2025-11-21 17:10:10 +0700",
+        "message": "refactor: remove unused template constants and simplify FAQs generator logic",
         "type": "other"
       }
     }
