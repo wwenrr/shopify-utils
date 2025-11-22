@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T08:05:43.987Z",
+  "generatedAt": "2025-11-22T08:27:25.404Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 36,
+  "totalCommits": 38,
   "commits": [
+    {
+      "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
+      "author": "MK",
+      "date": "2025-11-22 15:27:01 +0700",
+      "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+      "type": "refactor"
+    },
+    {
+      "hash": "093a7931a28dca78ba0309800fd8f08394e1c8a7",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 08:05:44 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "86a505eb9d0b6266db34425214760b31b113ce5e",
       "author": "MK",
@@ -260,24 +274,24 @@
   "features": [
     {
       "feature": "author-generator",
-      "commitCount": 2,
+      "commitCount": 3,
       "lastCommit": {
-        "hash": "783568dd731d8235f0f2df3dc9d8c17ac213583e",
+        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
         "author": "MK",
-        "date": "2025-11-22 14:48:21 +0700",
-        "message": "feat: integrate CRACO for enhanced configuration and update routing structure",
-        "type": "feature"
+        "date": "2025-11-22 15:27:01 +0700",
+        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+        "type": "refactor"
       }
     },
     {
       "feature": "blog-button",
-      "commitCount": 1,
+      "commitCount": 2,
       "lastCommit": {
-        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
+        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
         "author": "MK",
-        "date": "2025-11-20 22:29:08 +0700",
-        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
-        "type": "chore"
+        "date": "2025-11-22 15:27:01 +0700",
+        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+        "type": "refactor"
       }
     },
     {
@@ -293,12 +307,12 @@
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 4,
+      "commitCount": 5,
       "lastCommit": {
-        "hash": "3abdb3e7d8ea6c49ef5d23a4ea6ed2275e56f3bc",
+        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
         "author": "MK",
-        "date": "2025-11-21 17:10:10 +0700",
-        "message": "refactor: remove unused template constants and simplify FAQs generator logic",
+        "date": "2025-11-22 15:27:01 +0700",
+        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
         "type": "refactor"
       }
     }
