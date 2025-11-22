@@ -1,4 +1,4 @@
-import commitTypeMap from '@/shared/config/commitTypes.json';
+import commitTypeMap from '@/constants/config/commitTypes.json';
 
 export function shortHash(hash) {
   return hash ? hash.slice(0, 7) : '—';

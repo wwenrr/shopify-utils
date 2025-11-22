@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import styles from './MainLayout.module.css';
+import styles from './index.module.css';
 
 const STATUS_META = {
   success: {
