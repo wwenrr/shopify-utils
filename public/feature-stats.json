@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T08:37:05.063Z",
+  "generatedAt": "2025-11-22T10:47:59.494Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 40,
+  "totalCommits": 42,
   "commits": [
+    {
+      "hash": "34be3b89587fdfa137893dc21b61ad57f9aab0a0",
+      "author": "MK",
+      "date": "2025-11-22 17:47:32 +0700",
+      "message": "feat: update dependencies and enhance blog editor functionality with HTML block parsing and improved UI components",
+      "type": "feature"
+    },
+    {
+      "hash": "878d50f36f5b52cde197ef80cdf318a498f62310",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 08:37:05 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "dae02f22235a9f3fc0112a76b64fd042853742bd",
       "author": "MK",
