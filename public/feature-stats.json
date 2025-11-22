@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T11:05:19.580Z",
+  "generatedAt": "2025-11-22T12:21:35.674Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 44,
+  "totalCommits": 46,
   "commits": [
+    {
+      "hash": "43ccab740e3b61040eb683e3e11f2e150de76093",
+      "author": "MK",
+      "date": "2025-11-22 19:18:26 +0700",
+      "message": "feat: enhance blog button generator with copy functionality and toast notifications",
+      "type": "feature"
+    },
+    {
+      "hash": "c0b0d7988bad42c2e2fa90ebd7bae95fc47933a2",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 11:05:19 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "e9bad1415a65f5cff2c2db56a342b269afe085d2",
       "author": "MK",
@@ -327,13 +341,13 @@
     },
     {
       "feature": "blog-button",
-      "commitCount": 2,
+      "commitCount": 3,
       "lastCommit": {
-        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
+        "hash": "43ccab740e3b61040eb683e3e11f2e150de76093",
         "author": "MK",
-        "date": "2025-11-22 15:27:01 +0700",
-        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
-        "type": "refactor"
+        "date": "2025-11-22 19:18:26 +0700",
+        "message": "feat: enhance blog button generator with copy functionality and toast notifications",
+        "type": "feature"
       }
     },
     {
