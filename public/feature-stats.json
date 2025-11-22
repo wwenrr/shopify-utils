@@ -1,15 +1,22 @@
 {
-  "generatedAt": "2025-11-21T10:10:36.907Z",
-  "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 32,
+  "generatedAt": "2025-11-22T07:08:45.667Z",
+  "repoRoot": "/home/mk/Documents/Github/Dogo/dogo-utils",
+  "appRoot": "/home/mk/Documents/Github/Dogo/dogo-utils",
+  "totalCommits": 33,
   "commits": [
+    {
+      "hash": "9fb0ec248e67210f7b35b71a5feeecb97b701d43",
+      "author": "github-actions[bot]",
+      "date": "2025-11-21 10:10:36 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "3abdb3e7d8ea6c49ef5d23a4ea6ed2275e56f3bc",
       "author": "MK",
       "date": "2025-11-21 17:10:10 +0700",
       "message": "refactor: remove unused template constants and simplify FAQs generator logic",
-      "type": "other"
+      "type": "refactor"
     },
     {
       "hash": "7ef3559bdd849ec6fd5f2e2bee580022d499474d",
@@ -23,7 +30,7 @@
       "author": "MK",
       "date": "2025-11-21 17:01:16 +0700",
       "message": "refactor: streamline FAQs generator by removing unused constants and enhancing styling options",
-      "type": "other"
+      "type": "refactor"
     },
     {
       "hash": "0efbb2bbaf89e7e9f468ea1abd0fb7d96fe75c41",
@@ -271,7 +278,7 @@
         "author": "MK",
         "date": "2025-11-21 17:10:10 +0700",
         "message": "refactor: remove unused template constants and simplify FAQs generator logic",
-        "type": "other"
+        "type": "refactor"
       }
     }
   ]

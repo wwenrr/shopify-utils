@@ -3,8 +3,8 @@ import { Editor } from 'react-draft-wysiwyg';
 import { ContentState, EditorState, Modifier, convertFromHTML, convertFromRaw, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Copy, RefreshCw, Upload } from 'lucide-react';
-import { useEditorStore } from '../../../features/editor';
-import styles from './EditorPage.module.css';
+import { useEditorStore } from '@/features/editor';
+import styles from './index.module.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 function EditorPage() {
@@ -457,3 +457,4 @@ function createContentStateFromHtml(htmlContent) {
 }
 
 export default EditorPage;
+

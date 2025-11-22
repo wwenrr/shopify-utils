@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import styles from './HtmlAlignmentPage.module.css';
+import styles from './index.module.css';
 
 const ALIGNMENT_RULES = {
   justify: 'text-align: justify;',
@@ -216,7 +216,7 @@ function HtmlAlignmentPage() {
         <section className={styles.card}>
           <div className={styles.structureHeader}>
             <p className={styles.cardTitle}>Project Directory Structure</p>
-            <span className={styles.helper}>Tick những thẻ cần định dạng, xem nội dung text bằng cách bấm “Xem nội dung”.</span>
+            <span className={styles.helper}>Tick những thẻ cần định dạng, xem nội dung text bằng cách bấm "Xem nội dung".</span>
           </div>
           {uniqueTags.length > 0 && (
             <div className={styles.tagList}>

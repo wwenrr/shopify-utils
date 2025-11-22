@@ -19,6 +19,11 @@
     "color": "#155e75",
     "background": "rgba(125, 211, 252, 0.24)"
   },
+  "refactor": {
+    "label": "Refactor",
+    "color": "#ea580c",
+    "background": "rgba(251, 146, 60, 0.24)"
+  },
   "chore": {
     "label": "Chore",
     "color": "#6b21a8",

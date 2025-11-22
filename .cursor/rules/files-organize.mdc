@@ -2,28 +2,46 @@
 alwaysApply: true
 ---
 
-meta:
-  name: require-feature-based-structure
-  description: "Mã nguồn phải tổ chức theo feature base, mỗi folder là 1 tính năng độc lập."
-rules:
-  - selector: "src/"
-    assert:
-      - each_folder_must_contain:
-          - components/
-          - hooks/
-          - services/
-          - utils/
-      - folder_structure_must_match:
-          regex: "^src/features/[a-z0-9-]+/(components|hooks|services|utils)/.*"
-          message: "Các thư mục và file phải nằm trong folder tính năng dưới src/features."
-      - forbid_cross_feature_imports:
-          pattern: "src/features/{featureA}/**/*.[jt]s"
-          not_import_from: "src/features/{featureB}/"
-          message: "Không được import trực tiếp code từ feature khác."
-  - selector: "src/shared/"
-    assert:
-      - only_shared_code_allowed: true
-      - forbid_import_from_features: true
-  - selector: "src/app/"
-    assert:
-      - only_global_config_allowed: true
+# Feature Structure: Container Pattern & Documentation
+
+## 1. Directory Structure Hierarchy
+
+src/features/[feature-name]/
+  components/     # Presentational UI only (No Logic, No API)
+  hooks/          # Business Logic, API calls, State (No JSX)
+  docs/           # Documentation in Mermaid format (.mmd)
+  index.tsx       # Container Component (The Manager)
+
+## 2. The Role of `index.tsx` (Container)
+
+The `index.tsx` is the entry point and manager of the feature.
+* **MUST**: Import hooks from `./hooks`.
+* **MUST**: Import presentational components from `./components`.
+* **MUST**: Compose them together.
+* **MUST NOT**: Be a simple barrel file (`export *`). It must contain JSX implementation connecting logic to UI.
+
+## 3. Documentation Rules (`./docs`)
+
+Every feature must have a `./docs` folder containing `.mmd` (Mermaid) files.
+* **Format**: ALWAYS use Mermaid syntax.
+* **Content**: Visualizing the Data Flow or Logic State Machine of the feature.
+* **Timing**: Update docs when logic changes.
+
+## 4. Code Generation Rules
+
+* **No Comments**: Do not add comments in the generated TSX/TS code.
+* **No Text Icons**: Do not use text-based icons (like emojis) in UI.
+
+## 5. Implementation Pattern
+
+### Hook (`./hooks/useFeatureLogic.ts`)
+Returns data and handlers. No JSX.
+
+### Component (`./components/FeatureView.tsx`)
+Receives props. Pure UI. No Logic.
+
+### Container (`./index.tsx`)
+const FeatureContainer = () => {
+  const logic = useFeatureLogic()
+  return <FeatureView {...logic} />
+}

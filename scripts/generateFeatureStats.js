@@ -17,6 +17,7 @@ const COMMIT_TYPE_MAP = {
   enhance: 'enhancement',
   chore: 'chore',
   style: 'style',
+  refactor: 'refactor',
 };
 
 function parseArgs(argv) {

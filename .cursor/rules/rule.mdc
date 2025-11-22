@@ -6,3 +6,6 @@ alwaysApply: true
 - tuyệt đối tuân thủ quy tắt tổ chức code
 - tuyệt đối tuân thủ quy tắt thiết kế UI
 - kêu gì làm đó, tuyệt đối không làm thừa, không tự thêm logic, tính năng không liên quan
+- tính năng liên quan tới refactor. khi xong luôn chạy npm run start để check còn lỗi không.
+- hạn chế "../../..". import sâu quá thì dùng import đường dẫn tuyệt đối.
+- trừ khi import từ './" còn lại dùng đường dẫn tuyệt đối hết

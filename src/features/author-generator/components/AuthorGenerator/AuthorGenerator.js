@@ -1,9 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import styles from './AuthorGenerator.module.css';
+import AUTHOR_PRESETS from '../../utils/authorPresets';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AuthorGenerator() {
   const [formData, setFormData] = useState(getInitialState());
   const [copyStatus, setCopyStatus] = useState('idle');
+  const [selectedPreset, setSelectedPreset] = useState('');
   const template = useMemo(() => buildTemplate(formData), [formData]);
   const hasContent = useMemo(() => hasUserInput(formData), [formData]);
 
@@ -23,17 +27,38 @@ function AuthorGenerator() {
     setFormData(getInitialState());
   };
 
-  const handleCopy = async () => {
+  const handlePresetChange = (event) => {
+    const presetId = event.target.value;
+    setSelectedPreset(presetId);
+    if (!presetId) return;
+    const preset = AUTHOR_PRESETS.find((item) => item.id === presetId);
+    if (preset) {
+      setFormData(preset.formData);
+    }
+  };
+
+  const copyTemplateToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(template);
       setCopyStatus('success');
-      setTimeout(() => setCopyStatus('idle'), 2000);
+      toast.success('Đã lưu HTML vào clipboard', { position: 'top-right', autoClose: 1800 });
     } catch (error) {
       console.error(error);
       setCopyStatus('error');
-      setTimeout(() => setCopyStatus('idle'), 2000);
+      toast.error('Copy HTML thất bại, hãy thử lại.', { position: 'top-right', autoClose: 2200 });
     }
   };
+
+  const handleCopy = () => {
+    if (!hasContent) return;
+    copyTemplateToClipboard();
+  };
+
+  useEffect(() => {
+    if (!hasContent) return;
+    copyTemplateToClipboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [template]);
 
   return (
     <section className={styles.wrapper}>
@@ -52,6 +77,21 @@ function AuthorGenerator() {
         <article className={styles.card}>
           <h3>Thông tin author</h3>
           <form className={styles.form}>
+            <label className={styles.field}>
+              <span>Nạp author có sẵn</span>
+              <select
+                value={selectedPreset}
+                onChange={handlePresetChange}
+                className={styles.select}
+              >
+                <option value="">Chọn author...</option>
+                {AUTHOR_PRESETS.map((preset) => (
+                  <option key={preset.id} value={preset.id}>
+                    {preset.label}
+                  </option>
+                ))}
+              </select>
+            </label>
             <label className={styles.field}>
               <span>Tên Author</span>
               <input
@@ -104,7 +144,14 @@ function AuthorGenerator() {
         </article>
 
         <article className={styles.card}>
-          <h3>Preview</h3>
+          <div className={styles.previewHeader}>
+            <h3>Preview</h3>
+            <div className={styles.previewActions}>
+              <button type="button" className={styles.copyButton} onClick={handleCopy}>
+                Copy HTML
+              </button>
+            </div>
+          </div>
           <div className={styles.preview}>
             {hasContent ? (
               <div dangerouslySetInnerHTML={{ __html: template }} />
@@ -118,14 +165,12 @@ function AuthorGenerator() {
       <article className={`${styles.card} ${styles.output}`}>
         <div className={styles.outputHeader}>
           <h3>HTML Output</h3>
-          {copyStatus === 'success' && <span className={styles.statusSuccess}>Đã copy</span>}
+          {copyStatus === 'success' && <span className={styles.statusSuccess}>Đã copy clipboard</span>}
           {copyStatus === 'error' && <span className={styles.statusError}>Copy lỗi</span>}
         </div>
         <pre className={styles.code}>{template}</pre>
-        <button type="button" className={styles.copyButton} onClick={handleCopy}>
-          Copy HTML
-        </button>
       </article>
+      <ToastContainer />
     </section>
   );
 }
@@ -140,14 +185,7 @@ function getInitialState() {
 }
 
 function getSampleState() {
-  return {
-    authorName: 'Yuzuki Tsukihana',
-    authorImageUrl:
-      'https://cdn.shopify.com/s/files/1/0512/5429/6766/files/author-yuzuki-tsukihana-2_1000x.png?v=1751427548',
-    authorDescription:
-      'Yuzuki Tsukihana là beauty editor đến từ Tokyo với hơn 10 năm nghiên cứu da nhạy cảm. Cô nổi tiếng với các bài viết giàu dữ liệu và routine tối giản.',
-    authorTagUrl: 'https://example.com/tagged/author-yuzuki-tsukihana',
-  };
+  return AUTHOR_PRESETS[0]?.formData || getInitialState();
 }
 
 function buildTemplate(data) {
@@ -158,20 +196,52 @@ function buildTemplate(data) {
     authorTagUrl: fallback(data.authorTagUrl, '{{ authorTagUrl }}'),
   };
 
-  return `<div style="display: flex; gap: 15px;">
-  <div style="flex: 0 0 20%; align-self: flex-start;">
-    <img width="150" height="150" style="width: 100%; height: auto; margin-top: 2rem;" src="${safe.authorImageUrl}" alt="author ${safe.authorName}">
+  return `<div
+  style="
+    display:flex;
+    gap:24px;
+    align-items:flex-start;
+    border:1px solid #e5e5e5;
+    border-radius:16px;
+    padding:24px;
+    background-color:#ffffff;
+  "
+>
+  <div style="flex:0 0 96px; width:96px; height:96px;">
+    <img
+      src="${safe.authorImageUrl}"
+      alt="${safe.authorName}"
+      style="
+        width:96px;
+        height:96px;
+        border-radius:50%;
+        object-fit:cover;
+        display:block;
+      "
+      loading="lazy"
+    />
   </div>
-
-  <div style="flex: 1; word-wrap: break-word; overflow-wrap: break-word;">
-    <p style="font-size: 1.75rem; font-weight: 600;">${safe.authorName}</p>
-
-    <div>
-      <p style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-word;">${safe.authorDescription}</p>
+  <div style="flex:1; min-width:0;">
+    <p style="margin:0 0 8px;">
+      <b>${safe.authorName}</b> 
+    </p>
+    <div style="margin:0 0 16px;">
+      <p style="margin:0;">
+        ${safe.authorDescription}
+      </p>
     </div>
-
-    <a target="_blank" href="${safe.authorTagUrl}">
-      View articles by ${safe.authorName}
+    <a
+      target="_blank"
+      href="${safe.authorTagUrl}"
+      style="
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        text-decoration:none;
+      "
+    >
+      <span>View articles by ${safe.authorName}</span>
+      <span aria-hidden="true">→</span>
     </a>
   </div>
 </div>`;
