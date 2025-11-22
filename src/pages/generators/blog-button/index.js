@@ -1,4 +1,4 @@
-import { BlogButtonGenerator } from '@/features/blog-button';
+import BlogButtonGenerator from '@/features/blog-button';
 
 function BlogButtonPage() {
   return <BlogButtonGenerator />;

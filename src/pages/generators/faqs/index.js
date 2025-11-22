@@ -1,4 +1,4 @@
-import { FaqsGenerator } from '@/features/faqs-generator';
+import FaqsGenerator from '@/features/faqs-generator';
 
 function FaqsPage() {
   return <FaqsGenerator />;

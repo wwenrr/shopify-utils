@@ -1,5 +1,5 @@
 export const SAMPLE_HTML = `<h2>5. FAQs - People also asked about best sleeves for Pokémon cards</h2>
-<p>Before wrapping up, let’s answer some common questions collectors and players ask about the best sleeves for Pokémon cards.</p>
+<p>Before wrapping up, let's answer some common questions collectors and players ask about the best sleeves for Pokémon cards.</p>
 <h3>5.1 Which sleeves to use for Pokémon cards?</h3>
 <p>Pokémon cards fit standard-size sleeves, typically 63.5mm x 88mm. Choose high-quality brands like Dragon Shield or KMC for maximum protection.</p>
 <h3>5.2 Are official Pokémon sleeves better?</h3>
@@ -51,4 +51,3 @@ export const TEMPLATE_CONFIG = {
   },
   sharedCss: {},
 };
-

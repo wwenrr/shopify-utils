@@ -1,4 +1,4 @@
-import { AuthorGenerator } from '@/features/author-generator';
+import AuthorGenerator from '@/features/author-generator';
 
 function AuthorGeneratorPage() {
   return <AuthorGenerator />;
