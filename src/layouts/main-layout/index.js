@@ -64,6 +64,16 @@ const NAV_SECTIONS = [
       },
     ],
   },
+  {
+    label: 'Configuration',
+    routes: [
+      {
+        path: '/config/tokens',
+        label: 'GitHub Configuration',
+        status: 'default',
+      },
+    ],
+  },
 ];
 
 function MainLayout({ children }) {

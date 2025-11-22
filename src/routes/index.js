@@ -5,6 +5,7 @@ import AuthorGeneratorPage from '@/pages/generators/author-generator';
 import BlogButtonPage from '@/pages/generators/blog-button';
 import FaqsPage from '@/pages/generators/faqs';
 import HtmlAlignmentPage from '@/pages/generators/html-alignment';
+import TokenConfigPage from '@/pages/config/token-config';
 
 export const routes = [
   {
@@ -30,6 +31,10 @@ export const routes = [
   {
     path: '/html-alignment',
     element: <HtmlAlignmentPage />,
+  },
+  {
+    path: '/config/tokens',
+    element: <TokenConfigPage />,
   },
 ];
 

@@ -1,0 +1,137 @@
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #40c57c;
+  --accent-strong: #2ea266;
+  --surface: #f8f9fa;
+  --shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.header {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+}
+
+.header h1 {
+  margin: 8px 0 16px;
+  font-size: 40px;
+  color: var(--text);
+}
+
+.header p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cardHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.githubIcon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.cardHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reloadButton {
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: transparent;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.reloadButton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: rgba(64, 197, 124, 0.05);
+}
+
+.createButton {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(64, 197, 124, 0.3);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.createButton:hover {
+  background-color: var(--accent-strong);
+}
+
+.createButton:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 720px) {
+  .header {
+    padding: 28px;
+  }
+
+  .card {
+    padding: 22px;
+  }
+}
+

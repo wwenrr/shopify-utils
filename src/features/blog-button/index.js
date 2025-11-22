@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useBlogButtonGenerator } from './hooks';
 import { VARIANT_FIELDS } from './utils';
 import styles from './index.module.css';
@@ -8,7 +10,6 @@ function BlogButtonGenerator() {
     currentVariantConfig,
     buttonMarkup,
     previewMarkup,
-    copyState,
     handleInputChange,
     handleCheckboxChange,
     handleVariantFieldChange,
@@ -31,7 +32,12 @@ function BlogButtonGenerator() {
 
       <div className={styles.grid}>
         <article className={styles.card}>
-          <h2>Cấu hình button</h2>
+          <div className={styles.cardHeader}>
+            <h2>Cấu hình button</h2>
+            <button type="button" className={styles.copyButton} onClick={handleCopyMarkup}>
+              Copy
+            </button>
+          </div>
           <form className={styles.form}>
             <label className={styles.field}>
               <span>Nội dung button</span>
@@ -137,16 +143,21 @@ function BlogButtonGenerator() {
       </article>
 
       <article className={`${styles.card} ${styles.fullWidth}`}>
-        <div className={styles.outputHeader}>
-          <h2>Button HTML</h2>
-          {copyState === 'copied' && <span className={styles.statusSuccess}>Đã copy</span>}
-          {copyState === 'error' && <span className={styles.statusError}>Copy lỗi</span>}
-        </div>
+        <h2>Button HTML</h2>
         <pre className={styles.output}>{buttonMarkup.trim()}</pre>
-        <button type="button" className={styles.primary} onClick={handleCopyMarkup}>
-          Copy button
-        </button>
       </article>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        closeOnClick
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        newestOnTop={false}
+        theme="light"
+      />
     </div>
   );
 }

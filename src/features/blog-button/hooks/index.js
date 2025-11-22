@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 import { cloneVariantDefaults, VARIANT_DEFAULTS, buildButtonMarkup, DEFAULT_PREVIEW_TEXT } from '../utils';
 
 const INITIAL_FORM = {
@@ -20,7 +21,6 @@ const SAMPLE_FORM = {
 export function useBlogButtonGenerator() {
   const [formValues, setFormValues] = useState(INITIAL_FORM);
   const [variantSettings, setVariantSettings] = useState(() => cloneVariantDefaults());
-  const [copyState, setCopyState] = useState('idle');
 
   const currentVariantConfig = useMemo(() => {
     return variantSettings[formValues.variant] || VARIANT_DEFAULTS.jwl;
@@ -48,9 +48,6 @@ export function useBlogButtonGenerator() {
       ...previous,
       [name]: value,
     }));
-    if (name === 'variant') {
-      setCopyState('idle');
-    }
   };
 
   const handleCheckboxChange = (event) => {
@@ -85,30 +82,26 @@ export function useBlogButtonGenerator() {
       ...previous,
       [SAMPLE_FORM.variant]: { ...VARIANT_DEFAULTS[SAMPLE_FORM.variant] },
     }));
-    setCopyState('idle');
   };
 
   const handleResetForm = () => {
     setFormValues(INITIAL_FORM);
     setVariantSettings(cloneVariantDefaults());
-    setCopyState('idle');
   };
 
   const handleCopyMarkup = async () => {
     try {
       await navigator.clipboard.writeText(buttonMarkup.trim());
-      setCopyState('copied');
-      setTimeout(() => setCopyState('idle'), 2000);
+      toast.success('Đã copy button HTML vào clipboard', { position: 'top-right', autoClose: 2000 });
     } catch (error) {
       console.error(error);
-      setCopyState('error');
+      toast.error('Copy thất bại, hãy thử lại', { position: 'top-right', autoClose: 2000 });
     }
   };
 
   return {
     formValues,
     variantSettings,
-    copyState,
     currentVariantConfig,
     buttonMarkup,
     previewMarkup,
