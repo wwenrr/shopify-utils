@@ -1,9 +1,16 @@
 {
-  "generatedAt": "2025-11-22T07:08:45.667Z",
-  "repoRoot": "/home/mk/Documents/Github/Dogo/dogo-utils",
-  "appRoot": "/home/mk/Documents/Github/Dogo/dogo-utils",
-  "totalCommits": 33,
+  "generatedAt": "2025-11-22T07:48:51.653Z",
+  "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
+  "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
+  "totalCommits": 34,
   "commits": [
+    {
+      "hash": "783568dd731d8235f0f2df3dc9d8c17ac213583e",
+      "author": "MK",
+      "date": "2025-11-22 14:48:21 +0700",
+      "message": "feat: integrate CRACO for enhanced configuration and update routing structure",
+      "type": "feature"
+    },
     {
       "hash": "9fb0ec248e67210f7b35b71a5feeecb97b701d43",
       "author": "github-actions[bot]",
@@ -239,13 +246,13 @@
   "features": [
     {
       "feature": "author-generator",
-      "commitCount": 1,
+      "commitCount": 2,
       "lastCommit": {
-        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
+        "hash": "783568dd731d8235f0f2df3dc9d8c17ac213583e",
         "author": "MK",
-        "date": "2025-11-20 22:29:08 +0700",
-        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
-        "type": "chore"
+        "date": "2025-11-22 14:48:21 +0700",
+        "message": "feat: integrate CRACO for enhanced configuration and update routing structure",
+        "type": "feature"
       }
     },
     {
