@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T07:48:51.653Z",
+  "generatedAt": "2025-11-22T08:05:43.987Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 34,
+  "totalCommits": 36,
   "commits": [
+    {
+      "hash": "86a505eb9d0b6266db34425214760b31b113ce5e",
+      "author": "MK",
+      "date": "2025-11-22 15:05:15 +0700",
+      "message": "refactor: restructure routing and remove unused MainLayout component",
+      "type": "refactor"
+    },
+    {
+      "hash": "d747bba5f27961f813250f397ff55f4c71e20cd9",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 07:48:51 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "783568dd731d8235f0f2df3dc9d8c17ac213583e",
       "author": "MK",
