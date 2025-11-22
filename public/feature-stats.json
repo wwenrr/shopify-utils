@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T12:21:35.674Z",
+  "generatedAt": "2025-11-22T13:34:46.280Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 46,
+  "totalCommits": 48,
   "commits": [
+    {
+      "hash": "adfb3e3571162d5d05d9b6db7912122504ed4871",
+      "author": "MK",
+      "date": "2025-11-22 20:34:23 +0700",
+      "message": "feat: add toggle functionality to show/hide GitHub token in TokenForm component and enhance styling",
+      "type": "feature"
+    },
+    {
+      "hash": "f142e05a5260b91fb2944a4f6915149727100c29",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 12:21:35 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "43ccab740e3b61040eb683e3e11f2e150de76093",
       "author": "MK",
