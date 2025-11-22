@@ -1,10 +1,27 @@
-import { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDashboardStats } from './hooks';
-import { shortHash, getTypeLabel, getTypeStyle, formatRelativeTimestamp, formatAbsoluteTimestamp } from './utils';
+import { shortHash, getTypeLabel, getTypeStyle, formatRelativeTimestamp, formatAbsoluteTimestamp, formatTimeOnly, getAuthorAvatar, groupCommitsByDay } from './utils';
+import LimitSelect from './components/LimitSelect';
+import CommitChart from './components/CommitChart';
 import styles from './index.module.css';
+
+const DEFAULT_LIMIT = 10;
 
 function DashboardPage() {
   const { commits, status, latestUpdateDate } = useDashboardStats();
+  const [limit, setLimit] = useState(String(DEFAULT_LIMIT));
+
+  const displayedCommits = useMemo(() => {
+    if (limit === 'all') {
+      return commits;
+    }
+    const limitNum = parseInt(limit, 10);
+    return commits.slice(0, limitNum);
+  }, [commits, limit]);
+
+  const commitGroups = useMemo(() => {
+    return groupCommitsByDay(displayedCommits);
+  }, [displayedCommits]);
 
   const commitTable = useMemo(() => {
     if (status === 'loading') {
@@ -19,7 +36,7 @@ function DashboardPage() {
       return <p className={styles.state}>Chưa có lịch sử commit.</p>;
     }
 
-    const rows = commits;
+    let rowIndex = 0;
 
     return (
       <div className={styles.tableWrapper}>
@@ -30,37 +47,59 @@ function DashboardPage() {
               <th>Hash</th>
               <th>Type</th>
               <th>Author</th>
-              <th>Date</th>
+              <th>Time</th>
               <th>Description</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((commit, index) => (
-              <tr key={commit.hash}>
-                <td data-label="#">{index + 1}</td>
-                <td data-label="Hash" className={styles.hashCell}>
-                  {shortHash(commit.hash)}
-                </td>
-                <td data-label="Type">
-                  <span
-                    className={styles.typeBadge}
-                    style={getTypeStyle(commit.type)}
-                  >
-                    {getTypeLabel(commit.type)}
-                  </span>
-                </td>
-                <td data-label="Author">{commit.author}</td>
-                <td data-label="Date">{formatAbsoluteTimestamp(commit.date)}</td>
-                <td data-label="Description" className={styles.messageCell}>
-                  {commit.message}
-                </td>
-              </tr>
+            {commitGroups.map((group) => (
+              <React.Fragment key={group.key}>
+                <tr className={styles.dayGroupHeader}>
+                  <td colSpan="6" className={styles.dayGroupCell}>
+                    {group.label}
+                  </td>
+                </tr>
+                {group.commits.map((commit) => {
+                  rowIndex += 1;
+                  return (
+                    <tr key={commit.hash}>
+                      <td data-label="#">{rowIndex}</td>
+                      <td data-label="Hash" className={styles.hashCell}>
+                        {shortHash(commit.hash)}
+                      </td>
+                      <td data-label="Type">
+                        <span
+                          className={styles.typeBadge}
+                          style={getTypeStyle(commit.type)}
+                        >
+                          {getTypeLabel(commit.type)}
+                        </span>
+                      </td>
+                      <td data-label="Author" className={styles.authorCell}>
+                        {getAuthorAvatar(commit.author) ? (
+                          <img
+                            src={getAuthorAvatar(commit.author)}
+                            alt={commit.author}
+                            className={styles.authorAvatar}
+                          />
+                        ) : (
+                          <span>{commit.author}</span>
+                        )}
+                      </td>
+                      <td data-label="Time">{formatTimeOnly(commit.date)}</td>
+                      <td data-label="Description" className={styles.messageCell}>
+                        {commit.message}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
       </div>
     );
-  }, [commits, status]);
+  }, [commitGroups, status, commits.length]);
 
   return (
     <div className={styles.page}>
@@ -80,12 +119,21 @@ function DashboardPage() {
       </section>
 
       <section className={styles.card}>
+        <CommitChart commits={commits} />
+      </section>
+
+      <section className={styles.card}>
         <header className={styles.cardHeader}>
           <div>
             <p className={styles.eyebrow}>Commit log</p>
             <h2>Lịch sử commit mới nhất</h2>
           </div>
-          <span className={styles.metaBadge}>{commits.length} bản ghi</span>
+          <div className={styles.headerActions}>
+            <LimitSelect value={limit} onChange={setLimit} />
+            <span className={styles.metaBadge}>
+              {displayedCommits.length} / {commits.length} bản ghi
+            </span>
+          </div>
         </header>
         {commitTable}
       </section>

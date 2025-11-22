@@ -1,0 +1,157 @@
+.chartContainer {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.chartHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.periodSelector {
+  display: flex;
+  gap: 8px;
+  background-color: #f8f9fa;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.periodButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.periodButton:hover {
+  color: #1f2937;
+  background-color: #ffffff;
+}
+
+.periodButtonActive {
+  color: #ffffff;
+  background-color: #40c57c;
+  font-weight: 600;
+}
+
+.periodButtonActive:hover {
+  background-color: #36b26d;
+}
+
+.chartWrapper {
+  width: 100%;
+  height: 300px;
+}
+
+.dateRange {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.dateInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dateLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+.dateInput:hover {
+  border-color: #40c57c;
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: #40c57c;
+  box-shadow: 0 0 0 3px rgba(64, 197, 124, 0.1);
+}
+
+.empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@media (max-width: 720px) {
+  .chartHeader {
+    flex-direction: column;
+  }
+  
+  .controls {
+    width: 100%;
+    align-items: stretch;
+  }
+  
+  .periodSelector {
+    width: 100%;
+  }
+  
+  .periodButton {
+    flex: 1;
+  }
+  
+  .dateRange {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .dateInput {
+    width: 100%;
+  }
+}
+

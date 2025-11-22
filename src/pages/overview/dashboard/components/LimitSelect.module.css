@@ -1,0 +1,73 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.trigger:hover {
+  border-color: #40c57c;
+  background-color: #f8f9fa;
+}
+
+.trigger:focus {
+  outline: none;
+  border-color: #40c57c;
+  box-shadow: 0 0 0 3px rgba(64, 197, 124, 0.1);
+}
+
+.icon {
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.trigger[data-state='open'] .icon {
+  transform: rotate(180deg);
+}
+
+.content {
+  min-width: 180px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  padding: 4px;
+  z-index: 1000;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1f2937;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.15s ease;
+}
+
+.item:hover,
+.item[data-highlighted] {
+  background-color: #f3f4f6;
+}
+
+.itemActive {
+  color: #40c57c;
+  font-weight: 600;
+}
+
+.checkIcon {
+  color: #40c57c;
+  flex-shrink: 0;
+}
+
