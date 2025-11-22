@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T08:27:25.404Z",
+  "generatedAt": "2025-11-22T08:37:05.063Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 38,
+  "totalCommits": 40,
   "commits": [
+    {
+      "hash": "dae02f22235a9f3fc0112a76b64fd042853742bd",
+      "author": "MK",
+      "date": "2025-11-22 15:36:34 +0700",
+      "message": "refactor: simplify blog editor component by utilizing custom hooks and removing unused functions",
+      "type": "refactor"
+    },
+    {
+      "hash": "1575d07f9a772c470cb3d8397a385fe4ce962572",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 08:27:25 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
       "author": "MK",
