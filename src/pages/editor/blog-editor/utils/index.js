@@ -1,205 +1,211 @@
-import { ContentState, EditorState, Modifier, convertFromHTML, convertFromRaw, convertToRaw } from 'draft-js';
-
-export function buildEditorStats(state) {
-  const text = state.getCurrentContent().getPlainText(' ').trim();
-  if (!text) {
-    return { words: 0, characters: 0, readingTime: 1 };
+export function parseHtmlToBlocks(htmlString) {
+  if (!htmlString || !htmlString.trim()) {
+    return [];
   }
 
-  const words = text.split(/\s+/).filter(Boolean).length;
-  const characters = text.length;
-  const readingTime = Math.max(1, Math.ceil(words / 200));
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString.trim(), 'text/html');
+  
+  if (doc.querySelector('parsererror')) {
+    return [];
+  }
 
-  return { words, characters, readingTime };
+  const body = doc.body;
+  if (!body) {
+    return [];
+  }
+
+  return parseNodeTree(body.childNodes, 0);
 }
 
-export function getToolbarOptions() {
-  return {
-    options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link', 'history'],
-    inline: {
-      options: ['bold', 'italic', 'underline', 'strikethrough', 'monospace'],
-    },
-    list: {
-      options: ['unordered', 'ordered'],
-    },
-    textAlign: {
-      options: ['left', 'center', 'right', 'justify'],
-    },
-  };
-}
+function parseNodeTree(nodes, depth) {
+  const blocks = [];
+  const elementNodes = Array.from(nodes).filter(
+    (node) => node.nodeType === Node.ELEMENT_NODE
+  );
 
-export function buildEditorStateFromBase64(base64Content) {
-  const rawContent = decodeBase64ToRaw(base64Content);
-  if (!rawContent) {
-    return null;
-  }
+  elementNodes.forEach((node) => {
+    const element = node;
+    const blockId = generateBlockId();
+    const outerHtml = element.outerHTML;
+    const innerHtml = element.innerHTML;
+    const tagName = element.tagName.toLowerCase();
 
-  const sanitized = sanitizeRawContent(rawContent);
-  if (!sanitized) {
-    return null;
-  }
-
-  try {
-    return EditorState.createWithContent(convertFromRaw(sanitized));
-  } catch (error) {
-    return null;
-  }
-}
-
-export function encodeEditorStateToBase64(state) {
-  try {
-    const raw = convertToRaw(state.getCurrentContent());
-    return encodeRawContentToBase64(raw);
-  } catch (error) {
-    return null;
-  }
-}
-
-export function encodeTextToBase64(text) {
-  if (typeof window === 'undefined' || !text) {
-    return null;
-  }
-
-  try {
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(text);
-    let binary = '';
-    bytes.forEach((byte) => {
-      binary += String.fromCharCode(byte);
+    blocks.push({
+      id: blockId,
+      tag: tagName,
+      depth,
+      outerHtml,
+      innerHtml,
+      children: [],
     });
-    return window.btoa(binary);
-  } catch (error) {
-    return null;
-  }
-}
 
-export function buildEditorStateFromHtml(htmlContent) {
-  const contentState = createContentStateFromHtml(htmlContent);
-  if (!contentState) {
-    return null;
-  }
-
-  try {
-    return EditorState.createWithContent(contentState);
-  } catch (error) {
-    return null;
-  }
-}
-
-export function encodeRawContentToBase64(rawContent) {
-  if (typeof window === 'undefined' || !rawContent) {
-    return null;
-  }
-
-  try {
-    const json = JSON.stringify(rawContent);
-    const encoder = new TextEncoder();
-    const bytes = encoder.encode(json);
-    let binary = '';
-    bytes.forEach((byte) => {
-      binary += String.fromCharCode(byte);
-    });
-    return window.btoa(binary);
-  } catch (error) {
-    return null;
-  }
-}
-
-export function decodeBase64ToRaw(base64Value) {
-  if (typeof window === 'undefined' || !base64Value) {
-    return null;
-  }
-
-  try {
-    const binary = window.atob(base64Value);
-    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-    const decoder = new TextDecoder();
-    const json = decoder.decode(bytes);
-    return JSON.parse(json);
-  } catch (error) {
-    return null;
-  }
-}
-
-export function sanitizeRawContent(rawContent) {
-  if (!rawContent || !Array.isArray(rawContent.blocks)) {
-    return null;
-  }
-
-  const entityMap = rawContent.entityMap ?? {};
-  const sanitizedEntityMap = Object.entries(entityMap).reduce((acc, [key, value]) => {
-    if (value && key !== 'null' && key !== 'undefined') {
-      acc[String(key)] = value;
+    if (element.children && element.children.length > 0) {
+      const childBlocks = parseNodeTree(element.children, depth + 1);
+      blocks[blocks.length - 1].children = childBlocks;
     }
-    return acc;
-  }, {});
-
-  const blocks = rawContent.blocks.map((block) => {
-    if (!Array.isArray(block.entityRanges) || block.entityRanges.length === 0) {
-      return block;
-    }
-
-    const entityRanges = block.entityRanges
-      .map((range) => ({
-        ...range,
-        key: range.key === null || range.key === undefined ? undefined : range.key,
-      }))
-      .filter((range) => sanitizedEntityMap[String(range.key)] !== undefined)
-      .map((range) => ({
-        ...range,
-        key: parseInt(range.key, 10),
-      }));
-
-    return {
-      ...block,
-      entityRanges,
-    };
   });
 
-  return {
-    ...rawContent,
-    entityMap: sanitizedEntityMap,
-    blocks,
-  };
+  return blocks;
 }
 
-export function insertHtmlIntoEditorState(editorState, htmlContent) {
-  const contentFromHtml = createContentStateFromHtml(htmlContent);
-  if (!contentFromHtml) {
-    return null;
+function generateBlockId() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
   }
-
-  const fragment = contentFromHtml.getBlockMap();
-  const newContent = Modifier.replaceWithFragment(
-    editorState.getCurrentContent(),
-    editorState.getSelection(),
-    fragment
-  );
-  const selectionAfter = newContent.getSelectionAfter();
-  if (!selectionAfter) {
-    return null;
-  }
-
-  const nextState = EditorState.push(editorState, newContent, 'insert-fragment');
-  return EditorState.forceSelection(nextState, selectionAfter);
+  return `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
-export function createContentStateFromHtml(htmlContent) {
-  if (!htmlContent || !htmlContent.trim()) {
-    return null;
-  }
-
-  try {
-    const blocksFromHtml = convertFromHTML(htmlContent);
-    if (!blocksFromHtml || !blocksFromHtml.contentBlocks?.length) {
-      return null;
+export function findBlockById(blocks, targetId) {
+  for (const block of blocks) {
+    if (block.id === targetId) {
+      return block;
     }
+    if (block.children && block.children.length > 0) {
+      const found = findBlockById(block.children, targetId);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return null;
+}
 
-    return ContentState.createFromBlockArray(
-      blocksFromHtml.contentBlocks,
-      blocksFromHtml.entityMap
-    );
-  } catch (error) {
-    return null;
+export function insertBlockAtPosition(blocks, targetId, newHtml, insertType = 'inside') {
+  const newBlocks = parseHtmlToBlocks(newHtml);
+  if (newBlocks.length === 0) {
+    return blocks;
+  }
+
+  if (insertType === 'inside') {
+    return insertBlocksInsideRecursive(blocks, targetId, newBlocks);
+  } else {
+    return insertBlocksAfterRecursive(blocks, targetId, newBlocks);
   }
 }
+
+function insertBlocksInsideRecursive(blocks, targetId, newBlocks) {
+  return blocks.map((block) => {
+    if (block.id === targetId) {
+      return {
+        ...block,
+        children: [...newBlocks, ...block.children],
+      };
+    }
+    if (block.children && block.children.length > 0) {
+      return {
+        ...block,
+        children: insertBlocksInsideRecursive(block.children, targetId, newBlocks),
+      };
+    }
+    return block;
+  });
+}
+
+function insertBlocksAfterRecursive(blocks, targetId, newBlocks) {
+  const result = [];
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i];
+    if (block.id === targetId) {
+      result.push(block);
+      result.push(...newBlocks);
+    } else {
+      if (block.children && block.children.length > 0) {
+        result.push({
+          ...block,
+          children: insertBlocksAfterRecursive(block.children, targetId, newBlocks),
+        });
+      } else {
+        result.push(block);
+      }
+    }
+  }
+  return result;
+}
+
+export function deleteBlockById(blocks, targetId) {
+  if (!Array.isArray(blocks)) {
+    return [];
+  }
+  
+  const result = [];
+  for (const block of blocks) {
+    if (block && block.id === targetId) {
+      continue;
+    }
+    if (block && block.children && Array.isArray(block.children) && block.children.length > 0) {
+      result.push({
+        ...block,
+        children: deleteBlockById(block.children, targetId),
+      });
+    } else if (block) {
+      result.push(block);
+    }
+  }
+  return result;
+}
+
+export function flattenBlocks(blocks) {
+  const result = [];
+  
+  function traverse(blockList) {
+    blockList.forEach((block) => {
+      result.push(block);
+      if (block.children && block.children.length > 0) {
+        traverse(block.children);
+      }
+    });
+  }
+  
+  traverse(blocks);
+  return result;
+}
+
+export function serializeBlocksToHtml(blocks) {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    return '';
+  }
+
+  function serializeBlock(block) {
+    if (!block || !block.outerHtml) {
+      return '';
+    }
+    return block.outerHtml;
+  }
+
+  return blocks.map(serializeBlock).join('\n');
+}
+
+export function updateBlockHtml(blocks, targetId, newHtml) {
+  if (!Array.isArray(blocks)) {
+    return [];
+  }
+
+  const newBlocks = parseHtmlToBlocks(newHtml);
+  if (newBlocks.length === 0) {
+    return blocks;
+  }
+
+  return updateBlockRecursive(blocks, targetId, newBlocks[0]);
+}
+
+function updateBlockRecursive(blocks, targetId, newBlock) {
+  return blocks.map((block) => {
+    if (block && block.id === targetId) {
+      return {
+        ...newBlock,
+        id: targetId,
+        depth: block.depth,
+        children: block.children || [],
+      };
+    }
+    if (block && block.children && Array.isArray(block.children) && block.children.length > 0) {
+      return {
+        ...block,
+        children: updateBlockRecursive(block.children, targetId, newBlock),
+      };
+    }
+    return block;
+  });
+}
+

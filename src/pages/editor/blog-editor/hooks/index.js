@@ -1,189 +1,150 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import { useEditorStore } from '@/features/editor';
-import {
-  buildEditorStateFromBase64,
-  encodeEditorStateToBase64,
-  buildEditorStateFromHtml,
-  insertHtmlIntoEditorState,
-  encodeTextToBase64,
-  buildEditorStats,
-  getToolbarOptions,
-} from '../utils';
+import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { parseHtmlToBlocks, insertBlockAtPosition, deleteBlockById, serializeBlocksToHtml, updateBlockHtml } from '../utils';
+import { useBlogEditorStore } from '../stores/blogEditorStore';
 
-export function useBlogEditor() {
-  const title = useEditorStore((state) => state.title);
-  const subtitle = useEditorStore((state) => state.subtitle);
-  const base64Content = useEditorStore((state) => state.base64Content);
-  const hydrated = useEditorStore((state) => state.hydrated);
-  const setTitle = useEditorStore((state) => state.setTitle);
-  const setSubtitle = useEditorStore((state) => state.setSubtitle);
-  const setBase64Content = useEditorStore((state) => state.setBase64Content);
-  const setHtmlMeta = useEditorStore((state) => state.setHtmlMeta);
-  const resetStore = useEditorStore((state) => state.reset);
+export function useHtmlBlockEditor() {
+  const { inputHtml, blocks, setInputHtml, setBlocks } = useBlogEditorStore();
+  const [insertModal, setInsertModal] = useState({ open: false, targetId: null, insertType: 'inside' });
+  const [editModal, setEditModal] = useState({ open: false, targetId: null, initialHtml: '' });
 
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const [statusMessage, setStatusMessage] = useState('');
-  const [hasHydratedContent, setHasHydratedContent] = useState(false);
-  const fileInputRef = useRef(null);
+  const safeBlocks = Array.isArray(blocks) ? blocks : [];
 
   useEffect(() => {
-    if (!hydrated || hasHydratedContent) {
-      return;
-    }
-
-    if (base64Content) {
-      const restoredState = buildEditorStateFromBase64(base64Content);
-      if (restoredState) {
-        setEditorState(restoredState);
-      } else {
-        resetStore();
+    if (inputHtml && safeBlocks.length === 0) {
+      const parsed = parseHtmlToBlocks(inputHtml);
+      if (parsed.length > 0) {
+        setBlocks(parsed);
       }
     }
+  }, []);
 
-    setHasHydratedContent(true);
-  }, [hydrated, hasHydratedContent, base64Content, resetStore]);
+  const handleInputChange = useCallback((event) => {
+    const value = event.target.value;
+    setInputHtml(value);
+  }, [setInputHtml]);
 
-  const stats = useMemo(() => buildEditorStats(editorState), [editorState]);
-  const toolbar = useMemo(getToolbarOptions, []);
-  const rawContentPreview = useMemo(
-    () => JSON.stringify(convertToRaw(editorState.getCurrentContent()), null, 2),
-    [editorState]
-  );
-
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleSubtitleChange = (event) => {
-    setSubtitle(event.target.value);
-  };
-
-  const handleEditorChange = (nextState) => {
-    setEditorState(nextState);
-    const encoded = encodeEditorStateToBase64(nextState);
-    setBase64Content(encoded);
-  };
-
-  const handleClear = () => {
-    resetStore();
-    setEditorState(EditorState.createEmpty());
-    setStatusMessage('');
-    setHtmlMeta(null);
-  };
-
-  const handleCopyRaw = async () => {
-    try {
-      await navigator.clipboard.writeText(rawContentPreview);
-      setStatusMessage('Đã sao chép JSON của nội dung.');
-    } catch (error) {
-      setStatusMessage('Trình duyệt chặn thao tác sao chép.');
-    }
-  };
-
-  const persistHtmlMetadata = (htmlContent, source, filename = null) => {
-    const htmlBase64 = encodeTextToBase64(htmlContent);
-    if (!htmlBase64) {
-      setHtmlMeta(null);
+  const handleParseHtml = useCallback(() => {
+    if (!inputHtml.trim()) {
       return;
     }
-    setHtmlMeta({
-      source,
-      encoding: 'base64',
-      originalFilename: filename,
-      importedAt: new Date().toISOString(),
-      value: htmlBase64,
+    const parsed = parseHtmlToBlocks(inputHtml);
+    setBlocks(parsed);
+  }, [inputHtml, setBlocks]);
+
+  const handlePaste = useCallback((event) => {
+    const pastedText = event.clipboardData.getData('text');
+    if (pastedText) {
+      setInputHtml(pastedText);
+      setTimeout(() => {
+        const parsed = parseHtmlToBlocks(pastedText);
+        setBlocks(parsed);
+      }, 0);
+    }
+  }, [setInputHtml, setBlocks]);
+
+  const handleOpenInsertModal = useCallback((targetId, insertType = 'inside') => {
+    setInsertModal({ open: true, targetId, insertType });
+  }, []);
+
+  const handleCloseInsertModal = useCallback(() => {
+    setInsertModal({ open: false, targetId: null, insertType: 'inside' });
+  }, []);
+
+  const handleOpenEditModal = useCallback((targetId, currentHtml) => {
+    setEditModal({ open: true, targetId, initialHtml: currentHtml });
+  }, []);
+
+  const handleCloseEditModal = useCallback(() => {
+    setEditModal({ open: false, targetId: null, initialHtml: '' });
+  }, []);
+
+  const handleInsertBlock = useCallback((newHtml) => {
+    if (!newHtml.trim() || !insertModal.targetId) {
+      return;
+    }
+
+    setBlocks((prevBlocks) => {
+      const safePrevBlocks = Array.isArray(prevBlocks) ? prevBlocks : [];
+      return insertBlockAtPosition(safePrevBlocks, insertModal.targetId, newHtml, insertModal.insertType);
     });
-  };
 
-  const handleImportClick = () => {
-    fileInputRef.current?.click();
-  };
+    handleCloseInsertModal();
+  }, [insertModal.targetId, insertModal.insertType, setBlocks, handleCloseInsertModal]);
 
-  const handleImportFile = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
+  const handleDeleteBlock = useCallback((blockId) => {
+    setBlocks((prevBlocks) => {
+      const safePrevBlocks = Array.isArray(prevBlocks) ? prevBlocks : [];
+      return deleteBlockById(safePrevBlocks, blockId);
+    });
+  }, [setBlocks]);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const htmlContent = typeof reader.result === 'string' ? reader.result : '';
-      importHtmlContent(htmlContent, {
-        filename: file.name ?? null,
-        source: 'html-file',
-      });
-      event.target.value = '';
-    };
-    reader.onerror = () => {
-      setStatusMessage('Không thể đọc file HTML.');
-    };
-    reader.readAsText(file);
-  };
-
-  const importHtmlContent = (htmlContent, metadata = {}) => {
-    const nextState = buildEditorStateFromHtml(htmlContent);
-    if (!nextState) {
-      setStatusMessage('HTML không hợp lệ hoặc không có nội dung.');
-      return;
-    }
-
-    setEditorState(nextState);
-    const encoded = encodeEditorStateToBase64(nextState);
-    setBase64Content(encoded);
-    persistHtmlMetadata(htmlContent, metadata.source ?? 'html', metadata.filename ?? null);
-    setStatusMessage('Đã nhập nội dung từ file HTML.');
-  };
-
-  const handleEditorPaste = (text, html) => {
-    if (!html) {
-      return false;
-    }
-
-    const nextState = insertHtmlIntoEditorState(editorState, html);
-    if (!nextState) {
-      setStatusMessage('Không thể đọc nội dung HTML từ clipboard.');
-      return false;
-    }
-
-    setEditorState(nextState);
-    const encoded = encodeEditorStateToBase64(nextState);
-    setBase64Content(encoded);
-    persistHtmlMetadata(html, 'clipboard');
-    setStatusMessage('Đã dán nội dung HTML.');
-
-    return true;
-  };
-
-  const handleCopyHtml = async () => {
+  const handleCopyBlock = useCallback(async (blockHtml) => {
     try {
-      const raw = convertToRaw(editorState.getCurrentContent());
-      const html = draftToHtml(raw);
-      await navigator.clipboard.writeText(html);
-      setStatusMessage('Đã sao chép HTML của nội dung.');
+      await navigator.clipboard.writeText(blockHtml);
+      return true;
     } catch (error) {
-      setStatusMessage('Trình duyệt chặn thao tác sao chép.');
+      console.error('Copy failed:', error);
+      return false;
     }
-  };
+  }, []);
+
+  const handleClear = useCallback(() => {
+    setInputHtml('');
+    setBlocks([]);
+  }, [setInputHtml, setBlocks]);
+
+  const handleUpdateBlock = useCallback((newHtml) => {
+    if (!newHtml.trim() || !editModal.targetId) {
+      return;
+    }
+
+    setBlocks((prevBlocks) => {
+      const safePrevBlocks = Array.isArray(prevBlocks) ? prevBlocks : [];
+      return updateBlockHtml(safePrevBlocks, editModal.targetId, newHtml);
+    });
+
+    handleCloseEditModal();
+    toast.success('Đã cập nhật block thành công', { position: 'top-right', autoClose: 2000 });
+  }, [editModal.targetId, setBlocks, handleCloseEditModal]);
+
+  const handleCopyAllBlocks = useCallback(async () => {
+    if (safeBlocks.length === 0) {
+      toast.warning('Chưa có block nào để copy', { position: 'top-right', autoClose: 2000 });
+      return;
+    }
+
+    try {
+      const allHtml = serializeBlocksToHtml(safeBlocks);
+      await navigator.clipboard.writeText(allHtml);
+      toast.success(`Đã copy ${safeBlocks.length} block(s) vào clipboard`, {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+    } catch (error) {
+      console.error('Copy all blocks failed:', error);
+      toast.error('Copy thất bại, hãy thử lại', { position: 'top-right', autoClose: 2000 });
+    }
+  }, [safeBlocks]);
 
   return {
-    title,
-    subtitle,
-    editorState,
-    statusMessage,
-    fileInputRef,
-    stats,
-    toolbar,
-    rawContentPreview,
-    handleTitleChange,
-    handleSubtitleChange,
-    handleEditorChange,
+    blocks: safeBlocks,
+    inputHtml: inputHtml || '',
+    insertModal,
+    editModal,
+    handleInputChange,
+    handleParseHtml,
+    handlePaste,
+    handleOpenInsertModal,
+    handleCloseInsertModal,
+    handleOpenEditModal,
+    handleCloseEditModal,
+    handleInsertBlock,
+    handleUpdateBlock,
+    handleDeleteBlock,
+    handleCopyBlock,
+    handleCopyAllBlocks,
     handleClear,
-    handleCopyRaw,
-    handleImportClick,
-    handleImportFile,
-    handleEditorPaste,
-    handleCopyHtml,
   };
 }
+

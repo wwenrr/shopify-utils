@@ -1,0 +1,233 @@
+.block {
+  margin-bottom: 16px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  transition: border-color 150ms ease;
+}
+
+.block:hover {
+  border-color: var(--accent);
+}
+
+.blockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--card-border);
+  border-radius: 8px 8px 0 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.collapseButton {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 150ms ease;
+  padding: 0;
+}
+
+.collapseButton:hover {
+  background: var(--card-bg);
+  color: var(--accent);
+}
+
+.collapseButton svg {
+  transition: transform 150ms ease;
+}
+
+.collapseButton.expanded svg {
+  transform: rotate(90deg);
+}
+
+.tagName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.insertButton,
+.editButton,
+.copyButton,
+.deleteButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 150ms ease;
+}
+
+.insertButton:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.editButton:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.copyButton:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.deleteButton:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+.blockContent {
+  padding: 16px;
+}
+
+.htmlPreview {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--surface);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+}
+
+.htmlPreview * {
+  margin: 0;
+  max-width: 100%;
+}
+
+.htmlPreview p {
+  margin-bottom: 12px;
+}
+
+.htmlPreview p:last-child {
+  margin-bottom: 0;
+}
+
+.htmlPreview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.htmlPreview h1,
+.htmlPreview h2,
+.htmlPreview h3,
+.htmlPreview h4,
+.htmlPreview h5,
+.htmlPreview h6 {
+  margin-top: 16px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.htmlPreview ul,
+.htmlPreview ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.htmlPreview li {
+  margin: 6px 0;
+}
+
+.htmlPreview blockquote {
+  margin: 12px 0;
+  padding-left: 16px;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.htmlPreview code {
+  background: var(--card-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+}
+
+.htmlPreview pre {
+  background: var(--card-bg);
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.htmlPreview a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.htmlPreview a:hover {
+  text-decoration: underline;
+}
+
+.children {
+  margin-top: 16px;
+  padding-left: 0;
+}
+
+.insertAfterButton {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+  padding: 8px 0;
+}
+
+.insertAfterBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--card-border);
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 150ms ease;
+}
+
+.insertAfterBtn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+  color: white;
+}
+

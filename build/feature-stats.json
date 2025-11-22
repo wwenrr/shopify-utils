@@ -1,60 +1,333 @@
 {
-  "generatedAt": "2025-11-20T16:11:59.210Z",
+  "generatedAt": "2025-11-22T08:37:05.063Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 1,
+  "totalCommits": 40,
   "commits": [
+    {
+      "hash": "dae02f22235a9f3fc0112a76b64fd042853742bd",
+      "author": "MK",
+      "date": "2025-11-22 15:36:34 +0700",
+      "message": "refactor: simplify blog editor component by utilizing custom hooks and removing unused functions",
+      "type": "refactor"
+    },
+    {
+      "hash": "1575d07f9a772c470cb3d8397a385fe4ce962572",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 08:27:25 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
+      "author": "MK",
+      "date": "2025-11-22 15:27:01 +0700",
+      "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+      "type": "refactor"
+    },
+    {
+      "hash": "093a7931a28dca78ba0309800fd8f08394e1c8a7",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 08:05:44 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "86a505eb9d0b6266db34425214760b31b113ce5e",
+      "author": "MK",
+      "date": "2025-11-22 15:05:15 +0700",
+      "message": "refactor: restructure routing and remove unused MainLayout component",
+      "type": "refactor"
+    },
+    {
+      "hash": "d747bba5f27961f813250f397ff55f4c71e20cd9",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 07:48:51 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "783568dd731d8235f0f2df3dc9d8c17ac213583e",
+      "author": "MK",
+      "date": "2025-11-22 14:48:21 +0700",
+      "message": "feat: integrate CRACO for enhanced configuration and update routing structure",
+      "type": "feature"
+    },
+    {
+      "hash": "9fb0ec248e67210f7b35b71a5feeecb97b701d43",
+      "author": "github-actions[bot]",
+      "date": "2025-11-21 10:10:36 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "3abdb3e7d8ea6c49ef5d23a4ea6ed2275e56f3bc",
+      "author": "MK",
+      "date": "2025-11-21 17:10:10 +0700",
+      "message": "refactor: remove unused template constants and simplify FAQs generator logic",
+      "type": "refactor"
+    },
+    {
+      "hash": "7ef3559bdd849ec6fd5f2e2bee580022d499474d",
+      "author": "github-actions[bot]",
+      "date": "2025-11-21 10:01:45 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "0fec3922ea8d6b919d4c282cf4686c62853fc93a",
+      "author": "MK",
+      "date": "2025-11-21 17:01:16 +0700",
+      "message": "refactor: streamline FAQs generator by removing unused constants and enhancing styling options",
+      "type": "refactor"
+    },
+    {
+      "hash": "0efbb2bbaf89e7e9f468ea1abd0fb7d96fe75c41",
+      "author": "github-actions[bot]",
+      "date": "2025-11-21 07:12:13 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "06d3526ba0eae06b405df7f71b9b21f51598a892",
+      "author": "MK",
+      "date": "2025-11-21 14:11:45 +0700",
+      "message": "feat: add template selection and styling options to FAQs generator",
+      "type": "feature"
+    },
+    {
+      "hash": "6de1741808b8373628bc8da51755f0d3bec5780d",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:38:56 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "0e600c289d5675230c3d5139b34f8e3b7b097f43",
+      "author": "MK",
+      "date": "2025-11-20 23:37:34 +0700",
+      "message": "fix: update fallback route in App.js to redirect to the home page",
+      "type": "bugfix"
+    },
+    {
+      "hash": "2f382dadc5d256ca0e9df644d435bdb77ace3643",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:36:47 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "aa12e8bf7e133089ae3d6690edf6268aabcc1c8b",
+      "author": "MK",
+      "date": "2025-11-20 23:36:20 +0700",
+      "message": "chore: update routing and feature stats endpoint to support dynamic public URL",
+      "type": "chore"
+    },
+    {
+      "hash": "c21eb8cfe408d4921e4f28d354ce5d94fb7e4a4a",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:26:37 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "6009e07f34a3789f1235a1be0b761f99c73b3d64",
+      "author": "MK",
+      "date": "2025-11-20 23:25:25 +0700",
+      "message": "Update feature stats with new commits and enhance file management by removing unused HTML templates and updating .gitignore",
+      "type": "other"
+    },
+    {
+      "hash": "9cdc9f7712e09c34016206767a18fb9f4f23641a",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:22:46 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
+    {
+      "hash": "cfe61be99ebb283c11f264d3d668ecf9ac899ded",
+      "author": "MK",
+      "date": "2025-11-20 23:22:16 +0700",
+      "message": "chore: update asset paths in build files and set homepage URL in package.json",
+      "type": "chore"
+    },
+    {
+      "hash": "4449d8cfb9d0fd7464f99b91377f358fff518c54",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 16:11:59 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
       "author": "MK",
       "date": "2025-11-20 23:11:29 +0700",
       "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
       "type": "chore"
+    },
+    {
+      "hash": "84ecd53a1054c499c2018d2a17b056696febbf65",
+      "author": "MK",
+      "date": "2025-11-20 23:01:46 +0700",
+      "message": "chore: add feature stats generation and commit process in GitHub Actions workflow",
+      "type": "chore"
+    },
+    {
+      "hash": "a81ece98ac5fe8bf99053dd07437e6897cc8d5f6",
+      "author": "MK",
+      "date": "2025-11-20 22:48:14 +0700",
+      "message": "feat: add new commit type 'fix' with associated color and background settings in commitTypes.json",
+      "type": "feature"
+    },
+    {
+      "hash": "c624b97283f4d8c1c2cf9c722b8ffacd000f8de0",
+      "author": "MK",
+      "date": "2025-11-20 22:47:20 +0700",
+      "message": "fix: update pathSegmentsToKeep in 404.html to retain one path segment for better URL handling",
+      "type": "bugfix"
+    },
+    {
+      "hash": "4a5342c3c23e8b97c33920a6d524e21f4f0e65aa",
+      "author": "MK",
+      "date": "2025-11-20 22:43:31 +0700",
+      "message": "chore: add cross-env dependency and update build script to disable ESLint plugin",
+      "type": "chore"
+    },
+    {
+      "hash": "3062a7e6af9e033f4e237ce3b0fab39b71293cc7",
+      "author": "MK",
+      "date": "2025-11-20 22:40:33 +0700",
+      "message": "chore: update asset paths in build files and set homepage in package.json",
+      "type": "chore"
+    },
+    {
+      "hash": "a066060d33544d36a4f8f7abe05b3062a94e54d6",
+      "author": "MK",
+      "date": "2025-11-20 22:31:32 +0700",
+      "message": "chore: artifact upload path for GitHub Pages",
+      "type": "chore"
+    },
+    {
+      "hash": "54a984e61ebb9890144413dcab4c4824ff831265",
+      "author": "MK",
+      "date": "2025-11-20 22:30:05 +0700",
+      "message": "chore: remove sample.html and update .gitignore to exclude build directory",
+      "type": "chore"
+    },
+    {
+      "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
+      "author": "MK",
+      "date": "2025-11-20 22:29:08 +0700",
+      "message": "chore: remove unused HTML templates and update .gitignore for better file management",
+      "type": "chore"
+    },
+    {
+      "hash": "2c06d3c748a2aaaca0fbf147b18881fd7c975198",
+      "author": "MK",
+      "date": "2025-11-20 13:30:28 +0700",
+      "message": "style: update font styles and add paragraph styling function in FAQs template",
+      "type": "style"
+    },
+    {
+      "hash": "d417408980c628e31657fd71bdf887e5f9afc07f",
+      "author": "MK",
+      "date": "2025-11-20 09:15:13 +0700",
+      "message": "feat: add FAQs Template Generator section to index.html",
+      "type": "feature"
+    },
+    {
+      "hash": "35799ba30893a6a0b73d351abe7bfd9982776be9",
+      "author": "MK",
+      "date": "2025-11-19 15:34:03 +0700",
+      "message": "feat: implement variant settings form with dynamic color and style options for blog button template",
+      "type": "feature"
+    },
+    {
+      "hash": "00f5bbb20b7c8e7e4da0845c04ee58441def43c7",
+      "author": "MK",
+      "date": "2025-11-19 15:26:14 +0700",
+      "message": "style: update font family settings for button variants in blog button template",
+      "type": "style"
+    },
+    {
+      "hash": "ba90c3e5a577bac412eef7171cae68eb0d54daeb",
+      "author": "MK",
+      "date": "2025-11-19 15:21:25 +0700",
+      "message": "feat: add button variant selection and dynamic styling to blog button template",
+      "type": "feature"
+    },
+    {
+      "hash": "8a08fb6e78b135577d061cc3c9125ae7c950156a",
+      "author": "MK",
+      "date": "2025-11-19 15:05:55 +0700",
+      "message": "style: enhance responsive design and layout adjustments for blog button template",
+      "type": "style"
+    },
+    {
+      "hash": "dc9ef188e5c18e71ae288992a47fefbeecf750b0",
+      "author": "MK",
+      "date": "2025-11-19 14:52:06 +0700",
+      "message": "style: update button template with height and font family adjustments",
+      "type": "style"
+    },
+    {
+      "hash": "fdb5e6b5df609b549e05e405fd9e96a99bc37bf6",
+      "author": "MK",
+      "date": "2025-11-19 14:40:33 +0700",
+      "message": "feat: initial project structure and setup",
+      "type": "feature"
+    },
+    {
+      "hash": "06d3a7549b496680af39b5d1907710365d6b6439",
+      "author": "MK",
+      "date": "2025-11-19 10:50:00 +0700",
+      "message": "Initial commit",
+      "type": "other"
     }
   ],
   "features": [
     {
       "feature": "author-generator",
-      "commitCount": 1,
+      "commitCount": 3,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
-        "type": "chore"
+        "date": "2025-11-22 15:27:01 +0700",
+        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+        "type": "refactor"
       }
     },
     {
       "feature": "blog-button",
-      "commitCount": 1,
+      "commitCount": 2,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
-        "type": "chore"
+        "date": "2025-11-22 15:27:01 +0700",
+        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+        "type": "refactor"
       }
     },
     {
       "feature": "editor",
       "commitCount": 1,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
+        "date": "2025-11-20 22:29:08 +0700",
+        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
         "type": "chore"
       }
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 1,
+      "commitCount": 5,
       "lastCommit": {
-        "hash": "2b3b00e9cc59ccf758d8466a3903043eab74bce1",
+        "hash": "a013aa00df62dda0d0abfc579096a323e8b64e8d",
         "author": "MK",
-        "date": "2025-11-20 23:11:29 +0700",
-        "message": "chore: update permissions in GitHub Actions workflow to allow write access for contents",
-        "type": "chore"
+        "date": "2025-11-22 15:27:01 +0700",
+        "message": "refactor: consolidate author and blog button generators into single components and enhance styling",
+        "type": "refactor"
       }
     }
   ]
