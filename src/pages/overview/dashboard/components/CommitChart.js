@@ -21,7 +21,7 @@ function getDefaultEndDate() {
 }
 
 function CommitChart({ commits }) {
-  const [period, setPeriod] = useState('week');
+  const [period, setPeriod] = useState('month');
   const [startDate, setStartDate] = useState(getDefaultStartDate());
   const [endDate, setEndDate] = useState(getDefaultEndDate());
   
