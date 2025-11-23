@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { cloneVariantDefaults, VARIANT_DEFAULTS, buildButtonMarkup, DEFAULT_PREVIEW_TEXT } from '../utils';
+import { useBlogButtonStore } from '../stores/blogButtonStore';
 
 const INITIAL_FORM = {
   text: 'Đọc thêm bài viết',
@@ -21,6 +22,13 @@ const SAMPLE_FORM = {
 export function useBlogButtonGenerator() {
   const [formValues, setFormValues] = useState(INITIAL_FORM);
   const [variantSettings, setVariantSettings] = useState(() => cloneVariantDefaults());
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const saveConfig = useBlogButtonStore((state) => state.saveConfig);
+  const loadConfig = useBlogButtonStore((state) => state.loadConfig);
+  const savedConfigs = useBlogButtonStore((state) => state.savedConfigs);
+  const deleteConfig = useBlogButtonStore((state) => state.deleteConfig);
 
   const currentVariantConfig = useMemo(() => {
     return variantSettings[formValues.variant] || VARIANT_DEFAULTS.jwl;
@@ -99,6 +107,44 @@ export function useBlogButtonGenerator() {
     }
   };
 
+  const handleOpenSaveModal = () => {
+    setIsSaveModalOpen(true);
+  };
+
+  const handleCloseSaveModal = () => {
+    setIsSaveModalOpen(false);
+  };
+
+  const handleSave = async (name) => {
+    setIsSaving(true);
+    try {
+      saveConfig(name, formValues, variantSettings);
+      toast.success('Đã lưu cấu hình thành công', { position: 'top-right', autoClose: 2000 });
+      setIsSaveModalOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast.error('Lưu thất bại, hãy thử lại', { position: 'top-right', autoClose: 2000 });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleLoad = (configId) => {
+    const config = loadConfig(configId);
+    if (config) {
+      setFormValues(config.formValues);
+      setVariantSettings(config.variantSettings);
+      toast.success('Đã load cấu hình thành công', { position: 'top-right', autoClose: 2000 });
+    } else {
+      toast.error('Không tìm thấy cấu hình', { position: 'top-right', autoClose: 2000 });
+    }
+  };
+
+  const handleDeleteConfig = (configId) => {
+    deleteConfig(configId);
+    toast.success('Đã xóa cấu hình', { position: 'top-right', autoClose: 2000 });
+  };
+
   return {
     formValues,
     variantSettings,
@@ -112,5 +158,13 @@ export function useBlogButtonGenerator() {
     handleLoadSample,
     handleResetForm,
     handleCopyMarkup,
+    isSaveModalOpen,
+    isSaving,
+    handleOpenSaveModal,
+    handleCloseSaveModal,
+    handleSave,
+    handleLoad,
+    handleDeleteConfig,
+    savedConfigs,
   };
 }

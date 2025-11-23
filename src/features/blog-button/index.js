@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useBlogButtonGenerator } from './hooks';
 import { VARIANT_FIELDS } from './utils';
+import SaveModal from './components/SaveModal';
+import LoadModal from './components/LoadModal';
 import styles from './index.module.css';
 
 function BlogButtonGenerator() {
@@ -17,7 +20,17 @@ function BlogButtonGenerator() {
     handleLoadSample,
     handleResetForm,
     handleCopyMarkup,
+    isSaveModalOpen,
+    isSaving,
+    handleOpenSaveModal,
+    handleCloseSaveModal,
+    handleSave,
+    handleLoad,
+    handleDeleteConfig,
+    savedConfigs,
   } = useBlogButtonGenerator();
+
+  const [isLoadModalOpen, setIsLoadModalOpen] = useState(false);
 
   return (
     <div className={styles.page}>
@@ -33,10 +46,28 @@ function BlogButtonGenerator() {
       <div className={styles.grid}>
         <article className={styles.card}>
           <div className={styles.cardHeader}>
-            <h2>Cấu hình button</h2>
-            <button type="button" className={styles.copyButton} onClick={handleCopyMarkup}>
-              Copy
-            </button>
+            <div>
+              <h2>Cấu hình button</h2>
+            </div>
+            <div className={styles.headerActions}>
+              <button
+                type="button"
+                className={styles.loadButton}
+                onClick={() => setIsLoadModalOpen(true)}
+                disabled={savedConfigs.length === 0}
+              >
+                Load
+                {savedConfigs.length > 0 && (
+                  <span className={styles.badge}>{savedConfigs.length}</span>
+                )}
+              </button>
+              <button type="button" className={styles.saveButton} onClick={handleOpenSaveModal}>
+                Save
+              </button>
+              <button type="button" className={styles.copyButton} onClick={handleCopyMarkup}>
+                Copy
+              </button>
+            </div>
           </div>
           <form className={styles.form}>
             <label className={styles.field}>
@@ -146,6 +177,21 @@ function BlogButtonGenerator() {
         <h2>Button HTML</h2>
         <pre className={styles.output}>{buttonMarkup.trim()}</pre>
       </article>
+
+      <SaveModal
+        isOpen={isSaveModalOpen}
+        onClose={handleCloseSaveModal}
+        onSave={handleSave}
+        isLoading={isSaving}
+      />
+
+      <LoadModal
+        isOpen={isLoadModalOpen}
+        onClose={() => setIsLoadModalOpen(false)}
+        savedConfigs={savedConfigs}
+        onLoad={handleLoad}
+        onDelete={handleDeleteConfig}
+      />
 
       <ToastContainer
         position="top-right"
