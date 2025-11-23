@@ -33,7 +33,14 @@ function AuthorGenerator() {
 
       <div className={styles.grid}>
         <article className={styles.card}>
-          <h3>Thông tin author</h3>
+          <div className={styles.cardHeader}>
+            <h3>Thông tin author</h3>
+            <div className={styles.headerActions}>
+              <button type="button" className={styles.copyButton} onClick={handleCopy}>
+                Copy
+              </button>
+            </div>
+          </div>
           <form className={styles.form}>
             <label className={styles.field}>
               <span>Nạp author có sẵn</span>
@@ -102,14 +109,7 @@ function AuthorGenerator() {
         </article>
 
         <article className={styles.card}>
-          <div className={styles.previewHeader}>
-            <h3>Preview</h3>
-            <div className={styles.previewActions}>
-              <button type="button" className={styles.copyButton} onClick={handleCopy}>
-                Copy HTML
-              </button>
-            </div>
-          </div>
+          <h3>Preview</h3>
           <div className={styles.preview}>
             {hasContent ? (
               <div dangerouslySetInnerHTML={{ __html: template }} />
@@ -128,7 +128,17 @@ function AuthorGenerator() {
         </div>
         <pre className={styles.code}>{template}</pre>
       </article>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        closeOnClick
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        newestOnTop={false}
+        theme="light"
+      />
     </section>
   );
 }

@@ -65,6 +65,20 @@
   color: var(--text);
 }
 
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -172,11 +186,23 @@
   grid-column: 1 / -1;
 }
 
-.outputHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.copyButton {
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  position: relative;
+}
+
+.copyButton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: rgba(64, 197, 124, 0.05);
 }
 
 .output {
@@ -195,33 +221,6 @@
   overflow-y: auto;
 }
 
-.inlineAlert {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 16px 22px;
-  border-radius: 14px;
-  font-weight: 600;
-  color: #fff;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-}
-
-.inlineAlert.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.inlineAlert.success {
-  background-color: #10b981;
-}
-
-.inlineAlert.error {
-  background-color: #ef4444;
-}
 
 @media (max-width: 720px) {
   .header {

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   SAMPLE_HTML,
   normalizeInput,
@@ -12,42 +13,42 @@ export function useFaqsGenerator() {
   const [input, setInput] = useState('');
   const [outputHtml, setOutputHtml] = useState('');
   const [previewHtml, setPreviewHtml] = useState('');
-  const [inlineAlert, setInlineAlert] = useState({ message: '', type: 'error', visible: false });
   const [lastFaqData, setLastFaqData] = useState(null);
-  const alertTimeoutRef = useRef(null);
-
-  const showAlert = (message, type = 'error') => {
-    setInlineAlert({ message, type, visible: true });
-    if (alertTimeoutRef.current) {
-      clearTimeout(alertTimeoutRef.current);
-    }
-    alertTimeoutRef.current = setTimeout(() => {
-      setInlineAlert((previous) => ({ ...previous, visible: false }));
-    }, 2800);
-  };
 
   const handleScan = (rawInput) => {
     const raw = rawInput.trim();
     if (!raw) {
-      showAlert('Vui lòng nhập HTML FAQs trước khi scan.');
+      toast.warning('Vui lòng nhập HTML FAQs trước khi scan.', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       return;
     }
 
     const normalized = normalizeInput(raw);
     if (!isLikelyHtml(normalized)) {
-      showAlert('Nội dung phải là HTML hợp lệ (có thẻ).');
+      toast.error('Nội dung phải là HTML hợp lệ (có thẻ).', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       return;
     }
 
     const doc = parseHtml(normalized);
     if (!doc) {
-      showAlert('Không thể đọc HTML. Vui lòng kiểm tra lại.');
+      toast.error('Không thể đọc HTML. Vui lòng kiểm tra lại.', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       return;
     }
 
     const faqData = extractFaqData(doc);
     if (!faqData || faqData.questions.length === 0) {
-      showAlert('Không tìm thấy thẻ h3 cho câu hỏi. Vui lòng kiểm tra HTML.');
+      toast.error('Không tìm thấy thẻ h3 cho câu hỏi. Vui lòng kiểm tra HTML.', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       return;
     }
 
@@ -55,13 +56,19 @@ export function useFaqsGenerator() {
     setLastFaqData(faqData);
     setPreviewHtml(html);
     setOutputHtml(html);
-    showAlert('Đã tạo FAQs preview thành công.', 'success');
+    toast.success('Đã tạo FAQs preview thành công.', {
+      position: 'top-right',
+      autoClose: 2000,
+    });
   };
 
   const handleLoadSample = () => {
     setInput(SAMPLE_HTML);
     handleScan(SAMPLE_HTML);
-    showAlert('Đã load sample FAQs.', 'success');
+    toast.success('Đã load sample FAQs.', {
+      position: 'top-right',
+      autoClose: 2000,
+    });
   };
 
   const handleClearInput = () => {
@@ -69,12 +76,18 @@ export function useFaqsGenerator() {
     setPreviewHtml('');
     setOutputHtml('');
     setLastFaqData(null);
-    showAlert('Đã xóa nội dung.', 'success');
+    toast.success('Đã xóa nội dung.', {
+      position: 'top-right',
+      autoClose: 2000,
+    });
   };
 
   const handleCopyHtml = async () => {
     if (!outputHtml.trim()) {
-      showAlert('Chưa có HTML để copy.');
+      toast.warning('Chưa có HTML để copy.', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
       return;
     }
 
@@ -89,10 +102,16 @@ export function useFaqsGenerator() {
       } else {
         await navigator.clipboard.writeText(htmlString);
       }
-      showAlert('Đã copy FAQs HTML.', 'success');
+      toast.success('Đã copy FAQs HTML.', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
     } catch (error) {
       console.error(error);
-      showAlert('Không thể copy. Vui lòng thử lại.');
+      toast.error('Không thể copy. Vui lòng thử lại.', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
     }
   };
 
@@ -122,7 +141,6 @@ export function useFaqsGenerator() {
     input,
     outputHtml,
     previewHtml,
-    inlineAlert,
     handleInputChange,
     handlePaste,
     handleScanClick,

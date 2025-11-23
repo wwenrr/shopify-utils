@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useFaqsGenerator } from './hooks';
 import styles from './index.module.css';
 
@@ -6,7 +8,6 @@ function FaqsGenerator() {
     input,
     outputHtml,
     previewHtml,
-    inlineAlert,
     handleInputChange,
     handlePaste,
     handleScanClick,
@@ -28,7 +29,14 @@ function FaqsGenerator() {
 
       <div className={styles.grid}>
         <article className={styles.card}>
-          <h2>Nhập HTML FAQs</h2>
+          <div className={styles.cardHeader}>
+            <h2>Nhập HTML FAQs</h2>
+            <div className={styles.headerActions}>
+              <button type="button" className={styles.copyButton} onClick={handleCopyHtml}>
+                Copy
+              </button>
+            </div>
+          </div>
           <label className={styles.field}>
             <span>Dán nội dung FAQs (HTML)</span>
             <textarea
@@ -65,24 +73,21 @@ function FaqsGenerator() {
       </div>
 
       <article className={`${styles.card} ${styles.fullWidth}`}>
-        <div className={styles.outputHeader}>
-          <h2>Output HTML</h2>
-          <button type="button" className={styles.primary} onClick={handleCopyHtml}>
-            Copy HTML
-          </button>
-        </div>
+        <h2>Output HTML</h2>
         <pre className={styles.output}>{outputHtml}</pre>
       </article>
 
-      <div
-        className={`${styles.inlineAlert} ${
-          inlineAlert.visible ? styles.visible : ''
-        } ${inlineAlert.type === 'success' ? styles.success : styles.error}`}
-        role="status"
-        aria-live="polite"
-      >
-        {inlineAlert.message}
-      </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        closeOnClick
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        newestOnTop={false}
+        theme="light"
+      />
     </div>
   );
 }

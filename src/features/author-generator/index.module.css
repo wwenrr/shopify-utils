@@ -47,9 +47,23 @@
 }
 
 .card h3 {
-  margin: 0 0 20px;
+  margin: 0;
   font-size: 20px;
   color: #1f2937;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .form {
@@ -191,37 +205,24 @@
 }
 
 .copyButton {
-  border: none;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 15px;
-  font-weight: 600;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 14px;
   cursor: pointer;
-  color: #ffffff;
-  background-color: #40c57c;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  position: relative;
 }
 
 .copyButton:hover {
-  background-color: #2ea266;
+  border-color: #40c57c;
+  color: #40c57c;
+  background-color: rgba(64, 197, 124, 0.05);
 }
 
-.copyButton:active {
-  transform: translateY(1px);
-}
-
-.previewHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.previewActions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 
 @media (max-width: 720px) {
   .header {

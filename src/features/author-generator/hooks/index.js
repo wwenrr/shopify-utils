@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getInitialState, getSampleState, buildTemplate, hasUserInput, AUTHOR_PRESETS } from '../utils';
 
@@ -49,14 +49,15 @@ export function useAuthorGenerator() {
   };
 
   const handleCopy = () => {
-    if (!hasContent) return;
+    if (!hasContent) {
+      toast.warning('Vui lòng điền thông tin vào form trước khi copy', {
+        position: 'top-right',
+        autoClose: 2000,
+      });
+      return;
+    }
     copyTemplateToClipboard();
   };
-
-  useEffect(() => {
-    if (!hasContent) return;
-    copyTemplateToClipboard();
-  }, [template]);
 
   return {
     formData,
