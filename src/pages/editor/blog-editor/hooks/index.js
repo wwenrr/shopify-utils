@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { parseHtmlToBlocks, insertBlockAtPosition, deleteBlockById, serializeBlocksToHtml, updateBlockHtml } from '../utils';
+import { parseHtmlToBlocks, insertBlockAtPosition, deleteBlockById, serializeBlocksToHtml, updateBlockHtml, groupH2Blocks, ungroupH2Blocks, isH2Grouped, closeAllParentsAndSplit } from '../utils';
 import { useBlogEditorStore } from '../stores/blogEditorStore';
 
 export function useHtmlBlockEditor() {
   const { inputHtml, blocks, setInputHtml, setBlocks } = useBlogEditorStore();
   const [insertModal, setInsertModal] = useState({ open: false, targetId: null, insertType: 'inside' });
-  const [editModal, setEditModal] = useState({ open: false, targetId: null, initialHtml: '' });
+  const [editModal, setEditModal] = useState({ open: false, targetId: null, initialHtml: '', blockTag: null, innerHtml: '', originalOuterHtml: '' });
 
   const safeBlocks = Array.isArray(blocks) ? blocks : [];
 
@@ -51,12 +51,12 @@ export function useHtmlBlockEditor() {
     setInsertModal({ open: false, targetId: null, insertType: 'inside' });
   }, []);
 
-  const handleOpenEditModal = useCallback((targetId, currentHtml) => {
-    setEditModal({ open: true, targetId, initialHtml: currentHtml });
+  const handleOpenEditModal = useCallback((targetId, currentHtml, blockTag, innerHtml) => {
+    setEditModal({ open: true, targetId, initialHtml: currentHtml, blockTag, innerHtml, originalOuterHtml: currentHtml });
   }, []);
 
   const handleCloseEditModal = useCallback(() => {
-    setEditModal({ open: false, targetId: null, initialHtml: '' });
+    setEditModal({ open: false, targetId: null, initialHtml: '', blockTag: null, innerHtml: '', originalOuterHtml: '' });
   }, []);
 
   const handleInsertBlock = useCallback((newHtml) => {
@@ -99,14 +99,34 @@ export function useHtmlBlockEditor() {
       return;
     }
 
+    let finalHtml = newHtml.trim();
+
+    if (editModal.blockTag === 'section' && editModal.originalOuterHtml) {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(editModal.originalOuterHtml, 'text/html');
+        const originalElement = doc.body.firstElementChild;
+        
+        if (originalElement && originalElement.tagName.toLowerCase() === 'section') {
+          const attributes = Array.from(originalElement.attributes)
+            .map(attr => `${attr.name}="${attr.value}"`)
+            .join(' ');
+          const attrsStr = attributes ? ` ${attributes}` : '';
+          finalHtml = `<section${attrsStr}>${newHtml.trim()}</section>`;
+        }
+      } catch (error) {
+        console.error('Error wrapping section:', error);
+      }
+    }
+
     setBlocks((prevBlocks) => {
       const safePrevBlocks = Array.isArray(prevBlocks) ? prevBlocks : [];
-      return updateBlockHtml(safePrevBlocks, editModal.targetId, newHtml);
+      return updateBlockHtml(safePrevBlocks, editModal.targetId, finalHtml);
     });
 
     handleCloseEditModal();
     toast.success('Đã cập nhật block thành công', { position: 'top-right', autoClose: 2000 });
-  }, [editModal.targetId, setBlocks, handleCloseEditModal]);
+  }, [editModal.targetId, editModal.blockTag, editModal.originalOuterHtml, setBlocks, handleCloseEditModal]);
 
   const handleCopyAllBlocks = useCallback(async () => {
     if (safeBlocks.length === 0) {
@@ -127,11 +147,63 @@ export function useHtmlBlockEditor() {
     }
   }, [safeBlocks]);
 
+  const isGrouped = useMemo(() => isH2Grouped(safeBlocks), [safeBlocks]);
+
+  const handleGroupH2 = useCallback(() => {
+    if (safeBlocks.length === 0) {
+      toast.warning('Chưa có block nào để nhóm', { position: 'top-right', autoClose: 2000 });
+      return;
+    }
+
+    if (isGrouped) {
+      const ungroupedBlocks = ungroupH2Blocks(safeBlocks);
+      setBlocks(ungroupedBlocks);
+      toast.success('Đã bỏ nhóm h2', { position: 'top-right', autoClose: 2000 });
+    } else {
+      const h2Count = safeBlocks.filter(block => {
+        function countH2(b) {
+          if (b.tag === 'h2') return 1;
+          if (b.children && b.children.length > 0) {
+            return b.children.reduce((sum, child) => sum + countH2(child), 0);
+          }
+          return 0;
+        }
+        return countH2(block);
+      }).reduce((sum, count) => sum + count, 0);
+
+      if (h2Count === 0) {
+        toast.warning('Không tìm thấy thẻ h2 nào', { position: 'top-right', autoClose: 2000 });
+        return;
+      }
+
+      const groupedBlocks = groupH2Blocks(safeBlocks);
+      setBlocks(groupedBlocks);
+      
+      const groupedCount = groupedBlocks.filter(block => block.tag === 'section' && block.outerHtml?.includes('h2-group')).length;
+      toast.success(`Đã nhóm ${groupedCount} nhóm h2`, { position: 'top-right', autoClose: 2000 });
+    }
+  }, [safeBlocks, isGrouped, setBlocks]);
+
+  const handleSplitBlock = useCallback((blockId) => {
+    if (!blockId) {
+      return;
+    }
+
+    setBlocks((prevBlocks) => {
+      const safePrevBlocks = Array.isArray(prevBlocks) ? prevBlocks : [];
+      const splitBlocks = closeAllParentsAndSplit(safePrevBlocks, blockId);
+      return splitBlocks;
+    });
+
+    toast.success('Đã cắt và đóng tất cả thẻ cha', { position: 'top-right', autoClose: 2000 });
+  }, [setBlocks]);
+
   return {
     blocks: safeBlocks,
     inputHtml: inputHtml || '',
     insertModal,
     editModal,
+    isH2Grouped: isGrouped,
     handleInputChange,
     handleParseHtml,
     handlePaste,
@@ -144,6 +216,8 @@ export function useHtmlBlockEditor() {
     handleDeleteBlock,
     handleCopyBlock,
     handleCopyAllBlocks,
+    handleGroupH2,
+    handleSplitBlock,
     handleClear,
   };
 }

@@ -23,6 +23,11 @@
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.3);
 }
 
+.modalLarge {
+  max-width: 1200px;
+  max-height: 95vh;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -79,16 +84,25 @@
 
 .textarea {
   width: 100%;
-  padding: 12px;
+  padding: 16px;
   border: 1px solid var(--card-border);
   border-radius: 8px;
-  font-size: 14px;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  line-height: 1.6;
+  font-size: 13px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace;
+  line-height: 1.7;
   color: var(--text);
-  background: var(--card-bg);
+  background: var(--surface);
   resize: vertical;
   min-height: 200px;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+.textareaLarge {
+  min-height: 500px;
+  font-size: 14px;
 }
 
 .textarea:focus {

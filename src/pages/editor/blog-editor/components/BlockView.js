@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styles from './BlockView.module.css';
 
-function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit }) {
+function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit, onSplit }) {
   const hasChildren = block.children && block.children.length > 0;
   const [isExpanded, setIsExpanded] = useState(!hasChildren);
 
@@ -31,13 +31,57 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit })
 
   const handleEditClick = (event) => {
     event.stopPropagation();
-    onEdit(block.id, block.outerHtml);
+    onEdit(block.id, block.outerHtml, block.tag, block.innerHtml);
   };
 
   const handleToggleExpand = (event) => {
     event.stopPropagation();
     setIsExpanded((prev) => !prev);
   };
+
+  const handleSplitClick = (event) => {
+    event.stopPropagation();
+    if (onSplit) {
+      onSplit(block.id);
+    }
+  };
+
+  const getDisplayHtml = useMemo(() => {
+    if (!hasChildren || !isExpanded) {
+      return block.outerHtml;
+    }
+
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(block.outerHtml, 'text/html');
+      
+      if (doc.querySelector('parsererror')) {
+        return block.outerHtml;
+      }
+
+      const body = doc.body;
+      if (!body) {
+        return block.outerHtml;
+      }
+
+      const element = body.firstElementChild;
+      if (!element) {
+        return block.outerHtml;
+      }
+
+      const clone = element.cloneNode(true);
+      while (clone.firstChild) {
+        clone.removeChild(clone.firstChild);
+      }
+
+      const tag = clone.tagName.toLowerCase();
+      const className = clone.className ? ` class="${clone.className}"` : '';
+      return `<${tag}${className}></${tag}>`;
+    } catch (error) {
+      console.error('Error processing HTML:', error);
+      return block.outerHtml;
+    }
+  }, [block.outerHtml, hasChildren, isExpanded]);
 
   return (
     <>
@@ -161,7 +205,7 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit })
           </div>
         </div>
         <div className={styles.blockContent}>
-          <div className={styles.htmlPreview} dangerouslySetInnerHTML={{ __html: block.outerHtml }} />
+          <div className={styles.htmlPreview} dangerouslySetInnerHTML={{ __html: getDisplayHtml }} />
         </div>
         {hasChildren && isExpanded && (
           <div className={styles.children}>
@@ -174,6 +218,7 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit })
                 onDelete={onDelete}
                 onCopy={onCopy}
                 onEdit={onEdit}
+                onSplit={onSplit}
               />
             ))}
           </div>
@@ -201,6 +246,29 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit })
             />
           </svg>
         </button>
+        {onSplit && (
+          <button
+            type="button"
+            className={styles.splitAfterBtn}
+            onClick={handleSplitClick}
+            aria-label="Cắt - đóng tất cả thẻ cha"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 4L12 4M4 8L12 8M4 12L12 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        )}
       </div>
     </>
   );
