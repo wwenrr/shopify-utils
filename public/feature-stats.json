@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-23T09:00:58.635Z",
+  "generatedAt": "2025-11-23T09:02:35.259Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 50,
+  "totalCommits": 52,
   "commits": [
+    {
+      "hash": "c943a8e56c1724bb475aa4b4bb83ef0e421213f1",
+      "author": "MK",
+      "date": "2025-11-23 16:02:06 +0700",
+      "message": "fix: change default period in CommitChart from week to month",
+      "type": "bugfix"
+    },
+    {
+      "hash": "5a288bd7ed222fe5801473dd296ce1ecd79e3b28",
+      "author": "github-actions[bot]",
+      "date": "2025-11-23 09:00:58 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "2759d01d4ca39c6a04a5abb3c775f6497e369c5a",
       "author": "MK",
