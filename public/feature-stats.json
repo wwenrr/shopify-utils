@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-22T13:34:46.280Z",
+  "generatedAt": "2025-11-23T09:00:58.635Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 48,
+  "totalCommits": 50,
   "commits": [
+    {
+      "hash": "2759d01d4ca39c6a04a5abb3c775f6497e369c5a",
+      "author": "MK",
+      "date": "2025-11-23 16:00:31 +0700",
+      "message": "feat: enhance blog button generator with save and load functionality, including modals and improved UI components",
+      "type": "feature"
+    },
+    {
+      "hash": "e3b7136b68237ef5cab8f942de75a9f4adc473fb",
+      "author": "github-actions[bot]",
+      "date": "2025-11-22 13:34:46 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "adfb3e3571162d5d05d9b6db7912122504ed4871",
       "author": "MK",
@@ -355,12 +369,12 @@
     },
     {
       "feature": "blog-button",
-      "commitCount": 3,
+      "commitCount": 4,
       "lastCommit": {
-        "hash": "43ccab740e3b61040eb683e3e11f2e150de76093",
+        "hash": "2759d01d4ca39c6a04a5abb3c775f6497e369c5a",
         "author": "MK",
-        "date": "2025-11-22 19:18:26 +0700",
-        "message": "feat: enhance blog button generator with copy functionality and toast notifications",
+        "date": "2025-11-23 16:00:31 +0700",
+        "message": "feat: enhance blog button generator with save and load functionality, including modals and improved UI components",
         "type": "feature"
       }
     },
