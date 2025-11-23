@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-23T09:02:35.259Z",
+  "generatedAt": "2025-11-23T10:35:14.578Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 52,
+  "totalCommits": 54,
   "commits": [
+    {
+      "hash": "5b126cbe6b83c6b804b550cb615ea55dbd064081",
+      "author": "MK",
+      "date": "2025-11-23 17:34:49 +0700",
+      "message": "feat: remove editor store and related functionality; implement context menu for block actions in blog editor",
+      "type": "feature"
+    },
+    {
+      "hash": "916b9ef560902916d14080cf1bdaf60aaef3658e",
+      "author": "github-actions[bot]",
+      "date": "2025-11-23 09:02:35 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "c943a8e56c1724bb475aa4b4bb83ef0e421213f1",
       "author": "MK",
@@ -390,17 +404,6 @@
         "date": "2025-11-23 16:00:31 +0700",
         "message": "feat: enhance blog button generator with save and load functionality, including modals and improved UI components",
         "type": "feature"
-      }
-    },
-    {
-      "feature": "editor",
-      "commitCount": 1,
-      "lastCommit": {
-        "hash": "938ad98440574b8e057298b2abfb450a60deb44a",
-        "author": "MK",
-        "date": "2025-11-20 22:29:08 +0700",
-        "message": "chore: remove unused HTML templates and update .gitignore for better file management",
-        "type": "chore"
       }
     },
     {
