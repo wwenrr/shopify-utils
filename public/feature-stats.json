@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-24T02:51:52.968Z",
+  "generatedAt": "2025-11-24T06:21:07.833Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 58,
+  "totalCommits": 60,
   "commits": [
+    {
+      "hash": "6a4f9ff2ee47e7e0ad82b17258af5a2966a4a7ce",
+      "author": "MK",
+      "date": "2025-11-24 13:20:38 +0700",
+      "message": "bugfix: h3 sanitization in shopify",
+      "type": "bugfix"
+    },
+    {
+      "hash": "058043b19497f89b7603f628c09c2657d4f2fdea",
+      "author": "github-actions[bot]",
+      "date": "2025-11-24 02:51:53 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "5fc34be89a08d8ee8d06f76beb52ce3c1038727f",
       "author": "MK",
@@ -436,13 +450,13 @@
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 6,
+      "commitCount": 7,
       "lastCommit": {
-        "hash": "8250537cdc246f44b1e3f9e1c1ecb21b6da74e7f",
+        "hash": "6a4f9ff2ee47e7e0ad82b17258af5a2966a4a7ce",
         "author": "MK",
-        "date": "2025-11-23 18:39:38 +0700",
-        "message": "style: enhance author and FAQs generators with improved UI components, copy functionality, and toast notifications",
-        "type": "style"
+        "date": "2025-11-24 13:20:38 +0700",
+        "message": "bugfix: h3 sanitization in shopify",
+        "type": "bugfix"
       }
     }
   ]
