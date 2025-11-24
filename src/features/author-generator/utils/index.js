@@ -64,11 +64,14 @@ export function buildTemplate(data) {
         display:inline-flex;
         align-items:center;
         gap:6px;
-        text-decoration:none;
+        text-decoration:underline;
+        font-style:italic;
       "
     >
       <span>View articles by ${safe.authorName}</span>
-      <span aria-hidden="true">→</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px;display:block;flex-shrink:0;" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+      </svg>
     </a>
   </div>
 </div>`;
