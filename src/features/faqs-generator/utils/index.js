@@ -87,8 +87,9 @@ export function buildFaqTemplate(data) {
       const iconAttr = styleAttr(iconStyle);
       const answerAttr = styleAttr(answerStyle);
       return `<details${detailsAttr}${openAttr}>
+  <h3${headingAttr} style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">${item.question}</h3>
   <summary${summaryAttr}>
-    <h3${headingAttr}>${item.question}</h3>
+    <strong style="font-size: var(--font-size-heading-3)">${item.question}</strong>
     <span${iconAttr}>▾</span>
   </summary>
   <div${answerAttr}>
