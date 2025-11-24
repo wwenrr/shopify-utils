@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-23T11:40:02.434Z",
+  "generatedAt": "2025-11-24T02:51:52.968Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 56,
+  "totalCommits": 58,
   "commits": [
+    {
+      "hash": "5fc34be89a08d8ee8d06f76beb52ce3c1038727f",
+      "author": "MK",
+      "date": "2025-11-24 09:51:26 +0700",
+      "message": "style: update author link styling with underline and italic font, replace arrow with SVG icon",
+      "type": "style"
+    },
+    {
+      "hash": "2e00f0e61ab6b350cb6ecdc735a1e0adce5c24a2",
+      "author": "github-actions[bot]",
+      "date": "2025-11-23 11:40:02 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "8250537cdc246f44b1e3f9e1c1ecb21b6da74e7f",
       "author": "MK",
@@ -400,12 +414,12 @@
   "features": [
     {
       "feature": "author-generator",
-      "commitCount": 4,
+      "commitCount": 5,
       "lastCommit": {
-        "hash": "8250537cdc246f44b1e3f9e1c1ecb21b6da74e7f",
+        "hash": "5fc34be89a08d8ee8d06f76beb52ce3c1038727f",
         "author": "MK",
-        "date": "2025-11-23 18:39:38 +0700",
-        "message": "style: enhance author and FAQs generators with improved UI components, copy functionality, and toast notifications",
+        "date": "2025-11-24 09:51:26 +0700",
+        "message": "style: update author link styling with underline and italic font, replace arrow with SVG icon",
         "type": "style"
       }
     },
