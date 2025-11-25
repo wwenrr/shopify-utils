@@ -1,9 +1,25 @@
 import { useState, useMemo } from 'react';
 import styles from './BlockView.module.css';
 
-function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit, onSplit }) {
+function BlockView({
+  block,
+  onInsert,
+  onInsertAfter,
+  onDelete,
+  onCopy,
+  onEdit,
+  selectedBlockIds = [],
+  onToggleSelect,
+  childrenContent = null,
+}) {
   const hasChildren = block.children && block.children.length > 0;
   const [isExpanded, setIsExpanded] = useState(!hasChildren);
+  const isSelected = Array.isArray(selectedBlockIds) && selectedBlockIds.includes(block.id);
+  const blockClasses = [styles.block];
+
+  if (isSelected) {
+    blockClasses.push(styles.blockSelected);
+  }
 
   const indentStyle = {
     marginLeft: `${block.depth * 24}px`,
@@ -39,13 +55,18 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit, o
     setIsExpanded((prev) => !prev);
   };
 
-  const handleSplitClick = (event) => {
-    event.stopPropagation();
-    if (onSplit) {
-      onSplit(block.id);
+  const handleBlockClick = (event) => {
+    if (
+      !onToggleSelect ||
+      event.target.closest('button') ||
+      event.target.closest('a') ||
+      event.target.closest('input') ||
+      event.target.closest('textarea')
+    ) {
+      return;
     }
+    onToggleSelect(block.id);
   };
-
   const getDisplayHtml = useMemo(() => {
     if (!hasChildren || !isExpanded) {
       return block.outerHtml;
@@ -85,7 +106,13 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit, o
 
   return (
     <>
-      <div className={styles.block} style={indentStyle}>
+      <div
+        className={blockClasses.join(' ')}
+        style={indentStyle}
+        data-block-id={block.id}
+        data-block-root="true"
+        onClickCapture={handleBlockClick}
+      >
         <div className={styles.blockHeader}>
           <div className={styles.headerLeft}>
             {hasChildren && (
@@ -207,21 +234,8 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit, o
         <div className={styles.blockContent}>
           <div className={styles.htmlPreview} dangerouslySetInnerHTML={{ __html: getDisplayHtml }} />
         </div>
-        {hasChildren && isExpanded && (
-          <div className={styles.children}>
-            {block.children.map((child) => (
-              <BlockView
-                key={child.id}
-                block={child}
-                onInsert={onInsert}
-                onInsertAfter={onInsertAfter}
-                onDelete={onDelete}
-                onCopy={onCopy}
-                onEdit={onEdit}
-                onSplit={onSplit}
-              />
-            ))}
-          </div>
+        {hasChildren && isExpanded && childrenContent && (
+          <div className={styles.children}>{childrenContent}</div>
         )}
       </div>
       <div className={styles.insertAfterButton} style={indentStyle}>
@@ -246,29 +260,6 @@ function BlockView({ block, onInsert, onInsertAfter, onDelete, onCopy, onEdit, o
             />
           </svg>
         </button>
-        {onSplit && (
-          <button
-            type="button"
-            className={styles.splitAfterBtn}
-            onClick={handleSplitClick}
-            aria-label="Cắt - đóng tất cả thẻ cha"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 4L12 4M4 8L12 8M4 12L12 12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-        )}
       </div>
     </>
   );

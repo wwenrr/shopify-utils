@@ -10,6 +10,11 @@
   border-color: var(--accent);
 }
 
+.blockSelected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(64, 197, 124, 0.18);
+}
+
 .blockHeader {
   display: flex;
   align-items: center;
@@ -25,6 +30,7 @@
   align-items: center;
   gap: 8px;
 }
+
 
 .collapseButton {
   width: 24px;
@@ -212,8 +218,7 @@
   padding: 8px 0;
 }
 
-.insertAfterBtn,
-.splitAfterBtn {
+.insertAfterBtn {
   width: 32px;
   height: 32px;
   display: flex;
@@ -234,10 +239,4 @@
   color: white;
 }
 
-.splitAfterBtn:hover {
-  background: #f59e0b;
-  border-color: #f59e0b;
-  border-style: solid;
-  color: white;
-}
 

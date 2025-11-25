@@ -67,17 +67,27 @@ function formatHtml(html) {
 
 function InsertModal({ isOpen, onClose, onInsert, mode = 'insert', initialValue = '' }) {
   const [htmlInput, setHtmlInput] = useState('');
+  const isEditLikeMode = mode === 'edit' || mode === 'group-edit';
+  const headingText =
+    mode === 'group-edit'
+      ? 'Chỉnh sửa HTML Nhóm'
+      : mode === 'edit'
+        ? 'Chỉnh sửa HTML Block'
+        : 'Chèn HTML Block Mới';
+  const labelText = mode === 'group-edit' ? 'Sửa HTML cho nhóm:' : 'Nhập HTML để chèn:';
+  const submitLabel = isEditLikeMode ? 'Lưu' : 'Chèn';
+  const textareaRows = mode === 'group-edit' ? 24 : isEditLikeMode ? 20 : 12;
 
   useEffect(() => {
     if (isOpen) {
-      if (mode === 'edit' && initialValue) {
+      if (isEditLikeMode && initialValue) {
         const formatted = formatHtml(initialValue);
         setHtmlInput(formatted);
       } else {
         setHtmlInput('');
       }
     }
-  }, [isOpen, mode, initialValue]);
+  }, [isOpen, mode, initialValue, isEditLikeMode]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -98,9 +108,9 @@ function InsertModal({ isOpen, onClose, onInsert, mode = 'insert', initialValue 
 
   return (
     <div className={styles.overlay} onClick={handleCancel}>
-      <div className={`${styles.modal} ${mode === 'edit' ? styles.modalLarge : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`${styles.modal} ${isEditLikeMode ? styles.modalLarge : ''}`} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h3>{mode === 'edit' ? 'Chỉnh sửa HTML Block' : 'Chèn HTML Block Mới'}</h3>
+          <h3>{headingText}</h3>
           <button
             type="button"
             className={styles.closeButton}
@@ -126,7 +136,7 @@ function InsertModal({ isOpen, onClose, onInsert, mode = 'insert', initialValue 
         </div>
         <form onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.label}>
-            <span>Nhập HTML để chèn:</span>
+            <span>{labelText}</span>
             <textarea
               value={htmlInput}
               onChange={(e) => setHtmlInput(e.target.value)}
@@ -138,8 +148,8 @@ function InsertModal({ isOpen, onClose, onInsert, mode = 'insert', initialValue 
                   setHtmlInput(formatted);
                 }
               }}
-              className={`${styles.textarea} ${mode === 'edit' ? styles.textareaLarge : ''}`}
-              rows={mode === 'edit' ? 20 : 12}
+              className={`${styles.textarea} ${isEditLikeMode ? styles.textareaLarge : ''}`}
+              rows={textareaRows}
               placeholder="<div>Nội dung HTML...</div>"
               autoFocus
               spellCheck={false}
@@ -150,7 +160,7 @@ function InsertModal({ isOpen, onClose, onInsert, mode = 'insert', initialValue 
               Hủy
             </button>
             <button type="submit" className={styles.submitButton} disabled={!htmlInput.trim()}>
-              {mode === 'edit' ? 'Lưu' : 'Chèn'}
+              {submitLabel}
             </button>
           </div>
         </form>

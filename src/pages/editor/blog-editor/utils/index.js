@@ -161,6 +161,95 @@ export function flattenBlocks(blocks) {
   return result;
 }
 
+export function buildBlockMetaMap(blocks) {
+  const map = {};
+
+  function traverse(blockList, parentId = null) {
+    if (!Array.isArray(blockList)) {
+      return;
+    }
+
+    blockList.forEach((block, index) => {
+      map[block.id] = {
+        parentId,
+        index,
+        siblings: blockList,
+        block,
+      };
+      if (block.children && block.children.length > 0) {
+        traverse(block.children, block.id);
+      }
+    });
+  }
+
+  traverse(blocks);
+  return map;
+}
+
+export function replaceBlocksRange(blocks, parentId, startIndex, deleteCount, newBlocks) {
+  if (!Array.isArray(blocks)) {
+    return [];
+  }
+
+  if (!Array.isArray(newBlocks)) {
+    return blocks;
+  }
+
+  const { updated } = replaceRangeRecursive(blocks, parentId, startIndex, deleteCount, newBlocks);
+  return updated;
+}
+
+function replaceRangeRecursive(blockList, parentId, startIndex, deleteCount, newBlocks) {
+  if (!Array.isArray(blockList)) {
+    return { updated: blockList, replaced: false };
+  }
+
+  if (parentId === null) {
+    const updatedList = [
+      ...blockList.slice(0, startIndex),
+      ...newBlocks,
+      ...blockList.slice(startIndex + deleteCount),
+    ];
+    return { updated: updatedList, replaced: true };
+  }
+
+  let replaced = false;
+  const updated = blockList.map((block) => {
+    if (replaced) {
+      return block;
+    }
+
+    if (block && block.id === parentId) {
+      const children = Array.isArray(block.children) ? block.children : [];
+      const updatedChildren = [
+        ...children.slice(0, startIndex),
+        ...newBlocks,
+        ...children.slice(startIndex + deleteCount),
+      ];
+      replaced = true;
+      return {
+        ...block,
+        children: updatedChildren,
+      };
+    }
+
+    if (block && block.children && block.children.length > 0) {
+      const childResult = replaceRangeRecursive(block.children, parentId, startIndex, deleteCount, newBlocks);
+      if (childResult.replaced) {
+        replaced = true;
+        return {
+          ...block,
+          children: childResult.updated,
+        };
+      }
+    }
+
+    return block;
+  });
+
+  return { updated: replaced ? updated : blockList, replaced };
+}
+
 export function serializeBlocksToHtml(blocks) {
   if (!Array.isArray(blocks) || blocks.length === 0) {
     return '';
@@ -209,120 +298,6 @@ function updateBlockRecursive(blocks, targetId, newBlock) {
   });
 }
 
-export function groupH2Blocks(blocks) {
-  if (!Array.isArray(blocks) || blocks.length === 0) {
-    return blocks;
-  }
-
-  const result = [];
-  let i = 0;
-
-  while (i < blocks.length) {
-    const block = blocks[i];
-    
-    if (block && block.tag === 'h2') {
-      const groupBlocks = [block];
-      i++;
-      
-      while (i < blocks.length && blocks[i] && blocks[i].tag !== 'h2') {
-        groupBlocks.push(blocks[i]);
-        i++;
-      }
-      
-      if (groupBlocks.length > 1) {
-        const groupId = generateBlockId();
-        const groupHtml = groupBlocks.map(b => b.outerHtml || '').join('\n');
-        const wrappedHtml = `<section class="h2-group">${groupHtml}</section>`;
-        const wrappedBlocks = parseHtmlToBlocks(wrappedHtml);
-        
-        if (wrappedBlocks.length > 0) {
-          const wrappedBlock = wrappedBlocks[0];
-          wrappedBlock.id = groupId;
-          wrappedBlock.depth = block.depth || 0;
-          wrappedBlock.children = groupBlocks;
-          result.push(wrappedBlock);
-        } else {
-          result.push(...groupBlocks);
-        }
-      } else {
-        result.push(block);
-      }
-    } else {
-      result.push(block);
-      i++;
-    }
-  }
-
-  return result;
-}
-
-export function ungroupH2Blocks(blocks) {
-  if (!Array.isArray(blocks) || blocks.length === 0) {
-    return blocks;
-  }
-
-  const result = [];
-
-  function flattenBlock(block) {
-    if (!block) return;
-
-    if (block.tag === 'section' && block.outerHtml && block.outerHtml.includes('h2-group')) {
-      if (block.children && Array.isArray(block.children) && block.children.length > 0) {
-        block.children.forEach(child => {
-          if (child.tag === 'section' && child.outerHtml && child.outerHtml.includes('h2-group')) {
-            flattenBlock(child);
-          } else {
-            result.push(child);
-          }
-        });
-      }
-    } else {
-      if (block.children && Array.isArray(block.children) && block.children.length > 0) {
-        const hasGroupedChild = block.children.some(
-          child => child.tag === 'section' && child.outerHtml && child.outerHtml.includes('h2-group')
-        );
-
-        if (hasGroupedChild) {
-          block.children.forEach(child => {
-            if (child.tag === 'section' && child.outerHtml && child.outerHtml.includes('h2-group')) {
-              flattenBlock(child);
-            } else {
-              result.push(child);
-            }
-          });
-        } else {
-          result.push(block);
-        }
-      } else {
-        result.push(block);
-      }
-    }
-  }
-
-  blocks.forEach(block => {
-    flattenBlock(block);
-  });
-
-  return result;
-}
-
-export function isH2Grouped(blocks) {
-  if (!Array.isArray(blocks) || blocks.length === 0) {
-    return false;
-  }
-
-  function checkBlock(block) {
-    if (block && block.tag === 'section' && block.outerHtml && block.outerHtml.includes('h2-group')) {
-      return true;
-    }
-    if (block && block.children && Array.isArray(block.children) && block.children.length > 0) {
-      return block.children.some(child => checkBlock(child));
-    }
-    return false;
-  }
-
-  return blocks.some(block => checkBlock(block));
-}
 
 export function closeAllParentsAndSplit(blocks, targetId) {
   if (!Array.isArray(blocks)) {

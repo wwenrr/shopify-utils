@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { parseHtmlToBlocks, insertBlockAtPosition, deleteBlockById, serializeBlocksToHtml, updateBlockHtml, buildBlockMetaMap, replaceBlocksRange } from '../utils';
 import { useBlogEditorStore } from '../stores/blogEditorStore';
@@ -16,6 +16,12 @@ export function useHtmlBlockEditor() {
     startIndex: 0,
     deleteCount: 0,
     initialHtml: '',
+  });
+  const [isDragSelecting, setIsDragSelecting] = useState(false);
+  const dragSelectionRef = useRef({
+    active: false,
+    mode: 'select',
+    processed: new Set(),
   });
 
   const safeBlocks = Array.isArray(blocks) ? blocks : [];
@@ -160,6 +166,22 @@ export function useHtmlBlockEditor() {
     }
   }, [safeBlocks]);
 
+  const applySelectionChange = useCallback((blockId, mode) => {
+    setSelectedBlockIds((prev) => {
+      const exists = prev.includes(blockId);
+      if (mode === 'select') {
+        if (exists) {
+          return prev;
+        }
+        return [...prev, blockId];
+      }
+      if (!exists) {
+        return prev;
+      }
+      return prev.filter((id) => id !== blockId);
+    });
+  }, []);
+
   const handleToggleBlockSelection = useCallback((blockId) => {
     setSelectedBlockIds((prev) => {
       if (prev.includes(blockId)) {
@@ -167,6 +189,45 @@ export function useHtmlBlockEditor() {
       }
       return [...prev, blockId];
     });
+  }, []);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedBlockIds([]);
+  }, []);
+
+  const handleSelectionDragStart = useCallback((blockId) => {
+    const alreadySelected = selectedBlockIds.includes(blockId);
+    const mode = alreadySelected ? 'deselect' : 'select';
+    dragSelectionRef.current = {
+      active: true,
+      mode,
+      processed: new Set([blockId]),
+    };
+    setIsDragSelecting(true);
+    applySelectionChange(blockId, mode);
+  }, [selectedBlockIds, applySelectionChange]);
+
+  const handleSelectionDragEnter = useCallback((blockId) => {
+    if (!dragSelectionRef.current.active) {
+      return;
+    }
+    if (dragSelectionRef.current.processed.has(blockId)) {
+      return;
+    }
+    dragSelectionRef.current.processed.add(blockId);
+    applySelectionChange(blockId, dragSelectionRef.current.mode);
+  }, [applySelectionChange]);
+
+  const handleSelectionDragEnd = useCallback(() => {
+    if (!dragSelectionRef.current.active) {
+      return;
+    }
+    dragSelectionRef.current = {
+      active: false,
+      mode: 'select',
+      processed: new Set(),
+    };
+    setIsDragSelecting(false);
   }, []);
 
   const handleGroupSelectedBlocks = useCallback(() => {
@@ -383,6 +444,11 @@ export function useHtmlBlockEditor() {
     handleOpenGroupEditModal,
     handleCloseGroupEditModal,
     handleUpdateGroupHtml,
+    handleSelectionDragStart,
+    handleSelectionDragEnter,
+    handleSelectionDragEnd,
+    isDragSelecting,
+    handleClearSelection,
   };
 }
 
