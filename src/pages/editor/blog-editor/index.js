@@ -13,6 +13,7 @@ function EditorPage() {
   const blocksCardRef = useRef(null);
   const [blocksCardEl, setBlocksCardEl] = useState(null);
   const [dragOverlay, setDragOverlay] = useState({ active: false, start: 0, end: 0 });
+  const [expandedH2Groups, setExpandedH2Groups] = useState(new Set());
   const {
     blocks,
     inputHtml,
@@ -47,6 +48,8 @@ function EditorPage() {
     handleSelectionDragEnter,
     handleSelectionDragEnd,
     handleClearSelection,
+    handleAutoGroupH2,
+    handleClearSpecialH2Groups,
   } = useHtmlBlockEditor();
 
   const getRelativeY = useCallback((clientY) => {
@@ -75,6 +78,18 @@ function EditorPage() {
 
   const stopOverlay = useCallback(() => {
     setDragOverlay({ active: false, start: 0, end: 0 });
+  }, []);
+
+  const handleToggleH2Group = useCallback((groupIndex) => {
+    setExpandedH2Groups((prev) => {
+      const next = new Set(prev);
+      if (next.has(groupIndex)) {
+        next.delete(groupIndex);
+      } else {
+        next.add(groupIndex);
+      }
+      return next;
+    });
   }, []);
 
   const getBlockIdFromEvent = useCallback((event) => {
@@ -204,43 +219,96 @@ function EditorPage() {
       const block = blockList[idx];
       const meta = groupedBlockMeta ? groupedBlockMeta[block.id] : null;
 
-      if (meta && meta.position === 'start' && Array.isArray(meta.memberIds) && meta.memberIds.length > 1) {
+      if (meta && meta.position === 'start' && Array.isArray(meta.memberIds) && (meta.memberIds.length > 1 || meta.type === 'special')) {
         const groupSize = meta.memberIds.length;
         const groupBlocks = blockList.slice(idx, idx + groupSize);
 
         if (groupBlocks.length === groupSize) {
+          const isSpecialGroup = meta.type === 'special';
+          const groupClassName = `${styles.groupWrapper} ${isSpecialGroup ? styles.specialGroupWrapper : ''}`;
+          const isExpanded = isSpecialGroup ? expandedH2Groups.has(meta.groupIndex) : true;
+          
+          let h2Title = '';
+          if (isSpecialGroup && groupBlocks.length > 0) {
+            const firstBlock = groupBlocks[0];
+            if (firstBlock.tag === 'h2') {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(firstBlock.innerHtml, 'text/html');
+              h2Title = doc.body.textContent?.trim() || '';
+            }
+          }
+          
           nodes.push(
-            <div key={`group-${meta.groupIndex}-${block.id}`} className={styles.groupWrapper}>
+            <div key={`group-${meta.groupIndex}-${block.id}`} className={groupClassName}>
               <div className={styles.groupHeader}>
                 <div className={styles.groupInfo}>
-                  <span className={styles.groupLabel}>Nhóm block</span>
-                  <span className={styles.groupCount}>{groupSize} block</span>
+                  {isSpecialGroup && (
+                    <button
+                      type="button"
+                      className={styles.expandButton}
+                      onClick={() => handleToggleH2Group(meta.groupIndex)}
+                      aria-label={isExpanded ? 'Thu gọn' : 'Mở rộng'}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+                      >
+                        <path
+                          d="M6 4L10 8L6 12"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                  <div>
+                    <span className={styles.groupLabel}>
+                      {isSpecialGroup ? (h2Title ? `H2: ${h2Title}` : 'Nhóm H2 tự động') : 'Nhóm block'}
+                    </span>
+                    <span className={styles.groupCount}>{groupSize} block</span>
+                  </div>
                 </div>
-                <div className={styles.groupActions}>
-                <button
-                  type="button"
-                  className={styles.groupActionButton}
-                  onClick={() => handleOpenGroupEditModal(meta.groupIndex)}
-                >
-                  Sửa HTML
-                </button>
-                  <button
-                    type="button"
-                    className={styles.groupActionButton}
-                    onClick={() => handleCopyGroupHtml(meta.groupIndex)}
-                  >
-                    Copy nhóm
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.groupActionButton}
-                    onClick={() => handleUngroupGroup(meta.groupIndex)}
-                  >
-                    Bỏ nhóm
-                  </button>
-                </div>
+                {isSpecialGroup ? (
+                  <div className={styles.groupActions}>
+                    <span className={styles.groupHint}>Không thể chỉnh sửa</span>
+                  </div>
+                ) : (
+                  <div className={styles.groupActions}>
+                    <button
+                      type="button"
+                      className={styles.groupActionButton}
+                      onClick={() => handleOpenGroupEditModal(meta.groupIndex)}
+                    >
+                      Sửa HTML
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.groupActionButton}
+                      onClick={() => handleCopyGroupHtml(meta.groupIndex)}
+                    >
+                      Copy nhóm
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.groupActionButton}
+                      onClick={() => handleUngroupGroup(meta.groupIndex)}
+                    >
+                      Bỏ nhóm
+                    </button>
+                  </div>
+                )}
               </div>
-              {groupBlocks.map((groupBlock) => renderSingleBlock(groupBlock))}
+              {isExpanded && (
+                <div className={styles.groupContent}>
+                  {groupBlocks.map((groupBlock) => renderSingleBlock(groupBlock))}
+                </div>
+              )}
             </div>
           );
           idx += groupSize;
@@ -297,6 +365,10 @@ function EditorPage() {
       handleClearGroupedBlocks();
     } else if (action === 'clearSelection') {
       handleClearSelection();
+    } else if (action === 'autoGroupH2') {
+      handleAutoGroupH2();
+    } else if (action === 'clearSpecialH2Groups') {
+      handleClearSpecialH2Groups();
     }
   };
 
@@ -424,122 +496,186 @@ function EditorPage() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            type="button"
-            className={styles.contextMenuItem}
-            onClick={() => handleContextMenuAction('clearSelection')}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className={styles.contextMenuSection}>
+            <span className={styles.contextMenuLabel}>Chọn lựa</span>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('clearSelection')}
             >
-              <path
-                d="M3 4H13M4 8H12M6 12H10"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>Bỏ chọn tất cả</span>
-          </button>
-          <button
-            type="button"
-            className={styles.contextMenuItem}
-            onClick={() => handleContextMenuAction('groupSelected')}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 4H13M4 8H12M6 12H10"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Bỏ chọn tất cả</span>
+            </button>
+          </div>
+
+          <div className={styles.contextMenuDivider} />
+
+          <div className={styles.contextMenuSection}>
+            <span className={styles.contextMenuLabel}>Nhóm</span>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('groupSelected')}
             >
-              <path
-                d="M3 4H13M3 8H13M3 12H13"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>Nhóm block đã chọn</span>
-          </button>
-          <button
-            type="button"
-            className={styles.contextMenuItem}
-            onClick={() => handleContextMenuAction('copyAll')}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 4H13M3 8H13M3 12H13"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Nhóm block đã chọn</span>
+            </button>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('autoGroupH2')}
             >
-              <path
-                d="M5.5 3.5H3.5C2.94772 3.5 2.5 3.94772 2.5 4.5V12.5C2.5 13.0523 2.94772 13.5 3.5 13.5H11.5C12.0523 13.5 12.5 13.0523 12.5 12.5V10.5M5.5 3.5C5.5 2.94772 5.94772 2.5 6.5 2.5H12.5C13.0523 2.5 13.5 2.94772 13.5 3.5V9.5C13.5 10.0523 13.0523 10.5 12.5 10.5H6.5C5.94772 10.5 5.5 10.0523 5.5 9.5V3.5Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>Copy tất cả HTML</span>
-          </button>
-          <button
-            type="button"
-            className={styles.contextMenuItem}
-            onClick={() => handleContextMenuAction('clear')}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 4H13M4 8H12M5 12H11"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span>Nhóm H2 tự động</span>
+            </button>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('clearSpecialH2Groups')}
             >
-              <path
-                d="M4 4L12 12M12 4L4 12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>Xóa HTML</span>
-          </button>
-          <button
-            type="button"
-            className={styles.contextMenuItem}
-            onClick={() => handleContextMenuAction('clearGroups')}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 4H13M4 8H12M5 12H11"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M4 4L12 12M12 4L4 12"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Bỏ nhóm H2 tự động</span>
+            </button>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('clearGroups')}
             >
-              <path
-                d="M2.5 8H13.5M8 2.5V13.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4.5 4.5L11.5 11.5M11.5 4.5L4.5 11.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span>Bỏ tất cả nhóm</span>
-          </button>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2.5 8H13.5M8 2.5V13.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M4.5 4.5L11.5 11.5M11.5 4.5L4.5 11.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span>Bỏ tất cả nhóm</span>
+            </button>
+          </div>
+
+          <div className={styles.contextMenuDivider} />
+
+          <div className={styles.contextMenuSection}>
+            <span className={styles.contextMenuLabel}>Hành động</span>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('copyAll')}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.5 3.5H3.5C2.94772 3.5 2.5 3.94772 2.5 4.5V12.5C2.5 13.0523 2.94772 13.5 3.5 13.5H11.5C12.0523 13.5 12.5 13.0523 12.5 12.5V10.5M5.5 3.5C5.5 2.94772 5.94772 2.5 6.5 2.5H12.5C13.0523 2.5 13.5 2.94772 13.5 3.5V9.5C13.5 10.0523 13.0523 10.5 12.5 10.5H6.5C5.94772 10.5 5.5 10.0523 5.5 9.5V3.5Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Copy tất cả HTML</span>
+            </button>
+            <button
+              type="button"
+              className={styles.contextMenuItem}
+              onClick={() => handleContextMenuAction('clear')}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 4L12 12M12 4L4 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Xóa HTML</span>
+            </button>
+          </div>
         </div>
       )}
 

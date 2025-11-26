@@ -204,6 +204,11 @@
   gap: 12px;
 }
 
+.specialGroupWrapper {
+  background: rgba(255, 219, 141, 0.25);
+  border-color: rgba(255, 193, 71, 0.8);
+}
+
 .groupHeader {
   display: flex;
   align-items: center;
@@ -215,6 +220,13 @@
 }
 
 .groupInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.groupInfo > div {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -255,6 +267,34 @@
   color: #fff;
 }
 
+.groupHint {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.expandButton {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 150ms ease;
+  flex-shrink: 0;
+}
+
+.expandButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.groupContent {
+  padding-top: 12px;
+}
+
 .empty {
   margin: 0;
   padding: 40px;
@@ -270,12 +310,34 @@
   border: 1px solid var(--card-border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 4px;
-  min-width: 180px;
+  padding: 8px;
+  min-width: 200px;
   z-index: 10000;
   display: flex;
   flex-direction: column;
+  gap: 0;
+}
+
+.contextMenuSection {
+  display: flex;
+  flex-direction: column;
   gap: 2px;
+}
+
+.contextMenuLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 12px 4px;
+  margin-bottom: 2px;
+}
+
+.contextMenuDivider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 6px 0;
 }
 
 .contextMenuItem {

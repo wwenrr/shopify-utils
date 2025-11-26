@@ -230,6 +230,65 @@ export function useHtmlBlockEditor() {
     setIsDragSelecting(false);
   }, []);
 
+  const buildSpecialH2Groups = useCallback(() => {
+    if (!Array.isArray(safeBlocks) || safeBlocks.length === 0) {
+      return [];
+    }
+    const groups = [];
+    for (let i = 0; i < safeBlocks.length; i += 1) {
+      const block = safeBlocks[i];
+      if (block && block.tag === 'h2') {
+        const memberIds = [block.id];
+        let j = i + 1;
+        while (j < safeBlocks.length && safeBlocks[j] && safeBlocks[j].tag !== 'h2') {
+          memberIds.push(safeBlocks[j].id);
+          j += 1;
+        }
+        groups.push(memberIds);
+        i = j - 1;
+      }
+    }
+    return groups;
+  }, [safeBlocks]);
+
+  const applySpecialH2Groups = useCallback((groups) => {
+    setGroupedBlockSets((prev) => {
+      const manualGroups = prev.filter((group) => group.type !== 'special');
+      const specialGroups = groups
+        .filter((ids) => Array.isArray(ids) && ids.length > 0)
+        .map((ids) => ({
+          memberIds: ids,
+          type: 'special',
+          immutable: true,
+        }));
+      if (specialGroups.length === 0 && manualGroups.length === prev.length) {
+        return manualGroups;
+      }
+      return [...manualGroups, ...specialGroups];
+    });
+  }, []);
+
+  const handleAutoGroupH2 = useCallback(() => {
+    const groups = buildSpecialH2Groups();
+    if (groups.length === 0) {
+      setGroupedBlockSets((prev) => prev.filter((group) => group.type !== 'special'));
+      toast.info('Không tìm thấy H2 để nhóm', { position: 'top-right', autoClose: 2000 });
+      return;
+    }
+    applySpecialH2Groups(groups);
+    toast.success(`Đã nhóm ${groups.length} đoạn H2`, { position: 'top-right', autoClose: 2000 });
+  }, [buildSpecialH2Groups, applySpecialH2Groups]);
+
+  const handleClearSpecialH2Groups = useCallback(() => {
+    const specialGroups = groupedBlockSets.filter((group) => group.type === 'special');
+    if (specialGroups.length === 0) {
+      toast.info('Không có nhóm H2 tự động để xóa', { position: 'top-right', autoClose: 2000 });
+      return;
+    }
+    setGroupedBlockSets((prev) => prev.filter((group) => group.type !== 'special'));
+    toast.success('Đã xóa tất cả nhóm H2 tự động', { position: 'top-right', autoClose: 2000 });
+  }, [groupedBlockSets]);
+
   const handleGroupSelectedBlocks = useCallback(() => {
     if (selectedBlockIds.length < 2) {
       toast.warning('Chọn ít nhất 2 block để nhóm', { position: 'top-right', autoClose: 2000 });
@@ -270,21 +329,33 @@ export function useHtmlBlockEditor() {
 
     setGroupedBlockSets((prev) => {
       const filteredPrev = prev
-        .map((group) => group.filter((id) => !groupedIds.includes(id)))
-        .filter((group) => group.length > 1);
-      return [...filteredPrev, groupedIds];
+        .map((group) => ({
+          ...group,
+          memberIds: group.memberIds.filter((id) => !groupedIds.includes(id)),
+        }))
+        .filter((group) => group.memberIds.length > 1 || group.type === 'special');
+
+      return [
+        ...filteredPrev,
+        {
+          memberIds: groupedIds,
+          type: 'manual',
+          immutable: false,
+        },
+      ];
     });
     setSelectedBlockIds([]);
     toast.success(`Đã nhóm ${groupedIds.length} block`, { position: 'top-right', autoClose: 2000 });
   }, [selectedBlockIds, blockMetaMap]);
 
   const handleClearGroupedBlocks = useCallback(() => {
-    if (groupedBlockSets.length === 0) {
-      toast.info('Chưa có nhóm nào để xóa', { position: 'top-right', autoClose: 2000 });
+    const manualGroups = groupedBlockSets.filter((group) => group.type !== 'special');
+    if (manualGroups.length === 0) {
+      toast.info('Không có nhóm tùy chỉnh để xóa', { position: 'top-right', autoClose: 2000 });
       return;
     }
-    setGroupedBlockSets([]);
-    toast.success('Đã xóa tất cả nhóm', { position: 'top-right', autoClose: 2000 });
+    setGroupedBlockSets((prev) => prev.filter((group) => group.type === 'special'));
+    toast.success('Đã xóa các nhóm tùy chỉnh', { position: 'top-right', autoClose: 2000 });
   }, [groupedBlockSets]);
 
   useEffect(() => {
@@ -292,19 +363,29 @@ export function useHtmlBlockEditor() {
     setSelectedBlockIds((prev) => prev.filter((id) => validIds.has(id)));
     setGroupedBlockSets((prev) =>
       prev
-        .map((group) => group.filter((id) => validIds.has(id)))
-        .filter((group) => group.length > 1)
+        .map((group) => ({
+          ...group,
+          memberIds: group.memberIds.filter((id) => validIds.has(id)),
+        }))
+        .filter((group) => (group.type === 'special' ? group.memberIds.length > 0 : group.memberIds.length > 1))
     );
   }, [blockMetaMap]);
 
+  useEffect(() => {
+    const groups = buildSpecialH2Groups();
+    applySpecialH2Groups(groups);
+  }, [safeBlocks, buildSpecialH2Groups, applySpecialH2Groups]);
+
   const groupedBlockMeta = useMemo(() => {
     return groupedBlockSets.reduce((acc, group, groupIndex) => {
-      group.forEach((id, index) => {
+      group.memberIds.forEach((id, index) => {
         acc[id] = {
           groupIndex,
-          position: index === 0 ? 'start' : index === group.length - 1 ? 'end' : 'middle',
-          memberIds: group,
-          groupSize: group.length,
+          position: index === 0 ? 'start' : index === group.memberIds.length - 1 ? 'end' : 'middle',
+          memberIds: group.memberIds,
+          groupSize: group.memberIds.length,
+          type: group.type,
+          immutable: group.immutable,
         };
       });
       return acc;
@@ -313,12 +394,12 @@ export function useHtmlBlockEditor() {
 
   const handleCopyGroupHtml = useCallback(async (groupIndex) => {
     const targetGroup = groupedBlockSets[groupIndex];
-    if (!targetGroup || targetGroup.length === 0) {
+    if (!targetGroup || targetGroup.memberIds.length === 0) {
       toast.info('Nhóm này hiện trống', { position: 'top-right', autoClose: 2000 });
       return;
     }
 
-    const htmlChunks = targetGroup
+    const htmlChunks = targetGroup.memberIds
       .map((id) => blockMetaMap[id]?.block?.outerHtml || '')
       .filter((chunk) => chunk.trim().length > 0);
 
@@ -337,26 +418,39 @@ export function useHtmlBlockEditor() {
   }, [groupedBlockSets, blockMetaMap]);
 
   const handleUngroupGroup = useCallback((groupIndex) => {
+    const targetGroup = groupedBlockSets[groupIndex];
+    if (!targetGroup) {
+      return;
+    }
+    if (targetGroup.immutable) {
+      toast.info('Nhóm này không thể bỏ', { position: 'top-right', autoClose: 2000 });
+      return;
+    }
     setGroupedBlockSets((prev) => prev.filter((_, idx) => idx !== groupIndex));
-  }, []);
+  }, [groupedBlockSets]);
 
   const handleOpenGroupEditModal = useCallback((groupIndex) => {
     const group = groupedBlockSets[groupIndex];
-    if (!group || group.length === 0) {
+    if (!group || group.memberIds.length === 0) {
       toast.info('Nhóm này đang trống', { position: 'top-right', autoClose: 2000 });
       return;
     }
 
-    const metas = group.map((id) => blockMetaMap[id]).filter(Boolean);
-    if (metas.length !== group.length) {
+    if (group.immutable) {
+      toast.info('Nhóm này không thể chỉnh sửa', { position: 'top-right', autoClose: 2000 });
+      return;
+    }
+
+    const metas = group.memberIds.map((id) => blockMetaMap[id]).filter(Boolean);
+    if (metas.length !== group.memberIds.length) {
       toast.error('Không thể tìm thấy block trong nhóm', { position: 'top-right', autoClose: 2000 });
       return;
     }
 
     const parentId = metas[0].parentId || null;
     const startIndex = Math.min(...metas.map((meta) => meta.index));
-    const deleteCount = group.length;
-    const initialHtml = group
+    const deleteCount = group.memberIds.length;
+    const initialHtml = group.memberIds
       .map((id) => blockMetaMap[id]?.block?.outerHtml || '')
       .filter((html) => html.trim().length > 0)
       .join('\n');
@@ -449,6 +543,8 @@ export function useHtmlBlockEditor() {
     handleSelectionDragEnd,
     isDragSelecting,
     handleClearSelection,
+    handleAutoGroupH2,
+    handleClearSpecialH2Groups,
   };
 }
 
