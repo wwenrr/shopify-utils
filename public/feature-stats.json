@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-25T18:02:40.086Z",
+  "generatedAt": "2025-11-26T01:53:08.390Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 63,
+  "totalCommits": 65,
   "commits": [
+    {
+      "hash": "57dec9b4f109033e786ebd612d25ec45f36501b2",
+      "author": "MK",
+      "date": "2025-11-26 08:52:43 +0700",
+      "message": "feat: add automatic H2 grouping and enhanced group management in blog editor; implement toggle functionality for special groups and improve context menu actions",
+      "type": "feature"
+    },
+    {
+      "hash": "77770131addb00d948592126e032d4ef433a9e7d",
+      "author": "github-actions[bot]",
+      "date": "2025-11-25 18:02:40 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "e5b6f693987903f7166df0dbdd95f7b86edcdca9",
       "author": "MK",
