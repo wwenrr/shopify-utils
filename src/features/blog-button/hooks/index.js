@@ -8,7 +8,7 @@ const INITIAL_FORM = {
   url: 'https://example.com/bai-viet',
   variant: 'jwl',
   description: '',
-  target: false,
+  target: true,
 };
 
 const SAMPLE_FORM = {
