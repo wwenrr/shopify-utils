@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-26T01:53:08.390Z",
+  "generatedAt": "2025-11-26T06:07:22.510Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 65,
+  "totalCommits": 67,
   "commits": [
+    {
+      "hash": "00fc2ccade64c11cc5c7af1682bf4b03733ce51a",
+      "author": "MK",
+      "date": "2025-11-26 13:06:55 +0700",
+      "message": "fix: update blog button configuration to set target to true and adjust button markup for better alignment",
+      "type": "bugfix"
+    },
+    {
+      "hash": "7228bdeb3cad85da9ed9035e3cede8daa5d02d71",
+      "author": "github-actions[bot]",
+      "date": "2025-11-26 01:53:08 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "57dec9b4f109033e786ebd612d25ec45f36501b2",
       "author": "MK",
@@ -474,13 +488,13 @@
     },
     {
       "feature": "blog-button",
-      "commitCount": 4,
+      "commitCount": 5,
       "lastCommit": {
-        "hash": "2759d01d4ca39c6a04a5abb3c775f6497e369c5a",
+        "hash": "00fc2ccade64c11cc5c7af1682bf4b03733ce51a",
         "author": "MK",
-        "date": "2025-11-23 16:00:31 +0700",
-        "message": "feat: enhance blog button generator with save and load functionality, including modals and improved UI components",
-        "type": "feature"
+        "date": "2025-11-26 13:06:55 +0700",
+        "message": "fix: update blog button configuration to set target to true and adjust button markup for better alignment",
+        "type": "bugfix"
       }
     },
     {
