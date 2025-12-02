@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-11-26T06:07:22.510Z",
+  "generatedAt": "2025-12-02T10:12:51.472Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 67,
+  "totalCommits": 69,
   "commits": [
+    {
+      "hash": "e9e89d9d6b926834c40de411fad9022b48b7743c",
+      "author": "MK",
+      "date": "2025-12-02 17:12:21 +0700",
+      "message": "fix: update blog button markup to use a custom class for better styling",
+      "type": "bugfix"
+    },
+    {
+      "hash": "bd80f31937bd515c678ad14cef1545adad58ac6e",
+      "author": "github-actions[bot]",
+      "date": "2025-11-26 06:07:22 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "00fc2ccade64c11cc5c7af1682bf4b03733ce51a",
       "author": "MK",
@@ -488,12 +502,12 @@
     },
     {
       "feature": "blog-button",
-      "commitCount": 5,
+      "commitCount": 6,
       "lastCommit": {
-        "hash": "00fc2ccade64c11cc5c7af1682bf4b03733ce51a",
+        "hash": "e9e89d9d6b926834c40de411fad9022b48b7743c",
         "author": "MK",
-        "date": "2025-11-26 13:06:55 +0700",
-        "message": "fix: update blog button configuration to set target to true and adjust button markup for better alignment",
+        "date": "2025-12-02 17:12:21 +0700",
+        "message": "fix: update blog button markup to use a custom class for better styling",
         "type": "bugfix"
       }
     },
