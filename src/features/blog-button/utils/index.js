@@ -83,7 +83,7 @@ export function buildButtonMarkup(values, variantConfig) {
     ? `<p style="text-align:center;color:#757575;font-size:14px;margin:0;">${values.description}</p>`
     : '';
 
-  return `<div style="${containerStyle}">
+  return `<div class = "custom-blog-button-container" style="${containerStyle}">
   <a href="${values.url}"${targetAttr} style="${buttonStyle}" onmouseenter="${hoverIn}" onmouseleave="${hoverOut}">${values.text}</a>
   ${descriptionBlock}
 </div>`;
