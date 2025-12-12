@@ -31,7 +31,6 @@ export function buildTemplate(data) {
     border:1px solid #e5e5e5;
     border-radius:16px;
     padding:24px;
-    background-color:#ffffff;
   "
 >
   <div style="flex:0 0 96px; width:96px; height:96px;">
