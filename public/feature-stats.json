@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-12-02T10:12:51.472Z",
+  "generatedAt": "2025-12-12T03:59:41.991Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 69,
+  "totalCommits": 71,
   "commits": [
+    {
+      "hash": "d6de517e1353335c537e74aff23974bacd3873dc",
+      "author": "MK",
+      "date": "2025-12-12 10:59:17 +0700",
+      "message": "fix: add custom class to FAQ details element",
+      "type": "bugfix"
+    },
+    {
+      "hash": "ff2fd8b65543698bca6fd1c6f0503c78eebf8023",
+      "author": "github-actions[bot]",
+      "date": "2025-12-02 10:12:51 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "e9e89d9d6b926834c40de411fad9022b48b7743c",
       "author": "MK",
@@ -513,12 +527,12 @@
     },
     {
       "feature": "faqs-generator",
-      "commitCount": 7,
+      "commitCount": 8,
       "lastCommit": {
-        "hash": "6a4f9ff2ee47e7e0ad82b17258af5a2966a4a7ce",
+        "hash": "d6de517e1353335c537e74aff23974bacd3873dc",
         "author": "MK",
-        "date": "2025-11-24 13:20:38 +0700",
-        "message": "bugfix: h3 sanitization in shopify",
+        "date": "2025-12-12 10:59:17 +0700",
+        "message": "fix: add custom class to FAQ details element",
         "type": "bugfix"
       }
     }
