@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-12-12T06:46:01.734Z",
+  "generatedAt": "2025-12-12T06:57:21.913Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 73,
+  "totalCommits": 75,
   "commits": [
+    {
+      "hash": "6c826e373f7420ba08066b0796930a6ada9126ef",
+      "author": "MK",
+      "date": "2025-12-12 13:56:51 +0700",
+      "message": "fix: update blog button color scheme for improved visibility and consistency",
+      "type": "bugfix"
+    },
+    {
+      "hash": "559b0f5a2f03af773339c2af174457d40c4dacd7",
+      "author": "github-actions[bot]",
+      "date": "2025-12-12 06:46:01 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "a9cab7e83ad8eab1a41f76c4ed893708146caeb8",
       "author": "MK",
@@ -530,12 +544,12 @@
     },
     {
       "feature": "blog-button",
-      "commitCount": 6,
+      "commitCount": 7,
       "lastCommit": {
-        "hash": "e9e89d9d6b926834c40de411fad9022b48b7743c",
+        "hash": "6c826e373f7420ba08066b0796930a6ada9126ef",
         "author": "MK",
-        "date": "2025-12-02 17:12:21 +0700",
-        "message": "fix: update blog button markup to use a custom class for better styling",
+        "date": "2025-12-12 13:56:51 +0700",
+        "message": "fix: update blog button color scheme for improved visibility and consistency",
         "type": "bugfix"
       }
     },
