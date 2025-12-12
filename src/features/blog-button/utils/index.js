@@ -10,14 +10,14 @@ export const VARIANT_DEFAULTS = {
     hoverBorderColor: '#3F3E3D',
   },
   jf: {
-    backgroundColor: '#0D0C0C',
-    borderColor: '#0D0C0C',
+    backgroundColor: '#fa4e70',
+    borderColor: '#fa4e70',
     borderRadius: '5px',
     fontFamily: "'Nunito Sans',sans-serif",
     textColor: '#FFFFFF',
     hoverBackgroundColor: '#FFFFFF',
     hoverTextColor: '#0D0C0C',
-    hoverBorderColor: '#0D0C0C',
+    hoverBorderColor: '#fa4e70',
   },
 };
 
