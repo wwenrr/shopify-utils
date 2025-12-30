@@ -63,7 +63,6 @@ export function buildTemplate(data) {
         display:inline-flex;
         align-items:center;
         gap:6px;
-        text-decoration:underline;
         font-style:italic;
       "
     >
