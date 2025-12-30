@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-12-16T01:54:55.089Z",
+  "generatedAt": "2025-12-30T04:02:25.969Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 77,
+  "totalCommits": 79,
   "commits": [
+    {
+      "hash": "e2f8961ce9f6027d1eeb886ee8caa588f327bd64",
+      "author": "MK",
+      "date": "2025-12-30 11:02:02 +0700",
+      "message": "style: Remove underline from author display.",
+      "type": "style"
+    },
+    {
+      "hash": "ad56c686944fa09065130bb09762f27bad3af25d",
+      "author": "github-actions[bot]",
+      "date": "2025-12-16 01:54:55 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "38ed4922640d7c1bcdc5412f087fc3975dcf3af8",
       "author": "MK",
@@ -547,13 +561,13 @@
   "features": [
     {
       "feature": "author-generator",
-      "commitCount": 6,
+      "commitCount": 7,
       "lastCommit": {
-        "hash": "a9cab7e83ad8eab1a41f76c4ed893708146caeb8",
+        "hash": "e2f8961ce9f6027d1eeb886ee8caa588f327bd64",
         "author": "MK",
-        "date": "2025-12-12 13:45:34 +0700",
-        "message": "fix: remove background color from author template for improved styling",
-        "type": "bugfix"
+        "date": "2025-12-30 11:02:02 +0700",
+        "message": "style: Remove underline from author display.",
+        "type": "style"
       }
     },
     {
