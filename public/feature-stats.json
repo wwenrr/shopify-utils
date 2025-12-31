@@ -1,9 +1,23 @@
 {
-  "generatedAt": "2025-12-30T04:02:25.969Z",
+  "generatedAt": "2025-12-31T02:36:10.362Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 79,
+  "totalCommits": 81,
   "commits": [
+    {
+      "hash": "5e16d6eba229cb3f1b55a718656833c0fa4fb638",
+      "author": "MK",
+      "date": "2025-12-31 09:34:54 +0700",
+      "message": "style: Add `custom-author-generator` class to the author generator component.",
+      "type": "style"
+    },
+    {
+      "hash": "7248a7fbba829ae3b702fd0081d2144d978c84c6",
+      "author": "github-actions[bot]",
+      "date": "2025-12-30 04:02:26 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "e2f8961ce9f6027d1eeb886ee8caa588f327bd64",
       "author": "MK",
@@ -561,12 +575,12 @@
   "features": [
     {
       "feature": "author-generator",
-      "commitCount": 7,
+      "commitCount": 8,
       "lastCommit": {
-        "hash": "e2f8961ce9f6027d1eeb886ee8caa588f327bd64",
+        "hash": "5e16d6eba229cb3f1b55a718656833c0fa4fb638",
         "author": "MK",
-        "date": "2025-12-30 11:02:02 +0700",
-        "message": "style: Remove underline from author display.",
+        "date": "2025-12-31 09:34:54 +0700",
+        "message": "style: Add `custom-author-generator` class to the author generator component.",
         "type": "style"
       }
     },
