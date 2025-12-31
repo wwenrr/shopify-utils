@@ -32,6 +32,8 @@ export function buildTemplate(data) {
     border-radius:16px;
     padding:24px;
   "
+
+  class="custom-author-generator"
 >
   <div style="flex:0 0 96px; width:96px; height:96px;">
     <img
