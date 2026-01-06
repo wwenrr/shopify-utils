@@ -38,7 +38,7 @@ Configure GitHub personal access tokens for integration features, manage gists, 
 ## Installation
 
 ### Prerequisites
-- Node.js (version 14 or higher recommended)
+- Node.js (version 16 or higher recommended)
 - npm or yarn package manager
 
 ### Setup
@@ -125,7 +125,7 @@ shopify-utils/
 2. Paste your HTML content into the input area
 3. Click "Parse HTML" to convert content into editable blocks
 4. Use the toolbar to insert, edit, or delete blocks
-5. Select multiple blocks by dragging or clicking with shift/ctrl
+5. Select multiple blocks by dragging or clicking with Shift/Ctrl
 6. Group related blocks for easier management
 7. Copy the final HTML when ready
 
