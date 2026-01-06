@@ -1,70 +1,160 @@
-# Getting Started with Create React App
+# Shopify Utils
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive collection of utilities and tools designed to streamline content creation and HTML manipulation for Shopify blog posts and pages.
+
+## Overview
+
+Shopify Utils is a React-based web application that provides various generators and editors to help create standardized, properly formatted HTML content for Shopify stores. The application includes tools for generating author sections, blog buttons, FAQs, and an advanced HTML editor with block-based content management.
+
+## Features
+
+### 1. Author Generator
+Generate properly formatted HTML templates for author sections in blog posts. Input author information and get clean, inline-styled HTML ready to be embedded in your Shopify content.
+
+### 2. Blog Button Generator
+Create customized blog buttons with various styling options. Configure button text, links, colors, and variants to match your brand guidelines.
+
+### 3. FAQs Generator
+Transform raw HTML content into structured FAQ sections. Parse existing HTML with headings and paragraphs, and convert them into properly formatted FAQ blocks with inline styles.
+
+### 4. HTML Alignment Tool
+Validate and reformat HTML content by visualizing the structure as a tree. Analyze tag hierarchy and apply alignment formatting to selected elements.
+
+### 5. Blog Editor
+A powerful block-based HTML editor that allows you to:
+- Parse HTML into manageable blocks
+- Insert, edit, and delete content blocks
+- Group related blocks together
+- Copy individual blocks or entire sections
+- Drag and select multiple blocks
+- Manage H2-grouped content sections
+
+### 6. Dashboard
+View project statistics, commit history, and development activity with visual charts and tables.
+
+### 7. Token Configuration
+Configure GitHub personal access tokens for integration features, manage gists, and control authentication settings.
+
+## Installation
+
+### Prerequisites
+- Node.js (version 16 or higher recommended)
+- npm or yarn package manager
+
+### Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/wwenrr/shopify-utils.git
+cd shopify-utils
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm start
+```
+
+The application will open in your browser at [http://localhost:3000](http://localhost:3000).
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Runs the app in development mode. The page will automatically reload when you make changes. You may also see lint errors in the console.
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.
 
 ### `npm run build`
+Builds the app for production to the `build` folder. The build is optimized for best performance, with minified files and hashed filenames.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run generate:feature-stats`
+Generates feature statistics data for the dashboard.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+shopify-utils/
+├── public/              # Static files
+├── src/
+│   ├── features/        # Feature modules
+│   │   ├── author-generator/
+│   │   ├── blog-button/
+│   │   └── faqs-generator/
+│   ├── pages/           # Page components
+│   │   ├── overview/    # Dashboard
+│   │   ├── generators/  # Generator pages
+│   │   ├── editor/      # Blog editor
+│   │   └── config/      # Configuration pages
+│   ├── layouts/         # Layout components
+│   ├── routes/          # Route definitions
+│   ├── shared/          # Shared components and utilities
+│   └── constants/       # Constants and configuration
+├── scripts/             # Build and utility scripts
+└── package.json
+```
 
-### `npm run eject`
+## Technologies Used
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React 18
+- React Router v6
+- Zustand (state management)
+- Recharts (data visualization)
+- React Toastify (notifications)
+- Tippy.js (tooltips)
+- Radix UI (dropdown menus)
+- CRACO (Create React App Configuration Override)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Usage
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Generating Content
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Navigate to the desired generator from the sidebar menu
+2. Fill in the required information in the form
+3. Preview the generated HTML in real-time
+4. Click the "Copy" button to copy the HTML to your clipboard
+5. Paste the HTML into your Shopify blog post or page
 
-## Learn More
+### Using the Blog Editor
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Navigate to the Editor page
+2. Paste your HTML content into the input area
+3. Click "Parse HTML" to convert content into editable blocks
+4. Use the toolbar to insert, edit, or delete blocks
+5. Select multiple blocks by dragging or clicking with Shift/Ctrl
+6. Group related blocks for easier management
+7. Copy the final HTML when ready
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Configuring GitHub Integration
 
-### Code Splitting
+1. Navigate to Config > Tokens
+2. Enter your GitHub personal access token
+3. Save the configuration
+4. Use the gist management features to save and load configurations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Deployment
 
-### Analyzing the Bundle Size
+This application is configured to be deployed on GitHub Pages. The homepage is set to: `https://wwenrr.github.io/shopify-utils`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To deploy:
+```bash
+npm run build
+```
 
-### Making a Progressive Web App
+The build artifacts will be generated in the `build` folder, ready for deployment.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contributing
 
-### Advanced Configuration
+Contributions are welcome! Please feel free to submit issues or pull requests.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
+This project is private and not licensed for public use.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Support
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For questions or support, please open an issue in the GitHub repository.
