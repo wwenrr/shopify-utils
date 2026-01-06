@@ -1,9 +1,44 @@
 {
-  "generatedAt": "2025-12-31T02:36:10.362Z",
+  "generatedAt": "2026-01-06T09:11:35.212Z",
   "repoRoot": "/home/runner/work/shopify-utils/shopify-utils",
   "appRoot": "/home/runner/work/shopify-utils/shopify-utils",
-  "totalCommits": 81,
+  "totalCommits": 86,
   "commits": [
+    {
+      "hash": "504a13e5de59fe59079ed79f835364476689fe6d",
+      "author": "MK",
+      "date": "2026-01-06 18:11:12 +0900",
+      "message": "Merge pull request #2 from wwenrr/copilot/add-readme-content",
+      "type": "other"
+    },
+    {
+      "hash": "752d7b4f88046821b176ad1b7eaec731f63f3cdb",
+      "author": "copilot-swe-agent[bot]",
+      "date": "2026-01-06 09:09:55 +0000",
+      "message": "docs: update Node.js version requirement and capitalize key names",
+      "type": "other"
+    },
+    {
+      "hash": "e493c27f6aabc6363c2b4b403b40aa469cc29090",
+      "author": "copilot-swe-agent[bot]",
+      "date": "2026-01-06 09:09:10 +0000",
+      "message": "docs: create comprehensive README with project overview and features",
+      "type": "other"
+    },
+    {
+      "hash": "3cc37ddeb2e944e9602a4c5001a153e94516a494",
+      "author": "copilot-swe-agent[bot]",
+      "date": "2026-01-06 09:05:52 +0000",
+      "message": "Initial plan",
+      "type": "other"
+    },
+    {
+      "hash": "e389e7843ad8ba097dc36f6b33e3098d4dd32717",
+      "author": "github-actions[bot]",
+      "date": "2025-12-31 02:36:10 +0000",
+      "message": "chore: update feature stats [skip ci]",
+      "type": "chore"
+    },
     {
       "hash": "5e16d6eba229cb3f1b55a718656833c0fa4fb638",
       "author": "MK",
