@@ -89,7 +89,7 @@ export function buildFaqTemplate(data) {
       return `<details${detailsAttr}${openAttr} class="custom-blog-faq-item">
   <h3${headingAttr} style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">${item.question}</h3>
   <summary${summaryAttr}>
-    <strong style="font-size: var(--font-size-heading-3)">${item.question}</strong>
+    <strong style="font-size: 1.2rem">${item.question}</strong>
     <span${iconAttr}>▾</span>
   </summary>
   <div${answerAttr}>
